@@ -1,0 +1,8 @@
+1、将FileObserver.jar放进终端
+2、export CLASSPATH=/data/local/tmp/FileObserver.jar
+3、app_process /data/local/tmp cn.file.observer.Observer "/data/local/tmp/filelist.txt" &
+
+
+#/data/local/tmp/filelist.txt里面每一行写一个文件夹或者文件路径
+#进程名为file_observer
+#tag： file_action

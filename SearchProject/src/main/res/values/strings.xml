@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">馒头搜索</string>
+    <string name="action_settings">Settings</string>
+    <string name="actv_search">请输入搜索内容</string>
+    <string name="publish_title">标题：</string>
+    <string name="publish_content">内容：</string>
+    <string name="publish_tag">关键词</string>
+    <string name="publish_contact">联系方式</string>
+    <string name="et_tag">不能多于10个字</string>
+    <string name="et_title">标题不能多于50个字</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_submit">提交</string>
+    <string name="save_success">保存成功</string>
+    <string name="search_loc_fail">定位失败,无法查询</string>
+    <string name="public_loc_fail">定位失败,无法提交</string>
+    <string name="btn_submiting">正在提交</string>
+    <string name="btn_search">查找</string>
+    <string name="btn_searching">正在查找</string>
+    <string name="info_search_no_tag">请填写要查找的信息</string>
+    <string name="btn_open_map">在地图上看</string>
+    <string name="info_search_nothing">搜索结束，无信息</string>
+    <string name="check_update_fail">检测更新失败</string>
+    <string name="dialog_update_title">更新信息</string>
+    <string name="dialog_update_positive">确定</string>
+    <string name="dialog_update_negative">取消</string>
+    <string name="dialog_update_exit">退出程序</string>
+    <string name="notify_udpate_title">正在下载程序</string>
+    <string name="notify_udpate_title_completed">下载完成，点击安装</string>
+    <string name="no_baidu_map_app">没有检测到百度地图，使用内置地图</string>
+    <string name="no_network">没有连接网络</string>
+    <string name="no_search_result">没有搜索到信息</string>
+
+    <!-- 设置 -->
+    <string name="setting_search_range">搜索范围</string>
+    <string name="search_range_1">1公里</string>
+    <string name="search_range_3">3公里</string>
+    <string name="search_range_10">10公里</string>
+    <string name="setting_choice_map">使用地图类型</string>
+    <string name="map_self">内置地图</string>
+    <string name="map_baidu">百度地图</string>
+
+</resources>

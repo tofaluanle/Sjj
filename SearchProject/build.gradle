@@ -1,0 +1,26 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 7
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "cn.manjuu.searchproject"
+        minSdkVersion 7
+        targetSdkVersion 7
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:18.0.0'
+    compile files('libs/android-async-http-1.4.4.jar')
+    compile files('libs/baidumapapi_v2_2_0.jar')
+    compile files('libs/locSDK_3.1.jar')
+}

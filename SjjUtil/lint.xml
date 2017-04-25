@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi" severity="ignore">
+        <ignore path="src/cn/sjj/util/FileUtil.java" />
+        <ignore path="src/cn/sjj/util/ZipUtil.java" />
+    </issue>
+    <issue id="ProtectedPermissions">
+        <ignore path="AndroidManifest.xml" />
+    </issue>
+</lint>

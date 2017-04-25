@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 错误提示 -->
+    <string name="error_outOfMemory">内存溢出，图片无法加载，请尝试重启程序</string>
+    <string name="error_json_null">解析布局文件失败,请稍后再试</string>
+    <string name="error_file_not_all_exist">资源文件下载不完整,请稍后再试</string>
+    <string name="error_file_null">没有数据文件，请稍后再试</string>
+    <string name="error_element_null">抱歉，暂无信息</string>
+
+</resources>

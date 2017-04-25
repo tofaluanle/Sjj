@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.demoset.newsclient.BidirSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bidir_sliding_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/left_menu"
+        android:layout_width="200dip"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:background="#00ccff"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="show right" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/right_menu"
+        android:layout_width="200dip"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:background="#00ffcc"
+        android:visibility="invisible" >
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:text="TextView" />
+
+            </LinearLayout>
+        </ScrollView>
+        
+    </RelativeLayout>
+
+    <cn.demoset.newsclient.MyLinearLayout
+        android:id="@+id/content"
+        android:layout_width="320dip"
+        android:layout_height="fill_parent"
+        android:background="#e9e9e9"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/show_left_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="show left" />
+
+            <Button
+                android:id="@+id/show_right_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="show right" />
+        </RelativeLayout>
+        <!--
+        <ListView
+            android:id="@+id/contentList"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none"
+            android:cacheColorHint="#00000000" >
+        </ListView>
+        -->
+
+        <cn.demoset.newsclient.ui.TitleIndicator
+            android:id="@+id/pagerindicator"
+            android:layout_width="fill_parent"
+            android:layout_height="34dp"
+            android:background="@drawable/tab_bg"
+            app:footerColor="@color/tab_indicator_text_selected"
+            app:footerLineHeight="2dp"
+            app:footerTriangleHeight="3.0dp"
+            app:textColor="@color/tab_indicator_text"
+            app:textSizeNormal="@dimen/common_text_size_middle_2"
+            app:textSizeSelected="@dimen/common_text_size_middle_2" />
+        <!-- Don't set background for ViewPager. It doesn't work because of page margin -->
+
+        <cn.demoset.newsclient.ui.ViewPagerCompat
+            android:id="@+id/pager"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:duplicateParentState="true" />
+    </cn.demoset.newsclient.MyLinearLayout>
+
+</cn.demoset.newsclient.BidirSlidingLayout>

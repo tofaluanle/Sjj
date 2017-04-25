@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".MainActivity" >
+
+    <AutoCompleteTextView
+        android:id="@+id/actv_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:completionThreshold="1"
+        android:hint="@string/actv_search"
+        android:imeOptions="flagNoExtractUi" >
+
+        <requestFocus />
+    </AutoCompleteTextView>
+
+    <TextView
+        android:id="@+id/tv_hidden"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_search"
+        android:textColor="@color/black"
+        android:focusableInTouchMode="true"
+        android:textSize="23sp"/>
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actv_search"
+        android:layout_marginTop="10dp"
+        android:text="@string/btn_search" />
+
+    <View
+        android:id="@+id/line_publish_1"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/btn_search"
+        android:layout_marginTop="10dp"
+        android:background="@color/black" />
+
+    <ListView
+        android:id="@+id/lv_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line_publish_1"
+        android:cacheColorHint="@color/transparent"
+        android:layoutAnimation="@anim/navagation_listview_anim1" >
+    </ListView>
+
+    <View
+        android:id="@+id/line_publish_2"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/lv_search"
+        android:background="@color/black" />
+
+</RelativeLayout>
