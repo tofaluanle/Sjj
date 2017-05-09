@@ -24,7 +24,6 @@ import android.util.TypedValue;
 import android.view.View;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -39,9 +38,17 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 
-public class BitmapUtil {
+import cn.sjj.base.BaseUtil;
 
-    public static int computeSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels) {
+public class BitmapUtil extends BaseUtil {
+
+    private static String mDefaultCompressPath;
+
+    static {
+        mDefaultCompressPath = sContext.getCacheDir().getPath() + "/tmp_compress.jpg";
+    }
+
+    public static int computeSampleSize(Options options, int minSideLength, int maxNumOfPixels) {
         int initialSize = computeInitialSampleSize(options, minSideLength, maxNumOfPixels);
         int roundedSize;
         if (initialSize <= 8) {
@@ -56,7 +63,7 @@ public class BitmapUtil {
         return roundedSize;
     }
 
-    private static int computeInitialSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels) {
+    private static int computeInitialSampleSize(Options options, int minSideLength, int maxNumOfPixels) {
         double w = options.outWidth;
         double h = options.outHeight;
 
@@ -106,7 +113,7 @@ public class BitmapUtil {
         BufferedInputStream bis = new BufferedInputStream(is);
         Bitmap bmp = null;
         try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
+            Options options = new Options();
             options.inJustDecodeBounds = true;
             bis.mark(length);
             BitmapFactory.decodeStream(bis, null, options);
@@ -166,12 +173,11 @@ public class BitmapUtil {
         try {
             fis = new FileInputStream(imgFile);
             FileDescriptor fd = fis.getFD();
-            BitmapFactory.Options options = new BitmapFactory.Options();
+            Options options = new Options();
             options.inJustDecodeBounds = true;
             // BitmapFactory.decodeFile(imgFile, options);
             BitmapFactory.decodeFileDescriptor(fd, null, options);
-            options.inSampleSize = computeSampleSize(options, minSideLength,
-                    maxNumOfPixels);
+            options.inSampleSize = computeSampleSize(options, minSideLength, maxNumOfPixels);
             // Looger.i( "options.inSampleSize: " +
             // options.inSampleSize);
             try {
@@ -221,7 +227,7 @@ public class BitmapUtil {
      */
     public static Bitmap tryGetBitmap(Resources res, int id, int minSideLength, int maxNumOfPixels) {
         Bitmap bmp = null;
-        BitmapFactory.Options options = new BitmapFactory.Options();
+        Options options = new Options();
         options.inJustDecodeBounds = true;
         // BitmapFactory.decodeFile(imgFile, options);
         BitmapFactory.decodeResource(res, id, options);
@@ -246,7 +252,7 @@ public class BitmapUtil {
             return null;
         try {
             FileDescriptor fd = new FileInputStream(imgFile).getFD();
-            BitmapFactory.Options options = new BitmapFactory.Options();
+            Options options = new Options();
             options.inJustDecodeBounds = true;
             // BitmapFactory.decodeFile(imgFile, options);
             BitmapFactory.decodeFileDescriptor(fd, null, options);
@@ -309,7 +315,7 @@ public class BitmapUtil {
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     public static byte[] Bitmap2Bytes(Bitmap bm) {
-        return Bitmap2Bytes(bm, Bitmap.CompressFormat.PNG);
+        return Bitmap2Bytes(bm, Bitmap.CompressFormat.JPEG);
     }
 
     public static byte[] Bitmap2Bytes(Bitmap bm, Bitmap.CompressFormat format) {
@@ -343,8 +349,8 @@ public class BitmapUtil {
         int h = drawable.getIntrinsicHeight();
 
         // 取 drawable 的颜色格式
-        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                : Bitmap.Config.RGB_565;
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Config.ARGB_8888
+                : Config.RGB_565;
         // 建立对应 bitmap
         Bitmap bitmap = Bitmap.createBitmap(w, h, config);
         // 建立对应 bitmap 的画布
@@ -369,8 +375,8 @@ public class BitmapUtil {
                     .createBitmap(
                             drawable.getIntrinsicWidth(),
                             drawable.getIntrinsicHeight(),
-                            drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                                    : Bitmap.Config.RGB_565);
+                            drawable.getOpacity() != PixelFormat.OPAQUE ? Config.ARGB_8888
+                                    : Config.RGB_565);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
                     drawable.getIntrinsicHeight());
@@ -492,7 +498,7 @@ public class BitmapUtil {
                     0x70FFFFFF, 0x00FFFFFF, TileMode.MIRROR);
             paint.setShader(shader);
             paint.setXfermode(new PorterDuffXfermode(
-                    android.graphics.PorterDuff.Mode.DST_IN));
+                    Mode.DST_IN));
 
             // Draw the linear shader.
             canvas.drawRect(0, srcHeight, srcWidth,
@@ -559,7 +565,7 @@ public class BitmapUtil {
     }
 
     public static boolean saveBitmap(Bitmap bitmap, String path) {
-        return saveBitmap(bitmap, path, Bitmap.CompressFormat.PNG);
+        return saveBitmap(bitmap, path, Bitmap.CompressFormat.JPEG);
     }
 
     public static boolean saveBitmap(Bitmap bitmap, String path, Bitmap.CompressFormat format) {
@@ -739,18 +745,39 @@ public class BitmapUtil {
         public int quality;
     }
 
-    public static BitmapCompressInfo compressImage(Bitmap image, int maxSize) {
-        return compressImage(image, maxSize, 100, 10);
+    /**
+     * 压缩图片
+     *
+     * @param image
+     * @param maxSize
+     * @return
+     */
+    public synchronized static BitmapCompressInfo compressImage(Bitmap image, int maxSize) {
+        return compressAndSaveImage(mDefaultCompressPath, image, maxSize, 100, 10);
     }
 
-    public static BitmapCompressInfo compressImage(Bitmap image, int maxSize, int startQuality, int decrementStep) {
+    /**
+     * 先压缩图片，然后保存到目录
+     *
+     * @param filePath
+     * @param image
+     * @param maxSize
+     * @param startQuality
+     * @param decrementStep
+     * @return
+     */
+    public static BitmapCompressInfo compressAndSaveImage(String filePath, Bitmap image, int maxSize, int startQuality, int decrementStep) {
         ByteArrayOutputStream baos = null;
-        ByteArrayInputStream isBm = null;
         BitmapCompressInfo info = new BitmapCompressInfo();
         try {
             baos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, startQuality, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-            int options = startQuality;
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+            int options;
+            if (baos.toByteArray().length / 1024 < maxSize) {
+                options = 100;
+            } else {
+                options = startQuality == 100 ? startQuality - decrementStep : startQuality;
+            }
             while (baos.toByteArray().length / 1024 > maxSize) {  //循环判断如果压缩后图片是否大于maxSizekb,大于继续压缩
                 if (options <= 2) {
                     break;
@@ -763,22 +790,14 @@ public class BitmapUtil {
                 }
             }
             info.quality = options;
-            isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-            Options decodeOptions = new Options();
-            decodeOptions.inPreferredConfig = Bitmap.Config.RGB_565;
-            Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, decodeOptions);//把ByteArrayInputStream数据生成图片
-            info.bitmap = bitmap;
-            return info;
+            boolean saveSuccess = saveBitmap(filePath, baos);
+            if (saveSuccess) {
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                info.bitmap = bitmap;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (isBm != null) {
-                try {
-                    isBm.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             if (baos != null) {
                 try {
                     baos.close();
@@ -787,7 +806,28 @@ public class BitmapUtil {
                 }
             }
         }
-        return null;
+        return info;
+    }
+
+    private static boolean saveBitmap(String filePath, ByteArrayOutputStream baos) {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(filePath);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
     }
 
     public static byte[] compressImageReturnBytes(Bitmap image, int maxSize) {
@@ -843,3 +883,4 @@ public class BitmapUtil {
     }
 
 }
+
