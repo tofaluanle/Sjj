@@ -42,7 +42,7 @@ public class FileUtil {
     }
 
     // 复制文件夹
-    public static void copyDirectiory(String sourceDir, String targetDir)
+    public static void copyDirectory(String sourceDir, String targetDir)
             throws IOException {
         // 新建目标目录
         createDirectory(targetDir, true, true, true);
@@ -63,7 +63,7 @@ public class FileUtil {
                 String dir1 = sourceDir + "/" + file[i].getName();
                 // 准备复制的目标文件夹
                 String dir2 = targetDir + "/" + file[i].getName();
-                copyDirectiory(dir1, dir2);
+                copyDirectory(dir1, dir2);
             }
         }
     }
