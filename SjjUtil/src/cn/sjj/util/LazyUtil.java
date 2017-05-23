@@ -14,6 +14,9 @@ import cn.sjj.base.BaseUtil;
 public class LazyUtil extends BaseUtil {
 
     public static void close(Closeable c) {
+        if (c == null) {
+            return;
+        }
         try {
             c.close();
         } catch (IOException e) {
