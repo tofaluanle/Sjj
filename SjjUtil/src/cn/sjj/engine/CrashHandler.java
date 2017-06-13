@@ -34,6 +34,7 @@ import cn.sjj.util.FileUtil;
  * @author http://blog.csdn.net/liuhe688/article/details/6584143
  */
 public class CrashHandler implements UncaughtExceptionHandler {
+
     private static final String TAG = "CrashHandler";
     private Thread.UncaughtExceptionHandler mDefaultHandler;// 系统默认的UncaughtException处理类
 
@@ -41,10 +42,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
         private static final CrashHandler INSTANCE = new CrashHandler();// CrashHandler实例
     }
 
-    private Context mContext;// 程序的Context对象
-    private Map<String, String> info = new HashMap<String, String>();// 用来存储设备信息和异常信息
-    private SimpleDateFormat format = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss.SSS");// 用于格式化日期,作为日志文件名的一部分
+    private Context             mContext;// 程序的Context对象
+    private Map<String, String> info;// 用来存储设备信息和异常信息
+    private SimpleDateFormat    format;// 用于格式化日期,作为日志文件名的一部分
+    private String              mSaveDir;
+
+    public void setSaveDir(String mSaveDir) {
+        this.mSaveDir = mSaveDir;
+    }
 
     /**
      * 保证只有一个CrashHandler实例
@@ -67,6 +72,13 @@ public class CrashHandler implements UncaughtExceptionHandler {
      */
     public void init(Context context) {
         mContext = context;
+        info = new HashMap<>();
+        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            mSaveDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "crash" + File.separator + mContext.getPackageName();
+        } else {
+            mSaveDir = mContext.getFilesDir() + File.separator + "crash";
+        }
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();// 获取系统默认的UncaughtException处理器
         Thread.setDefaultUncaughtExceptionHandler(this);// 设置该CrashHandler为程序的默认处理器
     }
@@ -102,7 +114,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         new Thread() {
             public void run() {
                 Looper.prepare();
-                Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出", 0).show();
+                Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出", Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
         }.start();
@@ -172,15 +184,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
         // 保存文件
         String time = format.format(new Date());
         String fileName = "crash-" + time + ".log";
-        String path = "";
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "crash" + File.separator + mContext.getPackageName();
-        } else {
-            path = mContext.getFilesDir() + File.separator + "crash";
-        }
         try {
-            File dir = new File(path);
+            File dir = new File(mSaveDir);
             File file = new File(dir, fileName);
             FileUtil.createFile(file.getAbsolutePath());
             FileOutputStream fos = new FileOutputStream(file);

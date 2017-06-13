@@ -1,12 +1,13 @@
 package cn.sjj;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.os.Process;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import cn.sjj.util.FileUtil;
 import cn.sjj.util.SystemTool;
@@ -19,27 +20,29 @@ import cn.sjj.util.SystemTool;
  */
 public class LogRecorder2 implements Logger.ILogRecorder {
 
-    private static final String NOTE_PATH = "log###.txt";
-    private static final int MAX_FILE_LENGTH = 100 * 1024;
+    private static final String NOTE_PATH       = "log###.txt";
+    private static final int    MAX_FILE_LENGTH = 100 * 1024;
     //日志文件的最大数量
-    private static final int MAX_FILE_COUNT = 50;
-    private Context mContext;
+    private static final int    MAX_FILE_COUNT  = 50;
+    private Context          mContext;
     private FileOutputStream mFos;
-    private long mWriteCount;
+    private long             mWriteCount;
     private SimpleDateFormat mFormatter;
-    private int mPid;
+    private int              mPid;
+    private String           mLogPath;
 
-    public LogRecorder2() {
+    public LogRecorder2(Context context) {
         mFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         mPid = Process.myPid();
+        mContext = context.getApplicationContext();
+        mLogPath = context.getFilesDir().getAbsolutePath() + File.separator + SystemTool.getCurProcessName() + File.separator;
     }
 
     /**
      * 初始化日志文件
      */
-    public void initLogFile(Context context) {
+    public void initLogFile() {
         closeFos();
-        mContext = context.getApplicationContext();
         File logFile = getLogFile();
         mWriteCount = logFile.length();
         try {
@@ -56,12 +59,12 @@ public class LogRecorder2 implements Logger.ILogRecorder {
             useCount = MAX_FILE_COUNT + 1;
         }
 
-        File file = new File(getDirPath(), NOTE_PATH.replace("###", useCount + ""));
+        File file = new File(mLogPath, NOTE_PATH.replace("###", useCount + ""));
         if (file.exists()) {
             long length = file.length();
             if (length >= MAX_FILE_LENGTH) {
                 useCount = notExist;
-                file = new File(getDirPath(), NOTE_PATH.replace("###", useCount + ""));
+                file = new File(mLogPath, NOTE_PATH.replace("###", useCount + ""));
                 try {
                     FileUtil.createFile(file.getAbsolutePath());
                 } catch (IOException e) {
@@ -84,7 +87,7 @@ public class LogRecorder2 implements Logger.ILogRecorder {
         if (i > MAX_FILE_COUNT + 1) {
             i = 1;
         }
-        File file = new File(getDirPath(), NOTE_PATH.replace("###", i + ""));
+        File file = new File(mLogPath, NOTE_PATH.replace("###", i + ""));
         if (file.exists()) {
             FileUtil.deleteFolder(file.getAbsolutePath());
         }
@@ -97,7 +100,7 @@ public class LogRecorder2 implements Logger.ILogRecorder {
      */
     private int checkNotExistLogFile() {
         for (int i = 1; i <= MAX_FILE_COUNT; i++) {
-            File file = new File(getDirPath(), NOTE_PATH.replace("###", i + ""));
+            File file = new File(mLogPath, NOTE_PATH.replace("###", i + ""));
             if (!file.exists()) {
                 return i;
             }
@@ -105,9 +108,11 @@ public class LogRecorder2 implements Logger.ILogRecorder {
         return MAX_FILE_COUNT + 1;
     }
 
-    @NonNull
-    private String getDirPath() {
-        return mContext.getFilesDir().getAbsolutePath() + File.separator + SystemTool.getCurProcessName(mContext);
+    @Override
+    public void setLogPath(String path) {
+        this.mLogPath = path;
+        //TODO sjj 2017 切换路径时，应该不影响当前的fos，使用双缓冲fos
+        initLogFile();
     }
 
     @Override
@@ -136,7 +141,7 @@ public class LogRecorder2 implements Logger.ILogRecorder {
             isOverLength();
         } catch (Exception e) {
             e.printStackTrace();
-            initLogFile(mContext);
+            initLogFile();
         }
     }
 
@@ -154,7 +159,7 @@ public class LogRecorder2 implements Logger.ILogRecorder {
 
     private void isOverLength() {
         if (mWriteCount >= MAX_FILE_LENGTH) {
-            initLogFile(mContext);
+            initLogFile();
         }
     }
 }

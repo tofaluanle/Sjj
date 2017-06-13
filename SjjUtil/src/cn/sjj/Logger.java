@@ -20,6 +20,10 @@ public class Logger {
 
     private static ILogRecorder sLogRecorder;
 
+    public static ILogRecorder getLogRecorder() {
+        return sLogRecorder;
+    }
+
     public static void setLogRecorder(ILogRecorder logRecorder) {
         sLogRecorder = logRecorder;
     }
@@ -255,6 +259,8 @@ public class Logger {
      * @date 2016/5/6.
      */
     public interface ILogRecorder {
+
+        void setLogPath(String path);
 
         void takeNotes(Throwable e);
 

@@ -1,16 +1,4 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
-    }
-}
-apply plugin: 'android'
-
-dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
-}
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 15
@@ -40,3 +28,8 @@ android {
         release.setRoot('build-types/release')
     }
 }
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+}
+
