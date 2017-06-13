@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import cn.sjj.util.FileUtil;
 import cn.sjj.util.SystemTool;
@@ -22,31 +23,32 @@ public class LogRecorder2 implements Logger.ILogRecorder {
 
     private static final String NOTE_PATH       = "log###.txt";
     private static final int    MAX_FILE_LENGTH = 100 * 1024;
-    //日志文件的最大数量
-    private static final int    MAX_FILE_COUNT  = 50;
-    private Context          mContext;
-    private FileOutputStream mFos;
-    private long             mWriteCount;
-    private SimpleDateFormat mFormatter;
-    private int              mPid;
-    private String           mLogPath;
+    private static final int    MAX_FILE_COUNT  = 50;       //日志文件的最大数量
+
+    private FileOutputStream           mFos;
+    private long                       mWriteCount;
+    private String                     mLogPath;
+    private ArrayBlockingQueue<String> mBlockQueue;
+    private boolean                    mPathChanged;
+    private WriteThread                mWriteThread;
 
     public LogRecorder2(Context context) {
-        mFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        mPid = Process.myPid();
-        mContext = context.getApplicationContext();
         mLogPath = context.getFilesDir().getAbsolutePath() + File.separator + SystemTool.getCurProcessName() + File.separator;
+        initLogFile();
+        mBlockQueue = new ArrayBlockingQueue<>(1000);
+        mWriteThread = new WriteThread();
+        mWriteThread.start();
     }
 
     /**
      * 初始化日志文件
      */
-    public void initLogFile() {
+    private void initLogFile() {
         closeFos();
         File logFile = getLogFile();
-        mWriteCount = logFile.length();
         try {
             mFos = new FileOutputStream(logFile.getAbsolutePath(), true);
+            mWriteCount = logFile.length();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,8 +113,7 @@ public class LogRecorder2 implements Logger.ILogRecorder {
     @Override
     public void setLogPath(String path) {
         this.mLogPath = path;
-        //TODO sjj 2017 切换路径时，应该不影响当前的fos，使用双缓冲fos
-        initLogFile();
+        mPathChanged = true;
     }
 
     @Override
@@ -122,26 +123,9 @@ public class LogRecorder2 implements Logger.ILogRecorder {
 
     @Override
     public void takeNotes(String message) {
-        if (mFos == null) {
-            Log.e(Logger.sTAG, "why LogRecorder's mFos is null !?");
-            return;
-        }
-        try {
-            StringBuilder msg = new StringBuilder();
-            msg.append("[ ");
-            msg.append(mPid);
-            msg.append(" ]");
-            msg.append(mFormatter.format(System.currentTimeMillis()));
-            msg.append(": ");
-            msg.append(message + "\n");
-            byte[] buffer = msg.toString().getBytes();
-            mWriteCount += buffer.length;
-            mFos.write(buffer);
-            mFos.flush();
-            isOverLength();
-        } catch (Exception e) {
-            e.printStackTrace();
-            initLogFile();
+        boolean offer = mBlockQueue.offer(message);
+        if (!offer) {
+            Log.e(Logger.sTAG, "LogRecord2's BlockQueue offer fail");
         }
     }
 
@@ -149,6 +133,10 @@ public class LogRecorder2 implements Logger.ILogRecorder {
         if (mFos != null) {
             try {
                 mFos.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
                 mFos.close();
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -161,5 +149,49 @@ public class LogRecorder2 implements Logger.ILogRecorder {
         if (mWriteCount >= MAX_FILE_LENGTH) {
             initLogFile();
         }
+    }
+
+    private class WriteThread extends Thread {
+
+        public WriteThread() {
+            super("LogRecord2 write thread");
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            StringBuilder msg = new StringBuilder();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            msg.append("[ ");
+            msg.append(Process.myPid());
+            msg.append(" ]");
+            while (true) {
+                try {
+                    String message = mBlockQueue.take();
+                    if (mPathChanged) {
+                        initLogFile();
+                    }
+                    if (mFos == null) {
+                        Log.e(Logger.sTAG, "why LogRecorder's mFos is null !?");
+                        continue;
+                    }
+                    msg.delete(msg.indexOf("]") + 1, msg.length());
+                    msg.append(format.format(System.currentTimeMillis()));
+                    msg.append(": ");
+                    msg.append(message + "\n");
+                    byte[] buffer = msg.toString().getBytes();
+                    mWriteCount += buffer.length;
+                    mFos.write(buffer);
+                    mFos.flush();
+                    isOverLength();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    initLogFile();
+                }
+            }
+        }
+
     }
 }
