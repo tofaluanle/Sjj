@@ -160,6 +160,7 @@ public class LogRecorder2 implements Logger.ILogRecorder {
         @Override
         public void run() {
             super.run();
+            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             StringBuilder msg = new StringBuilder();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             msg.append("[ ");
