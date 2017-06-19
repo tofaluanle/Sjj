@@ -11,14 +11,14 @@ public class Logger {
 
     public static String sTAG = "sjj";
 
-    public static final int LEVEL = 0;
     private static final int VERBOSE = Log.VERBOSE;
-    private static final int DEBUG = Log.DEBUG;
-    private static final int INFO = Log.INFO;
-    private static final int WARN = Log.WARN;
-    private static final int ERROR = Log.ERROR;
-
+    private static final int DEBUG   = Log.DEBUG;
+    private static final int INFO    = Log.INFO;
+    private static final int WARN    = Log.WARN;
+    private static final int ERROR   = Log.ERROR;
     private static ILogRecorder sLogRecorder;
+
+    public static int sLevel = 0;
 
     public static ILogRecorder getLogRecorder() {
         return sLogRecorder;
@@ -32,68 +32,72 @@ public class Logger {
         Logger.sTAG = sTAG;
     }
 
+    public static void setLevel(int sLevel) {
+        Logger.sLevel = sLevel;
+    }
+
     public static void syso(String msg) {
-        if (LEVEL <= VERBOSE) {
+        if (sLevel <= VERBOSE) {
             System.out.println(msg);
         }
     }
 
     public static void v(String msg) {
-        if (LEVEL <= VERBOSE) {
+        if (sLevel <= VERBOSE) {
             Log.v(sTAG, msg);
         }
     }
 
     public static void d(String msg) {
-        if (LEVEL <= DEBUG) {
+        if (sLevel <= DEBUG) {
             Log.d(sTAG, msg);
         }
     }
 
     public static void i(String msg) {
-        if (LEVEL <= INFO) {
+        if (sLevel <= INFO) {
             Log.i(sTAG, msg);
         }
     }
 
     public static void w(String msg) {
-        if (LEVEL <= WARN) {
+        if (sLevel <= WARN) {
             Log.w(sTAG, msg);
         }
     }
 
     public static void e(String msg) {
-        if (LEVEL <= ERROR) {
+        if (sLevel <= ERROR) {
             Log.e(sTAG, msg);
         }
     }
 
     public static void v(String tag, String msg) {
-        if (LEVEL <= VERBOSE) {
+        if (sLevel <= VERBOSE) {
             Log.v(tag, msg);
         }
     }
 
     public static void d(String tag, String msg) {
-        if (LEVEL <= DEBUG) {
+        if (sLevel <= DEBUG) {
             Log.d(tag, msg);
         }
     }
 
     public static void i(String tag, String msg) {
-        if (LEVEL <= INFO) {
+        if (sLevel <= INFO) {
             Log.i(tag, msg);
         }
     }
 
     public static void w(String tag, String msg) {
-        if (LEVEL <= WARN) {
+        if (sLevel <= WARN) {
             Log.w(tag, msg);
         }
     }
 
     public static void e(String tag, String msg) {
-        if (LEVEL <= ERROR) {
+        if (sLevel <= ERROR) {
             Log.e(tag, msg);
         }
     }
@@ -255,6 +259,7 @@ public class Logger {
 
     /**
      * 定义记录日志的功能的接口
+     *
      * @auther 宋疆疆
      * @date 2016/5/6.
      */
