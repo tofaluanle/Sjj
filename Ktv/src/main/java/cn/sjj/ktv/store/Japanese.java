@@ -15,6 +15,7 @@ public class Japanese {
 
     static {
         songs = new ArrayList<>();
+        songs.add(new Song("はじまりのしるし", "Chima", "从零开始的魔法书"));
         songs.add(new Song("DEAREST DROP", "田所あずさ", "末日时在做什么？有没有空？可以来拯救吗？"));
         songs.add(new Song("フロム", "TRUE", "末日时在做什么？有没有空？可以来拯救吗？"));
         songs.add(new Song("なんでもないや", "RADWIMPS", "你的名字"));
