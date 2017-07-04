@@ -16,6 +16,7 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("明日への扉", "I WiSH", ""));
         songs.add(new Song("プラスチックスマイル", "Honey Bee", "七彩的素描"));
         songs.add(new Song("梦の中へ", "榎本温子 / 鈴木千尋", "他和她的事情"));
         songs.add(new Song("Shadow and Truth", "ONE III NOTES", "ACCA13区监察课"));
