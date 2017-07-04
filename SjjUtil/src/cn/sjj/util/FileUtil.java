@@ -702,10 +702,11 @@ public class FileUtil {
         return s;
     }
 
-    public static boolean writeFile(String filePath, String contents)
-            throws Exception {
+    public static boolean writeFile(String filePath, String contents) throws Exception {
         File file = new File(filePath);
-
+        if (!file.exists()) {
+            createFile(filePath);
+        }
         FileOutputStream fos = new FileOutputStream(file);
         OutputStreamWriter osw = new OutputStreamWriter(fos);
         BufferedWriter bw = new BufferedWriter(osw);
@@ -773,7 +774,7 @@ public class FileUtil {
     public static boolean writeFile(File file, InputStream is, boolean append, WriteListener listener) {
         FileOutputStream fos = null;
         try {
-            FileUtil.createFile(file.getAbsolutePath());
+            createFile(file.getAbsolutePath());
             fos = new FileOutputStream(file, append);
             byte[] buf = new byte[1024];
             int len = 0;
