@@ -15,6 +15,17 @@ public class Japanese {
 
     static {
         songs = new ArrayList<>();
+        songs.add(new Song("", "", ""));
+        songs.add(new Song("プラスチックスマイル", "Honey Bee", "七彩的素描"));
+        songs.add(new Song("梦の中へ", "榎本温子 / 鈴木千尋", "他和她的事情"));
+        songs.add(new Song("Shadow and Truth", "ONE III NOTES", "ACCA13区监察课"));
+        songs.add(new Song("STYX HELIX", "MYTH & ROID", "Re:从零开始异世界生活"));
+        songs.add(new Song("Good bye, yesterday", "渡辺みづき", "罗密欧与朱丽叶"));
+        songs.add(new Song("东京夏日相会 - 无念白", "yukiri", "Hanser"));
+        songs.add(new Song("奈落の花", "島みやえい子", "岛宫荣子 寒蝉鸣泣之时解"));
+        songs.add(new Song("未来へ", "玉城千春", "Kiroro"));
+        songs.add(new Song("はじまりのしるし", "Chima", "从零开始的魔法书"));
+        songs.add(new Song("つま先立ち", "Chima", ""));
         songs.add(new Song("DEAREST DROP", "田所あずさ", "末日时在做什么？有没有空？可以来拯救吗？"));
         songs.add(new Song("フロム", "TRUE", "末日时在做什么？有没有空？可以来拯救吗？"));
         songs.add(new Song("なんでもないや", "RADWIMPS", "你的名字"));
@@ -70,7 +81,7 @@ public class Japanese {
         songs.add(new Song("Lil' Goldfish", "まりか", ""));
         songs.add(new Song("希望の唄", "ウルトラタワー", "食戟之灵"));
         songs.add(new Song("ハロー", "ウルトラタワー", ""));
-        songs.add(new Song("long kiss good bye", "halcali", ""));
+        songs.add(new Song("long kiss good bye", "halcali", "火影忍者ed22"));
         songs.add(new Song("蜉蝣 ", "下級生2 ~瞳の中の少女たち", "かげろう"));
         songs.add(new Song("风になる", "辻亜弥乃", "幻化成风"));
         songs.add(new Song("夏祭り", "JITTERIN'JINN", "Whiteberry"));
@@ -78,15 +89,18 @@ public class Japanese {
         songs.add(new Song("爱·おぼえていますか", "林明美", "饭岛真理"));
         songs.add(new Song("夢の中へ", "井上陽水", "斉藤由貴"));
         songs.add(new Song("手纸~拝啓 十五の君へ", "アンジェラ・アキ", ""));
-        songs.add(new Song("いつも何度でも", "", "千与千寻\n"));
-        songs.add(new Song("若者のすべて", "anderlust", "野球少年"));
-        songs.add(new Song("明日、春が来たら", "anderlust", "野球少年"));
+        songs.add(new Song("いつも何度でも", "", "千与千寻"));
+        songs.add(new Song("いつかの自分", "anderlust", "野球少年op"));
+        songs.add(new Song("明日、春が来たら", "anderlust", "野球少年ed"));
+        songs.add(new Song("若者のすべて", "anderlust", "野球少年ed2"));
+        songs.add(new Song("Swallowtail Butterfly ~あいのうた~", "anderlust", ""));
         songs.add(new Song("Wishing", "西野カナ", ""));
         songs.add(new Song("if", "西野カナ", ""));
         songs.add(new Song("PIECES OF A DREAM", "CHEMISTRY", "ReLIFE 重返17岁"));
         songs.add(new Song("merry-go-round", "CHEMISTRY", "高达UC"));
         songs.add(new Song("スパイス", "東京カランコロン", "食戟之灵"));
         songs.add(new Song("お料理行進曲", "東京カランコロン", "食戟之灵"));
+        songs.add(new Song("島呗", "宫泽和史", "岛呗"));
         songs.add(new Song("待つわ", "あみん", "日本经典老歌"));
         songs.add(new Song("ルビーの指環", "寺尾聰", "日本经典老歌"));
         songs.add(new Song("3年目の浮気", "ヒロシ＆キーボー", "日本经典老歌"));
@@ -121,8 +135,7 @@ public class Japanese {
         songs.add(new Song("Unlimited Sky", "Tommy heavenly6", "高达00"));
         songs.add(new Song("もどかしい世界の上で", "牧野由依", "欢迎来到NHK"));
         songs.add(new Song("", "迟井美空", ""));
-        songs.add(new Song("", "azusa", ""));
+        songs.add(new Song("ナミダアメ", "azusa", ""));
         songs.add(new Song("遥かなる梦に", "beyond", ""));
-        songs.add(new Song("", "", ""));
     }
 }

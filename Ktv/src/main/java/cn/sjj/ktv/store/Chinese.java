@@ -15,6 +15,9 @@ public class Chinese {
 
     static {
         songs = new ArrayList<>();
+        songs.add(new Song("", "", ""));
+        songs.add(new Song("红色高跟鞋", "蔡健雅", ""));
+        songs.add(new Song("阿兰", "李志", ""));
         songs.add(new Song("看上她", "黎明", ""));
         songs.add(new Song("画", "G.E.M.邓紫棋", ""));
         songs.add(new Song("a.i.n.y.", "G.E.M.邓紫棋", ""));
@@ -27,6 +30,5 @@ public class Chinese {
         songs.add(new Song("你怎么舍得我难过", "黄品源", ""));
         songs.add(new Song("特别的爱给特别的你", "伍思凯", ""));
         songs.add(new Song("一生所爱", "卢冠廷", ""));
-        songs.add(new Song("", "", ""));
     }
 }
