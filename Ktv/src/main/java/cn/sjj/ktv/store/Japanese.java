@@ -16,6 +16,14 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("WOKE FROM DREAMING", "the delgados", "GUNSLINGER GIRL"));
+        songs.add(new Song("THE LIGHT BEFORE WE LAND", "the delgados", "GUNSLINGER GIRL"));
+        songs.add(new Song("DOPO IL SOGNO ～梦のあとに～", "うえのけいこ", "GUNSLINGER GIRL"));
+        songs.add(new Song("human", "Lia", "GUNSLINGER GIRL -IL TEATRINO-"));
+        songs.add(new Song("たった1つの想い", "KOKIA 吉田亚纪子", "GUNSLINGER GIRL -IL TEATRINO-"));
+        songs.add(new Song("スカボロー．フェア", "多田葵", "GUNSLINGER GIRL -IL TEATRINO-"));
+        songs.add(new Song("doll", "多田葵", "GUNSLINGER GIRL -IL TEATRINO-"));
+        songs.add(new Song("灼け落ちない翼", "多田葵", "Charlotte"));
         songs.add(new Song("ツギハギスタッカート", "MIKU", "拼凑的断音 hanser"));
         songs.add(new Song("鳥の詩", "Lia", "鸟之诗"));
         songs.add(new Song("青空", "Lia", "AIR"));
