@@ -15,7 +15,15 @@ public class Japanese {
 
     static {
         songs = new ArrayList<>();
-        songs.add(new Song("", "", ""));
+        songs.add(new Song("いろがみ", "能登麻美子", "地狱少女"));
+        songs.add(new Song("ノイズ", "ミオヤマザキ", "地狱少女"));
+        songs.add(new Song("ふたりの珊瑚礁", "高垣彩阳", "地狱少女 三鼎"));
+        songs.add(new Song("いちぬけ", "能登麻美子", "地狱少女 三鼎"));
+        songs.add(new Song("月华-tsukihana-", "北出菜奈", "地狱少女 三鼎"));
+        songs.add(new Song("あいぞめ", "能登麻美子", "地狱少女 二笼"));
+        songs.add(new Song("NightmaRe", "SNoW", "地狱少女 二笼"));
+        songs.add(new Song("かりぬい", "能登麻美子", "地狱少女"));
+        songs.add(new Song("逆さまの蝶", "SNoW", "地狱少女"));
         songs.add(new Song("WOKE FROM DREAMING", "the delgados", "GUNSLINGER GIRL"));
         songs.add(new Song("THE LIGHT BEFORE WE LAND", "the delgados", "GUNSLINGER GIRL"));
         songs.add(new Song("DOPO IL SOGNO ～梦のあとに～", "うえのけいこ", "GUNSLINGER GIRL"));
