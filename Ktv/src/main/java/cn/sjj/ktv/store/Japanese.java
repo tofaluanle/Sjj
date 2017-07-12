@@ -15,6 +15,19 @@ public class Japanese {
 
     static {
         songs = new ArrayList<>();
+        songs.add(new Song("", "", ""));
+        songs.add(new Song("蜜蜜蜜", "あゆみくりかまき", "Punch Line"));
+        songs.add(new Song("Questions", "中村優", "迷宫塔"));
+        songs.add(new Song("キミボク", "ムラマサ☆", ""));
+        songs.add(new Song("SWINGING", "ムラマサ☆", "迷宫塔"));
+        songs.add(new Song("Season", "瀧川ありさ", "七大罪"));
+        songs.add(new Song("オルフェンズの涙", "MISIA", "高达 铁血的奥尔芬斯"));
+        songs.add(new Song("Knew day", "(K)NoW＿NAME", "灰与幻想的格林姆迦尔"));
+        songs.add(new Song("GIRAFFE BLUES ~Mikumo Solo~", "美雲ΔJUNNA", "超时空要塞Δ"));
+        songs.add(new Song("GIRAFFE BLUES ~Freyja Solo~", "フレイアΔ鈴木みのり", "超时空要塞Δ"));
+        songs.add(new Song("風は予告なく吹く", "ワルキューレ", "超时空要塞Δ"));
+        songs.add(new Song("破滅の純情", "ワルキューレ", "超时空要塞Δ"));
+        songs.add(new Song("絶対零度θノヴァティック", "ワルキューレ", "超时空要塞Δ"));
         songs.add(new Song("いろがみ", "能登麻美子", "地狱少女"));
         songs.add(new Song("ノイズ", "ミオヤマザキ", "地狱少女"));
         songs.add(new Song("ふたりの珊瑚礁", "高垣彩阳", "地狱少女 三鼎"));
@@ -99,8 +112,6 @@ public class Japanese {
         songs.add(new Song("Thank you for everything", "岩田さゆり", "岩田小百合"));
         songs.add(new Song("あつい気持ち", "ONE STEP COMMUNICATE", "ワンステップ・コミュニケート"));
         songs.add(new Song("Lil' Goldfish", "まりか", ""));
-        songs.add(new Song("希望の唄", "ウルトラタワー", "食戟之灵"));
-        songs.add(new Song("ハロー", "ウルトラタワー", ""));
         songs.add(new Song("long kiss good bye", "halcali", "火影忍者ed22"));
         songs.add(new Song("蜉蝣 ", "下級生2 ~瞳の中の少女たち", "かげろう"));
         songs.add(new Song("风になる", "辻亜弥乃", "幻化成风"));
@@ -118,6 +129,10 @@ public class Japanese {
         songs.add(new Song("if", "西野カナ", ""));
         songs.add(new Song("PIECES OF A DREAM", "CHEMISTRY", "ReLIFE 重返17岁"));
         songs.add(new Song("merry-go-round", "CHEMISTRY", "高达UC"));
+        songs.add(new Song("さっちゃんのセクシーカレー", "大森靖子", "食戟之灵"));
+        songs.add(new Song("マジックミラー", "大森靖子", "食戟之灵"));
+        songs.add(new Song("希望の唄", "ウルトラタワー", "食戟之灵"));
+        songs.add(new Song("ハロー", "ウルトラタワー", ""));
         songs.add(new Song("スパイス", "東京カランコロン", "食戟之灵"));
         songs.add(new Song("お料理行進曲", "東京カランコロン", "食戟之灵"));
         songs.add(new Song("島呗", "宫泽和史", "岛呗"));
@@ -132,8 +147,9 @@ public class Japanese {
         songs.add(new Song("恋人", "徳永英明", "日本经典老歌"));
         songs.add(new Song("タッチ", "岩崎良美", "Touch"));
         songs.add(new Song("風のメッセージ", "芹澤廣明 ", "Touch"));
-        songs.add(new Song("夏待ち", "ROUND TABLE featuring Nino", ""));
-        songs.add(new Song("Rainbow", "ROUND TABLE featuring Nino", ""));
+        songs.add(new Song("Let Me Be With You", "ROUND TABLE featuring Nino", "人形电脑天使心"));
+        songs.add(new Song("夏待ち", "ROUND TABLE featuring Nino", "水星领航员ED"));
+        songs.add(new Song("Rainbow", "ROUND TABLE featuring Nino", "水星领航员ED"));
         songs.add(new Song("パズル", "ROUND TABLE featuring Nino", ""));
         songs.add(new Song("TRAIN-TRAIN", "The Blue Hearts", "旋转少女"));
         songs.add(new Song("脳天気", "The Blue Hearts", "旋转少女"));
@@ -154,6 +170,10 @@ public class Japanese {
         songs.add(new Song("trust you", "伊藤由奈", "高达00"));
         songs.add(new Song("Unlimited Sky", "Tommy heavenly6", "高达00"));
         songs.add(new Song("もどかしい世界の上で", "牧野由依", "欢迎来到NHK"));
+        songs.add(new Song("夢をかなえてドラえもん", "春奈るな", ""));
+        songs.add(new Song("君色シグナル", "春奈るな", "路人女主的养成方法"));
+        songs.add(new Song("カラフル", "迟井美空", "路人女主的养成方法"));
+        songs.add(new Song("サヨナラの手前", "迟井美空", ""));
         songs.add(new Song("", "迟井美空", ""));
         songs.add(new Song("ナミダアメ", "azusa", ""));
         songs.add(new Song("遥かなる梦に", "beyond", ""));
