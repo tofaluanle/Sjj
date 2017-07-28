@@ -16,6 +16,10 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("いつも何度でも", "伊藤サチコ", "千と千尋の神隠し 木村弓"));
+        songs.add(new Song("夜の国", "Annabel", "黑街ED"));
+        songs.add(new Song("世界は恋に落ちている", "CHiCO with HoneyWorks", "青春之旅OP"));
+        songs.add(new Song("運命のルーレット廻して", "ZARD", "转动命运之轮 ザード"));
         songs.add(new Song("蜜蜜蜜", "あゆみくりかまき", "Punch Line"));
         songs.add(new Song("Questions", "中村優", "迷宫塔"));
         songs.add(new Song("キミボク", "ムラマサ☆", ""));
