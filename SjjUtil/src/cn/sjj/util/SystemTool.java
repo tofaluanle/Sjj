@@ -327,6 +327,7 @@ public class SystemTool extends BaseUtil {
 
     /**
      * 虽然能查权限，但是至少在华为荣耀6的设置里禁止相关权限时，此方法依然会返回true，所以并不好使
+     *
      * @param permission
      * @return
      */
@@ -360,6 +361,7 @@ public class SystemTool extends BaseUtil {
 
     /**
      * 根据Uri获取到图片的绝对路径，主要针对的是系统分享过来的以content://开头的Uri
+     *
      * @param uri
      * @return
      */
@@ -447,6 +449,13 @@ public class SystemTool extends BaseUtil {
             installed = false;
         }
         return installed;
+    }
+
+    public static boolean isNeedRequestPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return false;
+        }
+        return true;
     }
 
 }
