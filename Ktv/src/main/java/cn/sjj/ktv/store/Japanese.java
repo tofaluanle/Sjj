@@ -16,6 +16,12 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("想い出がいっぱい", "下川みくに", ""));
+        songs.add(new Song("かけがえのない詩", "mihimaru GT", "大和美姬丸 2007 ドラえもん のび太の新魔界大冒険 ~7人の魔法使い~"));
+        songs.add(new Song("ReReハロ〜終われそうにない夏〜", "7!!", ""));
+        songs.add(new Song("I will", "Chelsy", "青春之旅"));
+        songs.add(new Song("一番の宝物", "LiSA", "Angel Beats!"));
+        songs.add(new Song("Beautiful World", "宇多田光", "福音战士新剧场版：序"));
         songs.add(new Song("いつも何度でも", "伊藤サチコ", "千と千尋の神隠し 木村弓"));
         songs.add(new Song("夜の国", "Annabel", "黑街ED"));
         songs.add(new Song("世界は恋に落ちている", "CHiCO with HoneyWorks", "青春之旅OP"));
