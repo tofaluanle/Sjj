@@ -310,4 +310,18 @@ public class StringUtil {
         return loadUrl;
     }
 
+    public static String makeNotNull(String str) {
+        if (str == null) {
+            return "";
+        }
+        return str;
+    }
+
+    public static String makeNotNull(String str, String replace) {
+        if (str == null) {
+            return replace;
+        }
+        return str;
+    }
+
 }
