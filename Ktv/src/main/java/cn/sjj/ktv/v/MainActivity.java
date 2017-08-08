@@ -19,8 +19,8 @@ import cn.sjj.ktv.util.BaseUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView mRv;
-    private SongAdapter  mAdapter;
+    private RecyclerView    mRv;
+    private CategoryAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void init() {
         BaseUtil.setContext(this);
         sampleInit();
-        mAdapter = new SongAdapter();
+        mAdapter = new CategoryAdapter();
         mAdapter.setData(Japanese.songs);
         mAdapter.notifyDataSetChanged();
         mRv.setLayoutManager(new LinearLayoutManager(this));

@@ -1,72 +1,65 @@
 package cn.sjj.ktv.v;
 
 import android.content.Context;
-import android.text.ClipboardManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.List;
+
 import cn.sjj.ktv.R;
-import cn.sjj.ktv.bean.Song;
-import cn.sjj.ktv.util.ToastUtil;
-import cn.sjj.ktv.widget.BaseRecyclerView2;
 
 /**
  * @auther 宋疆疆
- * @since 2017/6/16.
+ * @since 2017/8/8.
  */
-public class SongAdapter extends BaseRecyclerView2.ListAdapter<Song, SongAdapter.ViewHolder> {
+public class SongAdapter extends BaseAdapter {
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return new ViewHolder(inflater.inflate(R.layout.item, parent, false));
+    private List<String> data;
+
+    public SongAdapter(List<String> data) {
+        this.data = data;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Song song = getData(position);
-        holder.tvName.setText(song.getName());
-        holder.tvAuthor.setText(song.getAuthor());
-        holder.tvFrom.setText(song.getFrom());
+    public int getCount() {
+        return data.size();
     }
 
-    static final class ViewHolder extends BaseRecyclerView2.ViewHolder<Song> {
+    @Override
+    public Object getItem(int position) {
+        return data.get(position);
+    }
 
-        TextView tvName;
-        TextView tvAuthor;
-        TextView tvFrom;
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder vh = null;
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.song_item, null);
+            vh = new ViewHolder(convertView);
+            convertView.setTag(vh);
+        } else {
+            vh = (ViewHolder) convertView.getTag();
+        }
+        vh.tv.setText(data.get(position));
+        return convertView;
+    }
+
+    private static class ViewHolder {
+        TextView tv;
 
         public ViewHolder(View v) {
-            super(v);
-            tvName = (TextView) v.findViewById(R.id.item_tv_name);
-            tvAuthor = (TextView) v.findViewById(R.id.item_tv_author);
-            tvFrom = (TextView) v.findViewById(R.id.item_tv_from);
-
-            tvName.setOnClickListener(new OnSongInfoClickListener());
-            tvAuthor.setOnClickListener(new OnSongInfoClickListener());
-            tvFrom.setOnClickListener(new OnSongInfoClickListener());
-
-            v.setOnClickListener(new OnSongInfoClickListener());
-        }
-
-        private final class OnSongInfoClickListener implements View.OnClickListener {
-
-            @Override
-            public void onClick(View v) {
-                String text;
-                if (v instanceof TextView) {
-                    TextView tv = (TextView) v;
-                    text = tv.getText().toString();
-                } else {
-                    text = String.format("%s %s %s", tvName.getText(), tvAuthor.getText(), tvFrom.getText());
-                }
-                ClipboardManager cm = (ClipboardManager) v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setText(text);
-                ToastUtil.showToast(text);
-            }
+            v.setClickable(false);
+            v.setOnClickListener(null);
+            this.tv = (TextView) v.findViewById(R.id.item_tv_name);
         }
     }
-
 }
