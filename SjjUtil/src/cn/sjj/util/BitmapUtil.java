@@ -665,7 +665,6 @@ public class BitmapUtil extends BaseUtil {
         return degree;
     }
 
-
     /**
      * 将图片按照某个角度进行旋转
      *
@@ -742,7 +741,7 @@ public class BitmapUtil extends BaseUtil {
 
     public static class BitmapCompressInfo {
         public Bitmap bitmap;
-        public int quality;
+        public int    quality;
     }
 
     /**
@@ -773,12 +772,13 @@ public class BitmapUtil extends BaseUtil {
             baos = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
             int options;
-            if (baos.toByteArray().length / 1024 < maxSize) {
+            byte[] bytes = baos.toByteArray();
+            if (bytes.length / 1024 < maxSize) {
                 options = 100;
             } else {
                 options = startQuality == 100 ? startQuality - decrementStep : startQuality;
             }
-            while (baos.toByteArray().length / 1024 > maxSize) {  //循环判断如果压缩后图片是否大于maxSizekb,大于继续压缩
+            while (bytes.length / 1024 > maxSize) {  //循环判断如果压缩后图片是否大于maxSizekb,大于继续压缩
                 if (options <= 2) {
                     break;
                 }
@@ -790,9 +790,10 @@ public class BitmapUtil extends BaseUtil {
                 }
             }
             info.quality = options;
-            boolean saveSuccess = saveBitmap(filePath, baos);
+            bytes = baos.toByteArray();
+            boolean saveSuccess = saveBitmap(filePath, bytes);
             if (saveSuccess) {
-                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 info.bitmap = bitmap;
             }
         } catch (Exception e) {
@@ -809,11 +810,11 @@ public class BitmapUtil extends BaseUtil {
         return info;
     }
 
-    private static boolean saveBitmap(String filePath, ByteArrayOutputStream baos) {
+    private static boolean saveBitmap(String filePath, byte[] bytes) {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(filePath);
-            fos.write(baos.toByteArray());
+            fos.write(bytes);
             fos.flush();
             return true;
         } catch (Exception e) {
