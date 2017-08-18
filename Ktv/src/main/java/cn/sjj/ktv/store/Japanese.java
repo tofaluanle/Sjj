@@ -16,9 +16,11 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("あなたに出会わなければ~夏雪冬花~", "Aimer", "夏雪密会"));
+        songs.add(new Song("endscape", "UVERworld", "奔向地球OP", "高梨康治", "M.O.E."));
+        songs.add(new Song("Love is...", "加藤ミリヤ", "奔向地球ED"));
         songs.add(new Song("プレイス・オブ・ピリオド", "諫山実生", "寒蝉鸣泣之时"));
         songs.add(new Song("Letter Song", "初音ミク", "doriko", "致十年后的我"));
-        songs.add(new Song("Love is...", "加藤ミリヤ", "奔向地球ED"));
         songs.add(new Song("想い出がいっぱい", "下川みくに", ""));
         songs.add(new Song("かけがえのない詩", "mihimaru GT", "大和美姬丸", "2007 ドラえもん のび太の新魔界大冒険 ~7人の魔法使い~"));
         songs.add(new Song("ReReハロ〜終われそうにない夏〜", "7!!", ""));
