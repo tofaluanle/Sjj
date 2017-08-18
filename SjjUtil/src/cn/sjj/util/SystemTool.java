@@ -1,5 +1,6 @@
 package cn.sjj.util;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.ContentUris;
@@ -314,6 +315,10 @@ public class SystemTool extends BaseUtil {
             return true;
         }
         return false;
+    }
+
+    public static boolean isSDCardCanUse() {
+        return SystemTool.isSDCardExist() && ContextCompat.checkSelfPermission(sContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
