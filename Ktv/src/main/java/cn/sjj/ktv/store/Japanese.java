@@ -27,7 +27,6 @@ public class Japanese {
         songs.add(new Song("I will", "Chelsy", "青春之旅"));
         songs.add(new Song("一番の宝物", "LiSA", "Angel Beats!"));
         songs.add(new Song("Beautiful World", "宇多田光", "福音战士新剧场版：序"));
-        songs.add(new Song("いつも何度でも", "伊藤サチコ", "千と千尋の神隠し", "木村弓"));
         songs.add(new Song("夜の国", "Annabel", "黑街ED"));
         songs.add(new Song("世界は恋に落ちている", "CHiCO with HoneyWorks", "青春之旅OP"));
         songs.add(new Song("運命のルーレット廻して", "ZARD", "柯南OP", "转动命运之轮", "ザード"));
@@ -56,7 +55,7 @@ public class Japanese {
         songs.add(new Song("THE LIGHT BEFORE WE LAND", "the delgados", "GUNSLINGER GIRL"));
         songs.add(new Song("DOPO IL SOGNO ～梦のあとに～", "うえのけいこ", "GUNSLINGER GIRL"));
         songs.add(new Song("human", "Lia", "GUNSLINGER GIRL -IL TEATRINO-"));
-        songs.add(new Song("たった1つの想い", "KOKIA 吉田亚纪子", "GUNSLINGER GIRL -IL TEATRINO-"));
+        songs.add(new Song("たった1つの想い", "KOKIA 吉田亚纪子", "GUNSLINGER GIRL -IL TEATRINO-", "たった一つの想い"));
         songs.add(new Song("スカボロー．フェア", "多田葵", "GUNSLINGER GIRL -IL TEATRINO-"));
         songs.add(new Song("doll", "多田葵", "GUNSLINGER GIRL -IL TEATRINO-"));
         songs.add(new Song("灼け落ちない翼", "多田葵", "Charlotte"));
@@ -135,7 +134,7 @@ public class Japanese {
         songs.add(new Song("爱·おぼえていますか", "林明美", "超时空要塞", "饭岛真理"));
         songs.add(new Song("夢の中へ", "井上陽水", "斉藤由貴"));
         songs.add(new Song("手纸~拝啓 十五の君へ", "アンジェラ・アキ", ""));
-        songs.add(new Song("いつも何度でも", "", "千与千寻"));
+        songs.add(new Song("いつも何度でも", "伊藤サチコ", "千と千尋の神隠し", "千与千寻", "木村弓"));
         songs.add(new Song("いつかの自分", "anderlust", "野球少年op"));
         songs.add(new Song("明日、春が来たら", "anderlust", "野球少年ed"));
         songs.add(new Song("若者のすべて", "anderlust", "野球少年ed2"));
