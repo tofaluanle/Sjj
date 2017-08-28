@@ -12,7 +12,29 @@ import java.util.Map;
  */
 public class PrintUtil {
 
+    public static String print(Object[] objArray) {
+        if (objArray == null) {
+            return "null";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("size: ");
+        sb.append(objArray.length);
+        sb.append(" { ");
+        for (int i = 0; i < objArray.length; i++) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            Object obj = objArray[i];
+            sb.append(obj);
+        }
+        sb.append(" }");
+        return sb.toString();
+    }
+
     public static String print(List list) {
+        if (list == null) {
+            return "null";
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("size: ");
         sb.append(list.size());
@@ -29,6 +51,9 @@ public class PrintUtil {
     }
 
     public static String print(Map map) {
+        if (map == null) {
+            return "null";
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("size: ");
         sb.append(map.size());
