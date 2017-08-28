@@ -16,6 +16,11 @@ public class Chinese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("酒醉的探戈2001", "动力火车", ""));
+        songs.add(new Song("突然好想你", "五月天", ""));
+        songs.add(new Song("像梦一样自由", "汪峰", ""));
+        songs.add(new Song("同桌的你", "老狼", ""));
+        songs.add(new Song("最初的梦想", "范玮琪", ""));
         songs.add(new Song("红色高跟鞋", "蔡健雅", ""));
         songs.add(new Song("阿兰", "李志", ""));
         songs.add(new Song("看上她", "黎明", ""));
