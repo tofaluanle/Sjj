@@ -16,6 +16,7 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("Last Night,Good Night", "初音ミク", "Last Night Good Night"));
         songs.add(new Song("あなたに出会わなければ~夏雪冬花~", "Aimer", "夏雪密会"));
         songs.add(new Song("endscape", "UVERworld", "奔向地球OP", "高梨康治", "M.O.E."));
         songs.add(new Song("Love is...", "加藤ミリヤ", "奔向地球ED"));
