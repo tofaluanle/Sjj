@@ -16,6 +16,7 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("Fight on!", "Luce Twinkle Wink☆", "gamers电玩咖ED"));
         songs.add(new Song("Last Night,Good Night", "初音ミク", "Last Night Good Night"));
         songs.add(new Song("あなたに出会わなければ~夏雪冬花~", "Aimer", "夏雪密会"));
         songs.add(new Song("endscape", "UVERworld", "奔向地球OP", "高梨康治", "M.O.E."));
@@ -179,8 +180,8 @@ public class Japanese {
         songs.add(new Song("夢をかなえてドラえもん", "春奈るな", ""));
         songs.add(new Song("君色シグナル", "春奈るな", "路人女主的养成方法"));
         songs.add(new Song("カラフル", "迟井美空", "路人女主的养成方法"));
-        songs.add(new Song("サヨナラの手前", "迟井美空", ""));
-        songs.add(new Song("", "迟井美空", ""));
+        songs.add(new Song("サヨナラの手前", "迟井美空", "少年同盟ED", "爱哭鬼"));
+        songs.add(new Song("なきむし", "迟井美空", ""));
         songs.add(new Song("ナミダアメ", "azusa", ""));
         songs.add(new Song("遥かなる梦に", "beyond", ""));
         songs.add(new Song("待つわ", "あみん", "日本经典老歌"));
