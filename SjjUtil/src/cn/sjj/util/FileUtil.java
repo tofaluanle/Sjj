@@ -531,31 +531,29 @@ public class FileUtil {
     }
 
     /**
-     * 找出指定目录里的文件或文件夹的位置
+     * 找出指定目录里的文件或文件夹的位置，会递归查找子目录
      *
      * @param dirPath
      * @param fileName
-     * @param onlyCurrentDir 是否只在当前目录查找
      * @return
      * @author 宋疆疆
-     * @date 2013-11-29 上午11:09:31
+     * @date 2017-10-11 16:06:31
      */
-    public static List<String> findFile(String dirPath, String fileName,
-                                        boolean onlyCurrentDir) {
-        List<String> paths = new ArrayList<String>();
+    public static List<String> findFile(String dirPath, String fileName) {
+        List<String> paths = new ArrayList<>();
         File dir = new File(dirPath);
         if (dir.exists() && dir.isDirectory()) {
             File[] listFiles = dir.listFiles();
             if (listFiles == null || listFiles.length <= 0) {
                 return paths;
             }
+
             for (File file : listFiles) {
                 if (file.getName().equals(fileName)) {
                     paths.add(file.getAbsolutePath());
                 }
-                if (file.isDirectory() && !onlyCurrentDir) {
-                    List<String> tempPaths = findFile(file.getAbsolutePath(),
-                            fileName, onlyCurrentDir);
+                if (file.isDirectory()) {
+                    List<String> tempPaths = findFile(file.getAbsolutePath(), fileName);
                     if (tempPaths != null && 0 != tempPaths.size()) {
                         paths.addAll(tempPaths);
                     }

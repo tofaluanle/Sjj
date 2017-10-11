@@ -13,16 +13,21 @@ import java.util.Map;
 public class PrintUtil {
 
     public static String print(Object[] objArray) {
+        return print(objArray, ", ");
+    }
+
+    public static String print(Object[] objArray, String split) {
         if (objArray == null) {
             return "null";
         }
+
         StringBuilder sb = new StringBuilder();
         sb.append("size: ");
         sb.append(objArray.length);
         sb.append(" { ");
         for (int i = 0; i < objArray.length; i++) {
             if (i > 0) {
-                sb.append(", ");
+                sb.append(split);
             }
             Object obj = objArray[i];
             sb.append(obj);
@@ -32,16 +37,21 @@ public class PrintUtil {
     }
 
     public static String print(List list) {
+        return print(list, ", ");
+    }
+
+    public static String print(List list, String split) {
         if (list == null) {
             return "null";
         }
+
         StringBuilder sb = new StringBuilder();
         sb.append("size: ");
         sb.append(list.size());
         sb.append(" { ");
         for (int i = 0; i < list.size(); i++) {
             if (i > 0) {
-                sb.append(", ");
+                sb.append(split);
             }
             Object obj = list.get(i);
             sb.append(obj);
@@ -51,9 +61,14 @@ public class PrintUtil {
     }
 
     public static String print(Map map) {
+        return print(map, ", ");
+    }
+
+    public static String print(Map map, String split) {
         if (map == null) {
             return "null";
         }
+
         StringBuilder sb = new StringBuilder();
         sb.append("size: ");
         sb.append(map.size());
@@ -61,7 +76,7 @@ public class PrintUtil {
         Iterator iterator = map.keySet().iterator();
         for (int i = 0; iterator.hasNext(); i++) {
             if (i > 0) {
-                sb.append(", ");
+                sb.append(split);
             }
             Object key = iterator.next();
             sb.append("{ ");
