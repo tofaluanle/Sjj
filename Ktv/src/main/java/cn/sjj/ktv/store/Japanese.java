@@ -111,6 +111,7 @@ public class Japanese {
         songs.add(new Song("ペガサス幻想", "MAKE-UP", "圣斗士星矢"));
         songs.add(new Song("駅", "Tiara", ""));
         songs.add(new Song("Secret Baseー君がくれたものー(10 Years After Ver.) ", "ZONE", "未闻花名"));
+        songs.add(new Song("brave heart", "宫崎步", "数码宝贝"));
         songs.add(new Song("butter fly", "和田光司", "数码宝贝"));
         songs.add(new Song("夢をかなえてドラえもん", "", "哆啦A梦"));
         songs.add(new Song("RTB", "ムッシュかまやつ", "战斗妖精雪风", "Hajime Ueshiba"));
