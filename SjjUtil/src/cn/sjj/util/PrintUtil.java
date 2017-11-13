@@ -3,6 +3,7 @@ package cn.sjj.util;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 打印对象信息的工具类
@@ -89,4 +90,28 @@ public class PrintUtil {
         return sb.toString();
     }
 
+    public static String print(Set set) {
+        return print(set, ", ");
+    }
+
+    public static String print(Set set, String split) {
+        if (set == null) {
+            return "null";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("size: ");
+        sb.append(set.size());
+        sb.append(" { ");
+        Iterator iterator = set.iterator();
+        for (int i = 0; iterator.hasNext(); i++) {
+            if (i > 0) {
+                sb.append(split);
+            }
+            Object obj = iterator.next();
+            sb.append(obj);
+        }
+        sb.append(" }");
+        return sb.toString();
+    }
 }
