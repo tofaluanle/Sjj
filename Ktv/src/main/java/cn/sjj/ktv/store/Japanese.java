@@ -16,6 +16,8 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("その未来へ", "RIRIKO", "泥鲸之子们在沙地上歌唱OP", "2017年10月"));
+        songs.add(new Song("環-cycle-", "糸奇はな", "魔法使的新娘ED", "2017年10月"));
         songs.add(new Song("きみにとどけ", "タニザワトモフミ", "谷泽智文", "好想告诉你OP"));
         songs.add(new Song("深夜高速", "Flower Companyz", "深夜高速 (Acoustic)", "深夜高速 (2013.01.23 Live at WWW)"));
         songs.add(new Song("僕らの手には何もないけど", "RAM WIRE", "ラムワイヤー"));
