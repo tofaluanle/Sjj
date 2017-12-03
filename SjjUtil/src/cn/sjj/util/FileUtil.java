@@ -776,7 +776,7 @@ public class FileUtil {
             fos = new FileOutputStream(file, append);
             byte[] buf = new byte[1024];
             int len = 0;
-            int totalLen = 0;
+            long totalLen = 0;
             while (!listener.isCancel() && (len = is.read(buf)) != -1) {
                 totalLen += len;
                 fos.write(buf, 0, len);
@@ -804,7 +804,7 @@ public class FileUtil {
          * @param total 已经写入的总字节数
          * @param len   本次回调写入的字节数
          */
-        void onWrite(int total, int len);
+        void onWrite(long total, int len);
 
         boolean isCancel();
     }
