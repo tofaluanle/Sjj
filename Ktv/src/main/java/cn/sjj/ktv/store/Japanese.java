@@ -76,7 +76,7 @@ public class Japanese {
         songs.add(new Song("Shadow and Truth", "ONE III NOTES", "ACCA13区监察课"));
         songs.add(new Song("STYX HELIX", "MYTH & ROID", "Re:从零开始异世界生活"));
         songs.add(new Song("Good bye, yesterday", "渡辺みづき", "罗密欧与朱丽叶"));
-        songs.add(new Song("东京夏日相会 - 无念白", "yukiri", "Hanser"));
+        songs.add(new Song("东京夏日相会", "HoneyWorks", "鎖那", "CHiCO", "yukiri", "Hanser", "東京サマーセッション"));
         songs.add(new Song("奈落の花", "島みやえい子", "寒蝉鸣泣之时解", "岛宫荣子"));
         songs.add(new Song("未来へ", "玉城千春", "Kiroro"));
         songs.add(new Song("はじまりのしるし", "Chima", "从零开始的魔法书"));
