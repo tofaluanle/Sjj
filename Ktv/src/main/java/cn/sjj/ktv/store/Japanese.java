@@ -16,6 +16,7 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("ステップアップLOVE", "DAOK", "岡村靖幸", "血界战线 & BEYOND ED", "2017年10月"));
         songs.add(new Song("その未来へ", "RIRIKO", "泥鲸之子们在沙地上歌唱OP", "2017年10月"));
         songs.add(new Song("環-cycle-", "糸奇はな", "魔法使的新娘ED", "2017年10月"));
         songs.add(new Song("きみにとどけ", "タニザワトモフミ", "谷泽智文", "好想告诉你OP"));
