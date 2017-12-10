@@ -54,6 +54,17 @@ public class ActivityHolder {
         }
     }
 
+    public Activity get(Class type) {
+        synchronized (activities) {
+            for (Activity activity : activities) {
+                if (activity.getClass().equals(type)) {
+                    return activity;
+                }
+            }
+        }
+        return null;
+    }
+
     public void remove(Activity activity) {
         synchronized (activities) {
             activities.remove(activity);
