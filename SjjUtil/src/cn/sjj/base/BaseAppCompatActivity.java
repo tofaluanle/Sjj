@@ -2,6 +2,8 @@ package cn.sjj.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 
 import cn.sjj.IStatics;
@@ -14,6 +16,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     protected static final boolean DEBUG    = IStatics.DEBUG;
     protected static final boolean UI_DEBUG = IStatics.UI_DEBUG;
+
+    private Handler mUIHandler = new Handler(Looper.getMainLooper());
 
     protected abstract void init();
 
@@ -88,4 +92,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     protected void registerListener() {
     }
+
+    protected void runAfterOnResume(Runnable run) {
+        mUIHandler.post(() -> {
+            mUIHandler.post(run);
+        });
+    }
+
 }
