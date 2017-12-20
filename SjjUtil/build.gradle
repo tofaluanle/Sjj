@@ -4,20 +4,12 @@ def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
-    provided files('lib/layoutlib-15.jar')
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-}
-
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.0"
     defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
@@ -57,14 +49,14 @@ android {
 
     signingConfigs {
         debug {
-
+            storeFile file("${rootDir}/file/key/debug.keystore")
         }
 
         release {
-            storeFile file("../yourapp.keystore")
-            storePassword "your password"
-            keyAlias "your alias"
-            keyPassword "your password"
+            storeFile file("${rootDir}/file/key/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
         }
     }
 
@@ -90,23 +82,16 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        // 输出apk名称为boohee_v1.0_2015-01-15_wandoujia.apk
-                        def fileName = "boohee_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
-                        output.outputFile = new File(outputFile.parent, fileName)
-                    }
-                }
-            }
         }
     }
 
+    flavorDimensions "tier"
+
     // 友盟多渠道打包
     productFlavors {
-        wandoujia {}
+        wandoujia {
+            dimension "tier"
+        }
 //        _360 {}
 //        baidu {}
 //        xiaomi {}
@@ -121,6 +106,25 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
     }
+
+    compileOptions {
+        sourceCompatibility JAVA_VERSION
+        targetCompatibility JAVA_VERSION
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: '*.jar')
+
+//    provided files('lib/layoutlib-15.jar')
+
+    api 'com.android.support:appcompat-v7:27.0.0'
+    api 'com.android.support:recyclerview-v7:27.0.0'
+    api 'com.github.bumptech.glide:glide:3.7.0'
+    api 'com.mcxiaoke.volley:library:1.0.19'
+    api 'io.reactivex.rxjava2:rxjava:2.1.0'
+    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
 }
 
 tasks.withType(JavaCompile) {
@@ -134,3 +138,25 @@ def getGitVersion() {
 def getJenkinsBuild() {
     return System.getenv("BUILD_NUMBER") as Integer ?: 0
 }
+
+//Gradle 3.0.0以后不能用了£
+//applicationVariants.all { variant ->
+//    variant.outputs.each { output ->
+//        def outputFile = output.outputFile
+//        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//            // 输出apk名称为boohee_v1.0_2015-01-15_wandoujia.apk
+//            def fileName = "boohee_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+//            output.outputFile = new File(outputFile.parent, fileName)
+//        }
+//    }
+//}
+
+//task to copy library to libs
+//task copyLibrary(type: Copy) {
+//    println "============= copyLibrary"
+//    from('build/outputs/apk/wandoujia/debug/SjjUtil-wandoujia-debug.apk')
+//    into('build/outputs/apk')
+/////Rename the aar
+//    rename('SjjUtil-wandoujia-debug.apk', 'SjjUtil-123.apk')
+//}
+//copyLibrary.dependsOn(build)
