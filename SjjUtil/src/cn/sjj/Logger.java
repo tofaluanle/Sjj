@@ -9,16 +9,19 @@ import android.util.Log;
  */
 public class Logger {
 
-    public static String sTAG = "sjj";
+    public static       String sTAG          = "sjj";
+    public static final String UN_EXPECT_LOG = "why goto here !? ";
 
     private static final int VERBOSE = Log.VERBOSE;
     private static final int DEBUG   = Log.DEBUG;
     private static final int INFO    = Log.INFO;
     private static final int WARN    = Log.WARN;
     private static final int ERROR   = Log.ERROR;
+
     private static ILogRecorder sLogRecorder;
 
-    public static int sLevel = 0;
+    private static int sPrintLevel = 0;
+    private static int sWriteLevel = 0;
 
     public static ILogRecorder getLogRecorder() {
         return sLogRecorder;
@@ -32,178 +35,222 @@ public class Logger {
         Logger.sTAG = sTAG;
     }
 
-    public static void setLevel(int sLevel) {
-        Logger.sLevel = sLevel;
+    public static void setPrintLevel(int sPrintLevel) {
+        Logger.sPrintLevel = sPrintLevel;
+    }
+
+    public static void setWriteLevel(int sWriteLevel) {
+        Logger.sWriteLevel = sWriteLevel;
     }
 
     public static void syso(String msg) {
-        if (sLevel <= VERBOSE) {
-            System.out.println(msg);
-        }
+        syso(sPrintLevel <= VERBOSE, sTAG, msg, null);
     }
 
     public static void v(String msg) {
-        if (sLevel <= VERBOSE) {
-            Log.v(sTAG, msg);
-        }
+        v(sPrintLevel <= VERBOSE, sTAG, msg, null);
     }
 
     public static void d(String msg) {
-        if (sLevel <= DEBUG) {
-            Log.d(sTAG, msg);
-        }
+        d(sPrintLevel <= DEBUG, sTAG, msg, null);
     }
 
     public static void i(String msg) {
-        if (sLevel <= INFO) {
-            Log.i(sTAG, msg);
-        }
+        i(sPrintLevel <= INFO, sTAG, msg, null);
     }
 
     public static void w(String msg) {
-        if (sLevel <= WARN) {
-            Log.w(sTAG, msg);
-        }
+        w(sPrintLevel <= WARN, sTAG, msg, null);
     }
 
     public static void e(String msg) {
-        if (sLevel <= ERROR) {
-            Log.e(sTAG, msg);
-        }
+        e(sPrintLevel <= ERROR, sTAG, msg, null);
+    }
+
+    public static void syso(String tag, String msg) {
+        syso(sPrintLevel <= VERBOSE, tag, msg, null);
     }
 
     public static void v(String tag, String msg) {
-        if (sLevel <= VERBOSE) {
-            Log.v(tag, msg);
-        }
+        v(sPrintLevel <= VERBOSE, tag, msg, null);
     }
 
     public static void d(String tag, String msg) {
-        if (sLevel <= DEBUG) {
-            Log.d(tag, msg);
-        }
+        d(sPrintLevel <= DEBUG, tag, msg, null);
     }
 
     public static void i(String tag, String msg) {
-        if (sLevel <= INFO) {
-            Log.i(tag, msg);
-        }
+        i(sPrintLevel <= INFO, tag, msg, null);
     }
 
     public static void w(String tag, String msg) {
-        if (sLevel <= WARN) {
-            Log.w(tag, msg);
-        }
+        w(sPrintLevel <= WARN, tag, msg, null);
     }
 
     public static void e(String tag, String msg) {
-        if (sLevel <= ERROR) {
-            Log.e(tag, msg);
-        }
+        e(sPrintLevel <= ERROR, tag, msg, null);
     }
 
     public static void syso(boolean flag, String msg) {
-        if (flag) {
-            syso(msg);
-        }
+        syso(flag, sTAG, msg, null);
     }
 
     public static void v(boolean flag, String msg) {
-        if (flag) {
-            v(msg);
-        }
+        v(flag, sTAG, msg, null);
     }
 
     public static void d(boolean flag, String msg) {
-        if (flag) {
-            d(msg);
-        }
+        d(flag, sTAG, msg, null);
     }
 
     public static void i(boolean flag, String msg) {
-        if (flag) {
-            i(msg);
-        }
+        i(flag, sTAG, msg, null);
     }
 
     public static void w(boolean flag, String msg) {
-        if (flag) {
-            w(msg);
-        }
+        w(flag, sTAG, msg, null);
     }
 
     public static void e(boolean flag, String msg) {
-        if (flag) {
-            e(msg);
-        }
+        e(flag, sTAG, msg, null);
     }
 
     public static void syso(String msg, Throwable t) {
-        syso(getLineNumber(t) + msg);
+        syso(sPrintLevel <= VERBOSE, sTAG, msg, t);
     }
 
     public static void v(String msg, Throwable t) {
-        v(getLineNumber(t) + msg);
+        v(sPrintLevel <= VERBOSE, sTAG, msg, t);
     }
 
     public static void d(String msg, Throwable t) {
-        d(getLineNumber(t) + msg);
+        d(sPrintLevel <= DEBUG, sTAG, msg, t);
     }
 
     public static void i(String msg, Throwable t) {
-        i(getLineNumber(t) + msg);
+        i(sPrintLevel <= INFO, sTAG, msg, t);
     }
 
     public static void w(String msg, Throwable t) {
-        w(getLineNumber(t) + msg);
+        w(sPrintLevel <= WARN, sTAG, msg, t);
     }
 
     public static void e(String msg, Throwable t) {
-        e(getLineNumber(t) + msg);
+        e(sPrintLevel <= ERROR, sTAG, msg, t);
+    }
+
+    public static void syso(String tag, String msg, Throwable t) {
+        syso(sPrintLevel <= VERBOSE, tag, msg, t);
     }
 
     public static void v(String tag, String msg, Throwable t) {
-        v(tag, getLineNumber(t) + msg);
+        v(sPrintLevel <= VERBOSE, tag, msg, t);
     }
 
     public static void d(String tag, String msg, Throwable t) {
-        d(tag, getLineNumber(t) + msg);
+        d(sPrintLevel <= DEBUG, tag, msg, t);
     }
 
     public static void i(String tag, String msg, Throwable t) {
-        i(tag, getLineNumber(t) + msg);
+        i(sPrintLevel <= INFO, tag, msg, t);
     }
 
     public static void w(String tag, String msg, Throwable t) {
-        w(tag, getLineNumber(t) + msg);
+        w(sPrintLevel <= WARN, tag, msg, t);
     }
 
     public static void e(String tag, String msg, Throwable t) {
-        e(tag, getLineNumber(t) + msg);
+        e(sPrintLevel <= ERROR, tag, msg, t);
     }
 
     public static void syso(boolean flag, String msg, Throwable t) {
-        syso(flag, getLineNumber(t) + msg);
+        syso(flag, sTAG, msg, t);
     }
 
     public static void v(boolean flag, String msg, Throwable t) {
-        v(flag, getLineNumber(t) + msg);
+        v(flag, sTAG, msg, t);
     }
 
     public static void d(boolean flag, String msg, Throwable t) {
-        d(flag, getLineNumber(t) + msg);
+        d(flag, sTAG, msg, t);
     }
 
     public static void i(boolean flag, String msg, Throwable t) {
-        i(flag, getLineNumber(t) + msg);
+        i(flag, sTAG, msg, t);
     }
 
     public static void w(boolean flag, String msg, Throwable t) {
-        w(flag, getLineNumber(t) + msg);
+        w(flag, sTAG, msg, t);
     }
 
     public static void e(boolean flag, String msg, Throwable t) {
-        e(flag, getLineNumber(t) + msg);
+        e(flag, sTAG, msg, t);
+    }
+
+    public static void syso(boolean flag, String tag, String msg, Throwable t) {
+        if (flag && sWriteLevel <= VERBOSE) {
+            if (sLogRecorder != null) {
+                sLogRecorder.takeNotes(msg);
+            }
+        }
+        if (flag && sPrintLevel <= VERBOSE) {
+            System.out.println(tag + ": " + msg + " " + getLineNumber(t));
+        }
+    }
+
+    public static void v(boolean flag, String tag, String msg, Throwable t) {
+        if (flag && sWriteLevel <= VERBOSE) {
+            if (sLogRecorder != null) {
+                sLogRecorder.takeNotes(msg);
+            }
+        }
+        if (flag && sPrintLevel <= VERBOSE) {
+            Log.v(tag, msg + " " + getLineNumber(t));
+        }
+    }
+
+    public static void d(boolean flag, String tag, String msg, Throwable t) {
+        if (flag && sWriteLevel <= DEBUG) {
+            if (sLogRecorder != null) {
+                sLogRecorder.takeNotes(msg);
+            }
+        }
+        if (flag && sPrintLevel <= DEBUG) {
+            Log.d(tag, msg + " " + getLineNumber(t));
+        }
+    }
+
+    public static void i(boolean flag, String tag, String msg, Throwable t) {
+        if (flag && sWriteLevel <= INFO) {
+            if (sLogRecorder != null) {
+                sLogRecorder.takeNotes(msg);
+            }
+        }
+        if (flag && sPrintLevel <= INFO) {
+            Log.i(tag, msg + " " + getLineNumber(t));
+        }
+    }
+
+    public static void w(boolean flag, String tag, String msg, Throwable t) {
+        if (flag && sWriteLevel <= WARN) {
+            if (sLogRecorder != null) {
+                sLogRecorder.takeNotes(msg);
+            }
+        }
+        if (flag && sPrintLevel <= WARN) {
+            Log.w(tag, msg + " " + getLineNumber(t));
+        }
+    }
+
+    public static void e(boolean flag, String tag, String msg, Throwable t) {
+        if (flag && sWriteLevel <= ERROR) {
+            if (sLogRecorder != null) {
+                sLogRecorder.takeNotes(msg);
+            }
+        }
+        if (flag && sPrintLevel <= ERROR) {
+            Log.e(tag, msg + " " + getLineNumber(t));
+        }
     }
 
     public static String printStackTrace(Throwable e) {
@@ -250,6 +297,9 @@ public class Logger {
     }
 
     public static String getLineNumber(Throwable e) {
+        if (e == null) {
+            return "";
+        }
         StackTraceElement[] trace = e.getStackTrace();
         if (trace == null || trace.length == 0) {
             return "";
