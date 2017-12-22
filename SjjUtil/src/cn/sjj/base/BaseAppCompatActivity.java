@@ -14,14 +14,10 @@ import cn.sjj.Logger;
  */
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
-    protected static final boolean DEBUG = IStatics.DEBUG;
+    protected static final boolean DEBUG    = IStatics.DEBUG;
     protected static final boolean UI_DEBUG = IStatics.UI_DEBUG;
 
     private Handler mUIHandler = new Handler(Looper.getMainLooper());
-
-    protected abstract void findView();
-
-    protected abstract void registerListener();
 
     protected abstract void init();
 
@@ -89,6 +85,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i(DEBUG, this + " onActivityResult");
+    }
+
+    protected void findView() {
+    }
+
+    protected void registerListener() {
     }
 
     protected void runAfterOnResume(Runnable run) {

@@ -2,6 +2,7 @@ package cn.sjj.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -19,15 +20,17 @@ import cn.sjj.util.TextFormat;
  */
 public abstract class BaseFragment extends Fragment {
 
-    protected static final boolean DEBUG = false;
+    protected static final boolean DEBUG    = false;
     protected static final boolean UI_DEBUG = IStatics.UI_DEBUG;
 
     protected FragmentManager mFm;
-    protected View mFragmentView;//ENN fragment界面的的组件
+    protected View            mFragmentView;//ENN fragment界面的的组件
 
-    protected abstract void findView();
+    protected void findView() {
+    }
 
-    protected abstract void registerListener();
+    protected void registerListener() {
+    }
 
     protected abstract void init();
 
@@ -51,10 +54,16 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Logger.v(DEBUG, this + "   onViewCreated ");
+        super.onViewCreated(view, savedInstanceState);
+        findView();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Logger.v(DEBUG, this + "   onActivityCreated ");
         super.onActivityCreated(savedInstanceState);
-        findView();
         init();
         registerListener();
     }
