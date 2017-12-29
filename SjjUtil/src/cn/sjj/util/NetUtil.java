@@ -1,5 +1,6 @@
 package cn.sjj.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -20,6 +21,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -31,6 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.sjj.Logger;
+import cn.sjj.R;
 import cn.sjj.base.BaseUtil;
 
 public class NetUtil extends BaseUtil {
@@ -72,7 +75,7 @@ public class NetUtil extends BaseUtil {
             TextView msg = new TextView(activity);
             msg.setText("当前没有可以使用的网络，请设置网络！");
             new AlertDialog.Builder(activity)
-                    .setIcon(cn.sjj.R.drawable.ic_launcher)
+                    .setIcon(R.drawable.ic_launcher)
                     .setTitle("网络状态提示")
                     .setView(msg)
                     .setPositiveButton("确定",
@@ -120,22 +123,22 @@ public class NetUtil extends BaseUtil {
 
     }
 
-    public static String getIp() throws IOException {
-        String localIp = null;
-        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
-            NetworkInterface intf = en.nextElement();
-            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr
-                    .hasMoreElements(); ) {
-                InetAddress inetAddress = enumIpAddr.nextElement();
-                if (!inetAddress.isLoopbackAddress()) {
-                    if (inetAddress.isReachable(1000)) {
-                        InetAddress localInetAddress = inetAddress;
-                        localIp = inetAddress.getHostAddress().toString();
-                        byte[] localIpBytes = inetAddress.getAddress();
-                        System.arraycopy(localIpBytes, 0, new byte[255], 44, 4);
+    public static String getIp() {
+        String localIp = "null";
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        if (inetAddress.isReachable(1000)) {
+                            localIp = inetAddress.getHostAddress().toString();
+                        }
                     }
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return localIp;
     }
@@ -296,7 +299,7 @@ public class NetUtil extends BaseUtil {
         return connect;
     }
 
-    public static final int TYPE_WIFI = 0x01;
+    public static final int TYPE_WIFI  = 0x01;
     public static final int TYPE_CMWAP = 0x02;
     public static final int TYPE_CMNET = 0x03;
 
@@ -338,19 +341,19 @@ public class NetUtil extends BaseUtil {
     /**
      * wap网络
      */
-    public static final int NETWORK_TYPE_WAP = 1;
+    public static final int NETWORK_TYPE_WAP     = 1;
     /**
      * 2G网络
      */
-    public static final int NETWORK_TYPE_2G = 2;
+    public static final int NETWORK_TYPE_2G      = 2;
     /**
      * 3G和3G以上网络，或统称为快速网络
      */
-    public static final int NETWORK_TYPE_3G = 3;
+    public static final int NETWORK_TYPE_3G      = 3;
     /**
      * wifi网络
      */
-    public static final int NETWORK_TYPE_WIFI = 4;
+    public static final int NETWORK_TYPE_WIFI    = 4;
 
     /**
      * 获取网络状态，wifi,wap,2g,3g.
@@ -418,4 +421,97 @@ public class NetUtil extends BaseUtil {
 
     //http://blog.csdn.net/nanzhiwen666/article/details/8288433#
     //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
+    public static String getNetworkType2017() {
+        String strNetworkType = "";
+        @SuppressLint("MissingPermission")
+        NetworkInfo networkInfo = ((ConnectivityManager) sContext.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                strNetworkType = "WIFI";
+            } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                String _strSubTypeName = networkInfo.getSubtypeName();
+                // TD-SCDMA   networkType is 17
+                int networkType = networkInfo.getSubtype();
+                switch (networkType) {
+                    case TelephonyManager.NETWORK_TYPE_GPRS:
+                    case TelephonyManager.NETWORK_TYPE_EDGE:
+                    case TelephonyManager.NETWORK_TYPE_CDMA:
+                    case TelephonyManager.NETWORK_TYPE_1xRTT:
+                    case TelephonyManager.NETWORK_TYPE_IDEN: //api<8 : replace by 11
+                        strNetworkType = "2G";
+                        break;
+                    case TelephonyManager.NETWORK_TYPE_UMTS:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                    case TelephonyManager.NETWORK_TYPE_HSDPA:
+                    case TelephonyManager.NETWORK_TYPE_HSUPA:
+                    case TelephonyManager.NETWORK_TYPE_HSPA:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_B: //api<9 : replace by 14
+                    case TelephonyManager.NETWORK_TYPE_EHRPD:  //api<11 : replace by 12
+                    case TelephonyManager.NETWORK_TYPE_HSPAP:  //api<13 : replace by 15
+                        strNetworkType = "3G";
+                        break;
+                    case TelephonyManager.NETWORK_TYPE_LTE:    //api<11 : replace by 13
+                        strNetworkType = "4G";
+                        break;
+                    default:
+                        // http://baike.baidu.com/item/TD-SCDMA 中国移动 联通 电信 三种3G制式
+                        if (_strSubTypeName.equalsIgnoreCase("TD-SCDMA") || _strSubTypeName.equalsIgnoreCase("WCDMA") || _strSubTypeName.equalsIgnoreCase("CDMA2000")) {
+                            strNetworkType = "3G";
+                        } else {
+                            strNetworkType = _strSubTypeName;
+                        }
+
+                        break;
+                }
+            }
+        }
+        return strNetworkType;
+    }
+
+    public static String getIPAddress2017() {
+        @SuppressLint("MissingPermission")
+        NetworkInfo info = ((ConnectivityManager) sContext.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        if (info != null && info.isConnected()) {
+            if (info.getType() == ConnectivityManager.TYPE_MOBILE) {//当前使用2G/3G/4G网络
+                try {
+                    //Enumeration<NetworkInterface> en=NetworkInterface.getNetworkInterfaces();
+                    for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                        NetworkInterface intf = en.nextElement();
+                        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                            InetAddress inetAddress = enumIpAddr.nextElement();
+                            if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+                                return inetAddress.getHostAddress();
+                            }
+                        }
+                    }
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (info.getType() == ConnectivityManager.TYPE_WIFI) {//当前使用无线网络
+                WifiManager wifiManager = (WifiManager) sContext.getSystemService(Context.WIFI_SERVICE);
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                String ipAddress = intIP2StringIP(wifiInfo.getIpAddress());//得到IPV4地址
+                return ipAddress;
+            }
+        } else {
+            //当前无网络连接,请在设置中打开网络
+        }
+        return "nonetwork";
+    }
+
+    /**
+     * 将得到的int类型的IP转换为String类型
+     *
+     * @param ip
+     * @return
+     */
+    public static String intIP2StringIP(int ip) {
+        return (ip & 0xFF) + "." +
+                ((ip >> 8) & 0xFF) + "." +
+                ((ip >> 16) & 0xFF) + "." +
+                (ip >> 24 & 0xFF);
+    }
 }
