@@ -324,4 +324,31 @@ public class StringUtil {
         return str;
     }
 
+    public static CharSequence makeNotNull(CharSequence str) {
+        if (str == null) {
+            return "";
+        }
+        return str;
+    }
+
+    public static CharSequence makeNotNull(CharSequence str, CharSequence replace) {
+        if (str == null) {
+            return replace;
+        }
+        return str;
+    }
+
+    public static String replaceEmpty(String str, String replace) {
+        if (TextUtils.isEmpty(str)) {
+            str = replace;
+        }
+        return str;
+    }
+
+    public static String replaceEmpty(CharSequence str, CharSequence replace) {
+        if (TextUtils.isEmpty(str)) {
+            str = replace;
+        }
+        return str.toString();
+    }
 }
