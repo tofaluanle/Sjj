@@ -246,4 +246,28 @@ public class TextFormat {
         return DateFormat.format("yyyy-MM-dd kk:mm:ss", System.currentTimeMillis()).toString();
     }
 
+    public static String formatNumber(double data, int digit) {
+        double scale = 1000;
+        String pattern = "##.";
+        for (int i = 0; i < digit; i++) {
+            pattern += "#";
+        }
+        if (0 == digit) {
+            pattern = "##";
+        }
+        DecimalFormat format = new DecimalFormat(pattern);
+        if (data < scale) {
+            return format.format(data);
+        } else if (data < scale * scale) {
+            return format.format(data / scale) + "K";//10^3
+        } else if (data < scale * scale * scale) {
+            return format.format(data / scale / scale) + "M";//10^6
+        } else if (data < scale * scale * scale * scale) {
+            return format.format(data / scale / scale / scale) + "B";//10^9
+        } else if (data < scale * scale * scale * scale * scale) {
+            return format.format(data / scale / scale / scale / scale) + "T";//10^12
+        } else {
+            return format.format(data / scale / scale / scale / scale / scale) + "Q";//10^15
+        }
+    }
 }
