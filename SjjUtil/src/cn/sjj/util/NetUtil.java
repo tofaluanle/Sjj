@@ -470,6 +470,20 @@ public class NetUtil extends BaseUtil {
         return strNetworkType;
     }
 
+    public static String getNetworkTypeStr2017() {
+        String strNetworkType = "";
+        @SuppressLint("MissingPermission")
+        NetworkInfo networkInfo = ((ConnectivityManager) sContext.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                strNetworkType = "";
+            } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                strNetworkType = networkInfo.getSubtypeName();
+            }
+        }
+        return strNetworkType;
+    }
+
     public static String getIPAddress2017() {
         @SuppressLint("MissingPermission")
         NetworkInfo info = ((ConnectivityManager) sContext.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
@@ -499,7 +513,7 @@ public class NetUtil extends BaseUtil {
         } else {
             //当前无网络连接,请在设置中打开网络
         }
-        return "nonetwork";
+        return "";
     }
 
     /**
