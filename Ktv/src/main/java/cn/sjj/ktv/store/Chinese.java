@@ -16,6 +16,7 @@ public class Chinese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("讲真的", "曾惜", "不要你为难"));
         songs.add(new Song("一如年少模样", "陈鸿宇", "一如年少模样"));
         songs.add(new Song("那些花儿", "朴树", "我去2000年"));
         songs.add(new Song("歌在飞", "苏勒亚其其格", ""));
