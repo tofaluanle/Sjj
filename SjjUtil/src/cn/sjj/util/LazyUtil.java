@@ -6,6 +6,8 @@ import android.os.Looper;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import cn.sjj.base.BaseUtil;
 
@@ -44,6 +46,14 @@ public class LazyUtil extends BaseUtil {
         } else {
             mUIHandler.post(run);
         }
+    }
+
+    public static boolean isEmpty(List list) {
+        return list == null || list.isEmpty();
+    }
+
+    public static boolean isEmpty(Map map) {
+        return map == null || map.isEmpty();
     }
 
 }
