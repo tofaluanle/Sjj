@@ -16,6 +16,7 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("サタデー・ナイト・クエスチョン", "中島愛", "网路胜利组OP", "星期六·晚上·疑问"));
         songs.add(new Song("東京", "柴田淳", ""));
         songs.add(new Song("ふゆびより", "佐々木恵梨", "摇曳露营△ED", "2018年1月"));
         songs.add(new Song("Ref:rain", "Aimer", "恋如雨止ED", "2018年1月"));
