@@ -5,12 +5,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Delete {
 
     private static StringBuilder sb;
+    private static String mRoot = "/Users/songjj/WorkSpace/";
+    private static List<String> sIgnorePath;
 
     public static void main(String[] args) throws Exception {
+        initIgnorePath();
+
         boolean delete = true;
         if (args.length > 0) {
             switch (args[0]) {
@@ -25,18 +32,26 @@ public class Delete {
         sb = new StringBuilder();
         sb.append(new Date(System.currentTimeMillis()) + "\n");
 
-        String[] paths = new String[]{"G:/workspace/eclipse", "G:/workspace/repository/git", "G:/workspace/vs2010", "G:/workspace/Xamarin", "G:/workspace/android-studio"};
-        String[] names = new String[]{"bin", "obj", "Debug", "Release", "build"};
+        List<String> paths = new ArrayList<>();
+        paths.add(mRoot + "/AndroidStudio");
+//        String[] names = new String[]{"bin", "obj", "Debug", "Release", "build"};
+        String[] names = new String[]{"build"};
         for (String path : paths) {
             deleteDir(path, names, delete);
         }
 
-        String notePath = "G:/workspace/[DeleteIndex/" + new Date(System.currentTimeMillis()) + "_deleteIndex.txt";
+        String notePath = mRoot + "/[DeleteIndex/" + new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(System.currentTimeMillis()) + "_deleteIndex.txt";
         File file = new File(notePath);
         if (!file.exists()) {
             file.createNewFile();
         }
         writeFile(notePath, sb.toString());
+    }
+
+    private static void initIgnorePath() {
+        sIgnorePath = new ArrayList<>();
+        sIgnorePath.add("/Users/songjj/WorkSpace/AndroidStudio/StudyGradle/gradleSrc/");
+        sIgnorePath.add("/Users/songjj/WorkSpace/AndroidStudio/Sjj/deletedir/build");
     }
 
     // 循环遍历指定目录里的文件和文件夹
@@ -46,9 +61,10 @@ public class Delete {
             File[] listFiles = dir.listFiles();
             for (File file : listFiles) {
                 if (file.isDirectory()) {
-                    if (file.getAbsolutePath().equals("G:\\workspace\\android-studio\\Sjj\\deletedir\\build")) {
+                    if (isIgnorePath(file)) {
                         continue;
                     }
+
                     boolean isTarDir = false;
                     for (String name : names) {
                         if (name.equals(file.getName())) {
@@ -69,6 +85,15 @@ public class Delete {
 
             }
         }
+    }
+
+    private static boolean isIgnorePath(File file) {
+        for (String path : sIgnorePath) {
+            if (file.getAbsolutePath().contains(path)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -27,7 +27,9 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -179,7 +181,37 @@ public class NetUtil extends BaseUtil {
             return "";
         }
         String macAddress = info.getMacAddress();
+        if (macAddress.equals("02:00:00:00:00:00")) {
+            macAddress = getMacAddr();
+        }
+        if (macAddress.equals("02:00:00:00:00:00")) {
+            return "";
+        }
         return macAddress;
+    }
+
+    private static String getMacAddr() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:", b));
+                }
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "";
     }
 
     public static String getNetTypeName(Context context) {
