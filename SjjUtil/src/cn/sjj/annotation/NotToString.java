@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 与BaseBean配合使用，标记的属性不会被打印出来
+ *
  * @auther 宋疆疆
  * @date 2015/10/30.
  */
