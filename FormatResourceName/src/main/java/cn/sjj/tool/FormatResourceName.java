@@ -16,8 +16,8 @@ public class FormatResourceName {
 
     private static String  sDir     = "C:\\WorkSpace\\temp\\android-credit/";
     private static String  sPrefix  = "sjj_";
-    private static boolean sExecute = true;
-//    private static boolean sExecute = false;
+    //        private static boolean sExecute = true;
+    private static boolean sExecute = false;
 
     private static List<File>        sJavas        = new ArrayList<>();
     private static Map<File, String> sJavaContents = new HashMap<>();
@@ -76,12 +76,102 @@ public class FormatResourceName {
 
     private static void rename() {
         renameValueContent();
-        renameJavaContent();
-        renameLayoutContent();
-        renameManifestContent();
-        renameAnimatorFile();
-        renameDrawableFile();
-        renameLayoutFile();
+//        renameAnimatorContent();
+//        renameDrawableContent();
+//        renameJavaContent();
+//        renameLayoutContent();
+//        renameManifestContent();
+//        renameAnimatorFile();
+//        renameDrawableFile();
+//        renameLayoutFile();
+    }
+
+    private static void renameDrawableContent() {
+        System.out.println("\nREPLACE DRAWABLE FILE CONTENT ==============\n");
+        for (File file : sDrawables) {
+            if (!file.getName().endsWith(".xml")) {
+                continue;
+            }
+
+            String content;
+            try {
+                content = FileUtil.readFile(file.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(String.format("%s read content fail", file));
+                return;
+            }
+
+            String[] filters = {"android:", "id", "+id"};
+            String reg = "('@(.*)/(.*?)')|(\"@(.*)/(.*?)\")";
+            Pattern p = Pattern.compile(reg);
+            Matcher m = p.matcher(content);
+            Map<String, String> contentMap = new HashMap<>();
+            while (m.find()) {
+//                System.out.println(m.group());
+                String type;
+                String mId;
+                if (m.group(3) != null) {
+                    type = m.group(2);
+                    mId = m.group(3);
+                } else {
+                    type = m.group(5);
+                    mId = m.group(6);
+                }
+                boolean ignore = false;
+                for (String filter : filters) {
+                    if (type.startsWith(filter)) {
+                        ignore = true;
+                        break;
+                    }
+                }
+                if (ignore) {
+                    continue;
+                }
+
+                for (File resource : sDrawables) {
+                    String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
+                    if (mId.equals(resourceName) && !mId.startsWith(sPrefix)) {
+                        String targetContent = m.group();
+                        String replaceContent = targetContent.replace(mId, sPrefix + mId);
+                        contentMap.put(targetContent, replaceContent);
+                        break;
+                    }
+                }
+
+                //TODO valueIds没有区分类型，可以会引起不同类型匹配到同一个字符串的问题
+                for (String id : sValueIds) {
+                    if (mId.equals(id) && !mId.startsWith(sPrefix)) {
+                        String targetContent = m.group();
+                        String replaceContent = targetContent.replace(mId, sPrefix + mId);
+                        contentMap.put(targetContent, replaceContent);
+                        break;
+                    }
+                }
+
+            }
+
+            if (!sExecute) {
+                System.out.println(String.format("[ %s ] -> %s", file.getName(), contentMap));
+                continue;
+            }
+            if (contentMap.isEmpty()) {
+                continue;
+            }
+
+            for (Map.Entry<String, String> entry : contentMap.entrySet()) {
+                content = content.replaceAll(entry.getKey(), entry.getValue());
+            }
+            try {
+                FileUtil.writeFile(file.getAbsolutePath(), content);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(String.format("%s write content fail", file));
+            }
+        }
+    }
+
+    private static void renameAnimatorContent() {
     }
 
     private static void renameJavaContent() {
@@ -183,10 +273,10 @@ public class FormatResourceName {
                 continue;
             }
 
-            //TODO style的parent没有处理
             Pattern p = Pattern.compile("\\s+name=\\s*(('(.*?)')|(\"(.*?)\"))(>|\\s+|/>)");
             Matcher m = p.matcher(content);
             while (m.find()) {
+//                System.out.println(m.group());
                 String id;
                 if (m.group(3) != null) {
                     id = m.group(3);
@@ -199,6 +289,47 @@ public class FormatResourceName {
 
                 sValueIds.add(id);
                 String targetContent = m.group();
+                String replaceContent = targetContent.replaceAll(id, sPrefix + id);
+                contentMap.put(targetContent, replaceContent);
+            }
+
+            String reg = "\\s+parent=\\s*(('(.*?)')|(\"(.*?)\"))";
+            Pattern pParent = Pattern.compile(reg);
+            Matcher mParent = pParent.matcher(content);
+            while (mParent.find()) {
+//                System.out.println(mValue.group());
+                String id;
+                if (mParent.group(3) != null) {
+                    id = mParent.group(3);
+                } else {
+                    id = mParent.group(5);
+                }
+                if (id.contains("/")) {
+                    id = id.substring(id.indexOf("/") + 1, id.length());
+                }
+                if (id.startsWith(sPrefix) || id.startsWith("android:") || !sValueIds.contains(id)) {
+                    continue;
+                }
+
+                String targetContent = mParent.group();
+                String replaceContent = targetContent.replaceAll(id, sPrefix + id);
+                contentMap.put(targetContent, replaceContent);
+            }
+
+            String regValue = ">\\s*@.*/(.*?)<";
+//            String regValue = ">\\s*@.*/([^</]+?)<";
+//            String regValue = ">([^</]+)</";
+//            String regValue = "<.*>\\s*@.*/(.*?)(\\s*|<)";
+            Pattern pValue = Pattern.compile(regValue);
+            Matcher mValue = pValue.matcher(content);
+            while (mValue.find()) {
+                System.out.println(mValue.group());
+                String id = mValue.group(1).trim();
+                if (id.startsWith(sPrefix) || id.startsWith("android:") || id.startsWith("@android:") || !sValueIds.contains(id)) {
+                    continue;
+                }
+
+                String targetContent = mValue.group();
                 String replaceContent = targetContent.replaceAll(id, sPrefix + id);
                 contentMap.put(targetContent, replaceContent);
             }
@@ -279,8 +410,8 @@ public class FormatResourceName {
                 }
 
                 for (File resource : sDrawables) {
-                    String resourceContent = resource.getName().substring(0, resource.getName().lastIndexOf("."));
-                    if (mId.equals(resourceContent) || !mId.startsWith(sPrefix)) {
+                    String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
+                    if (mId.equals(resourceName) && !mId.startsWith(sPrefix)) {
                         String targetContent = m.group();
                         String replaceContent = targetContent.replace(mId, sPrefix + mId);
                         contentMap.put(targetContent, replaceContent);
@@ -290,7 +421,7 @@ public class FormatResourceName {
 
                 //TODO valueIds没有区分类型，可以会引起不同类型匹配到同一个字符串的问题
                 for (String id : sValueIds) {
-                    if (mId.equals(id) || !mId.startsWith(sPrefix)) {
+                    if (mId.equals(id) && !mId.startsWith(sPrefix)) {
                         String targetContent = m.group();
                         String replaceContent = targetContent.replace(mId, sPrefix + mId);
                         contentMap.put(targetContent, replaceContent);
@@ -361,7 +492,7 @@ public class FormatResourceName {
 
             //TODO valueIds没有区分类型，可以会引起不同类型匹配到同一个字符串的问题
             for (String id : sValueIds) {
-                if (mId.equals(id) || !mId.startsWith(sPrefix)) {
+                if (mId.equals(id) && !mId.startsWith(sPrefix)) {
                     String targetContent = m.group();
                     String replaceContent = targetContent.replace(mId, sPrefix + mId);
                     contentMap.put(targetContent, replaceContent);
@@ -370,8 +501,8 @@ public class FormatResourceName {
             }
 
             for (File resource : sDrawables) {
-                String resourceContent = resource.getName().substring(0, resource.getName().lastIndexOf("."));
-                if (mId.equals(resourceContent) || !mId.startsWith(sPrefix)) {
+                String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
+                if (mId.equals(resourceName) && !mId.startsWith(sPrefix)) {
                     String targetContent = m.group();
                     String replaceContent = targetContent.replace(mId, sPrefix + mId);
                     contentMap.put(targetContent, replaceContent);
