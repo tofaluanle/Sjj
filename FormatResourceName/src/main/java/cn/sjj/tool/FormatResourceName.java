@@ -2,7 +2,9 @@ package cn.sjj.tool;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,11 +31,59 @@ public class FormatResourceName {
 
     private static int sLayoutNameMaxLength;
 
+    private static String     sRuntimePath;
+    private static FileWriter sFw;
+
     public static void main(String[] args) {
 //        testResourcePattern();
 //        testLayoutPattern();
+//        testJavaPattern();
+        if (args.length > 0) {
+            sDir = args[0];
+            sPrefix = args[1];
+        }
+        if (args.length >= 3 && args[2].equals("-e")) {
+            sExecute = true;
+        }
+
+        try {
+            sRuntimePath = new File(".").getCanonicalPath();
+            sFw = new FileWriter(new File(sRuntimePath, "map.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         findFiles();
         rename();
+
+        if (sFw != null) {
+            try {
+                sFw.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                sFw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void testJavaPattern() {
+        String str = "(android.R.\n" +
+                "layout\n" +
+                ".tt);\n"
+                + "(R\n" +
+                ".layout.\n" +
+                "zz, dd);";
+//        Pattern p = Pattern.compile("[^\\.]R\\s*\\.\\s*.*\\s*\\.\\s*(.*?)[\\s,);]");
+        Pattern p = Pattern.compile("R\\s*\\.\\s*.*\\s*\\.\\s*(.*?)[\\s,);]");
+        Matcher m = p.matcher(str);
+        while (m.find()) {
+            print(m.group());
+            print("id = " + m.group(1));
+        }
     }
 
     private static void testLayoutPattern() {
@@ -45,7 +95,7 @@ public class FormatResourceName {
         Pattern p = Pattern.compile("('@.*/(.*?)')|(\"@.*/(.*?)\")");
         Matcher m = p.matcher(str);
         while (m.find()) {
-            System.out.println(m.group());
+            print(m.group());
         }
     }
 
@@ -63,31 +113,31 @@ public class FormatResourceName {
         Pattern p = Pattern.compile("\\s+name=\\s*(('(.*?)')|(\"(.*?)\"))(>|\\s+|/>)");
         Matcher m = p.matcher(str);
         while (m.find()) {
-            System.out.println(m.group());
+            print(m.group());
 
             String group = m.group();
             p = Pattern.compile("(\"(.*?)\")|('(.*?)')");
             Matcher m2 = p.matcher(group);
             while (m2.find()) {
-                System.out.println(m2.group());
+                print(m2.group());
             }
         }
     }
 
     private static void rename() {
         renameValueContent();
-//        renameAnimatorContent();
-//        renameDrawableContent();
-//        renameJavaContent();
-//        renameLayoutContent();
-//        renameManifestContent();
-//        renameAnimatorFile();
-//        renameDrawableFile();
-//        renameLayoutFile();
+        renameAnimatorContent();
+        renameDrawableContent();
+        renameJavaContent();
+        renameLayoutContent();
+        renameManifestContent();
+        renameAnimatorFile();
+        renameDrawableFile();
+        renameLayoutFile();
     }
 
     private static void renameDrawableContent() {
-        System.out.println("\nREPLACE DRAWABLE FILE CONTENT ==============\n");
+        print("\nREPLACE DRAWABLE FILE CONTENT ==============\n");
         for (File file : sDrawables) {
             if (!file.getName().endsWith(".xml")) {
                 continue;
@@ -98,7 +148,7 @@ public class FormatResourceName {
                 content = FileUtil.readFile(file.getAbsolutePath());
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(String.format("%s read content fail", file));
+                print(String.format("%s read content fail", file));
                 return;
             }
 
@@ -108,7 +158,7 @@ public class FormatResourceName {
             Matcher m = p.matcher(content);
             Map<String, String> contentMap = new HashMap<>();
             while (m.find()) {
-//                System.out.println(m.group());
+//                print(m.group());
                 String type;
                 String mId;
                 if (m.group(3) != null) {
@@ -151,11 +201,8 @@ public class FormatResourceName {
 
             }
 
-            if (!sExecute) {
-                System.out.println(String.format("[ %s ] -> %s", file.getName(), contentMap));
-                continue;
-            }
-            if (contentMap.isEmpty()) {
+            print(String.format("[ %s ] -> %s", file.getName(), contentMap));
+            if (!sExecute || contentMap.isEmpty()) {
                 continue;
             }
 
@@ -166,7 +213,7 @@ public class FormatResourceName {
                 FileUtil.writeFile(file.getAbsolutePath(), content);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(String.format("%s write content fail", file));
+                print(String.format("%s write content fail", file));
             }
         }
     }
@@ -175,9 +222,9 @@ public class FormatResourceName {
     }
 
     private static void renameJavaContent() {
-        System.out.println("\nREPLACE JAVA FILE CONTENT ==============\n");
+        print("\nREPLACE JAVA FILE CONTENT ==============\n");
         for (File java : sJavaContents.keySet()) {
-//                System.out.println(java);
+//                print(java);
             String content = sJavaContents.get(java);
             List<String> targetContents = new ArrayList<>();
             String[] suffixContents = {",", ";", ")", " "};
@@ -238,11 +285,8 @@ public class FormatResourceName {
                 }
             }
 
-            if (!sExecute) {
-                System.out.println(String.format("[ %s ] -> %s", java.getName(), targetContents));
-                continue;
-            }
-            if (targetContents.isEmpty()) {
+            print(String.format("[ %s ] -> %s", java.getName(), targetContents));
+            if (!sExecute || targetContents.isEmpty()) {
                 continue;
             }
 
@@ -254,13 +298,13 @@ public class FormatResourceName {
                 FileUtil.writeFile(java.getAbsolutePath(), content);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(String.format("%s write content fail", java));
+                print(String.format("%s write content fail", java));
             }
         }
     }
 
     private static void renameValueContent() {
-        System.out.println("\nREPLACE VALUE FILE CONTENT ==============\n");
+        print("\nREPLACE VALUE FILE CONTENT ==============\n");
 
         for (File value : sValues) {
             Map<String, String> contentMap = new HashMap<>();
@@ -269,14 +313,14 @@ public class FormatResourceName {
                 content = FileUtil.readFile(value.getAbsolutePath());
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(String.format("%s read content fail", value));
+                print(String.format("%s read content fail", value));
                 continue;
             }
 
             Pattern p = Pattern.compile("\\s+name=\\s*(('(.*?)')|(\"(.*?)\"))(>|\\s+|/>)");
             Matcher m = p.matcher(content);
             while (m.find()) {
-//                System.out.println(m.group());
+//                print(m.group());
                 String id;
                 if (m.group(3) != null) {
                     id = m.group(3);
@@ -297,7 +341,7 @@ public class FormatResourceName {
             Pattern pParent = Pattern.compile(reg);
             Matcher mParent = pParent.matcher(content);
             while (mParent.find()) {
-//                System.out.println(mValue.group());
+//                print(mValue.group());
                 String id;
                 if (mParent.group(3) != null) {
                     id = mParent.group(3);
@@ -323,7 +367,7 @@ public class FormatResourceName {
             Pattern pValue = Pattern.compile(regValue);
             Matcher mValue = pValue.matcher(content);
             while (mValue.find()) {
-                System.out.println(mValue.group());
+//                print(mValue.group());
                 String id = mValue.group(1).trim();
                 if (id.startsWith(sPrefix) || id.startsWith("android:") || id.startsWith("@android:") || !sValueIds.contains(id)) {
                     continue;
@@ -334,11 +378,8 @@ public class FormatResourceName {
                 contentMap.put(targetContent, replaceContent);
             }
 
-            if (!sExecute) {
-                System.out.println(String.format("[ %s ] -> %s", value.getName(), contentMap));
-                continue;
-            }
-            if (contentMap.isEmpty()) {
+            print(String.format("[ %s ] -> %s", value.getName(), contentMap));
+            if (!sExecute || contentMap.isEmpty()) {
                 continue;
             }
 
@@ -349,36 +390,36 @@ public class FormatResourceName {
                 FileUtil.writeFile(value.getAbsolutePath(), content);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(String.format("%s write content fail", value));
+                print(String.format("%s write content fail", value));
             }
         }
     }
 
     private static void renameLayoutFile() {
-        System.out.println("\nRENAME LAYOUT FILE ==============\n");
+        print("\nRENAME LAYOUT FILE ==============\n");
         for (File layout : sLayouts) {
             File newNameFile = new File(layout.getParentFile(), sPrefix + layout.getName());
+            print(String.format("[ %s ] -> [ %s ]", layout.getName(), newNameFile.getName()));
             if (!sExecute) {
-                System.out.println(String.format("[ %s ] -> [ %s ]", layout.getName(), newNameFile.getName()));
                 continue;
             }
 
             boolean rename = layout.renameTo(newNameFile);
             if (!rename) {
-                System.out.println(String.format("[ %s ] rename fail", layout.getName()));
+                print(String.format("[ %s ] rename fail", layout.getName()));
             }
         }
     }
 
     private static void renameLayoutContent() {
-        System.out.println("\nREPLACE LAYOUT FILE CONTENT ==============\n");
+        print("\nREPLACE LAYOUT FILE CONTENT ==============\n");
         for (File file : sLayouts) {
             String content;
             try {
                 content = FileUtil.readFile(file.getAbsolutePath());
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(String.format("%s read content fail", file));
+                print(String.format("%s read content fail", file));
                 return;
             }
 
@@ -388,7 +429,7 @@ public class FormatResourceName {
             Matcher m = p.matcher(content);
             Map<String, String> contentMap = new HashMap<>();
             while (m.find()) {
-//                System.out.println(m.group());
+//                print(m.group());
                 String type;
                 String mId;
                 if (m.group(3) != null) {
@@ -431,11 +472,8 @@ public class FormatResourceName {
 
             }
 
-            if (!sExecute) {
-                System.out.println(String.format("[ %s ] -> %s", file.getName(), contentMap));
-                continue;
-            }
-            if (contentMap.isEmpty()) {
+            print(String.format("[ %s ] -> %s", file.getName(), contentMap));
+            if (!sExecute || contentMap.isEmpty()) {
                 continue;
             }
 
@@ -446,20 +484,20 @@ public class FormatResourceName {
                 FileUtil.writeFile(file.getAbsolutePath(), content);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(String.format("%s write content fail", file));
+                print(String.format("%s write content fail", file));
             }
         }
     }
 
     private static void renameManifestContent() {
-        System.out.println("\nREPLACE MANIFEST FILE CONTENT ==============\n");
+        print("\nREPLACE MANIFEST FILE CONTENT ==============\n");
         File manifest = new File(sDir, "src\\main/AndroidManifest.xml");
         String content;
         try {
             content = FileUtil.readFile(manifest.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(String.format("%s read content fail", manifest));
+            print(String.format("%s read content fail", manifest));
             return;
         }
 
@@ -469,7 +507,7 @@ public class FormatResourceName {
         Matcher m = p.matcher(content);
         Map<String, String> contentMap = new HashMap<>();
         while (m.find()) {
-//            System.out.println(m.group());
+//            print(m.group());
             String type;
             String mId;
             if (m.group(3) != null) {
@@ -511,11 +549,8 @@ public class FormatResourceName {
             }
         }
 
-        if (!sExecute) {
-            System.out.println(String.format("[ %s ] -> %s", manifest.getName(), contentMap));
-            return;
-        }
-        if (contentMap.isEmpty()) {
+        print(String.format("[ %s ] -> %s", manifest.getName(), contentMap));
+        if (!sExecute || contentMap.isEmpty()) {
             return;
         }
 
@@ -526,38 +561,38 @@ public class FormatResourceName {
             FileUtil.writeFile(manifest.getAbsolutePath(), content);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(String.format("%s write content fail", manifest));
+            print(String.format("%s write content fail", manifest));
         }
     }
 
     private static void renameAnimatorFile() {
-        System.out.println("\nRENAME ANIMATOR FILE ==============\n");
+        print("\nRENAME ANIMATOR FILE ==============\n");
         for (File file : sAnimators) {
             File newNameFile = new File(file.getParentFile(), sPrefix + file.getName());
+            print(String.format("[ %s ] -> [ %s ]", file.getName(), newNameFile.getName()));
             if (!sExecute) {
-                System.out.println(String.format("[ %s ] -> [ %s ]", file.getName(), newNameFile.getName()));
                 continue;
             }
 
             boolean rename = file.renameTo(newNameFile);
             if (!rename) {
-                System.out.println(String.format("[ %s ] rename fail", file.getName()));
+                print(String.format("[ %s ] rename fail", file.getName()));
             }
         }
     }
 
     private static void renameDrawableFile() {
-        System.out.println("\nRENAME DRAWABLE FILE ==============\n");
+        print("\nRENAME DRAWABLE FILE ==============\n");
         for (File drawable : sDrawables) {
             File newNameFile = new File(drawable.getParentFile(), sPrefix + drawable.getName());
+            print(String.format("[ %s ] -> [ %s ]", drawable.getName(), newNameFile.getName()));
             if (!sExecute) {
-                System.out.println(String.format("[ %s ] -> [ %s ]", drawable.getName(), newNameFile.getName()));
                 continue;
             }
 
             boolean rename = drawable.renameTo(newNameFile);
             if (!rename) {
-                System.out.println(String.format("[ %s ] rename fail", drawable.getName()));
+                print(String.format("[ %s ] rename fail", drawable.getName()));
             }
         }
     }
@@ -572,7 +607,7 @@ public class FormatResourceName {
                 sJavaContents.put(java, content);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(String.format("%s read content fail", java));
+                print(String.format("%s read content fail", java));
             }
         }
 
@@ -631,4 +666,12 @@ public class FormatResourceName {
         }
     }
 
+    private static void print(String text) {
+        System.out.println(text);
+        try {
+            sFw.write(text + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
