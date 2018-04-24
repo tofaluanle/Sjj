@@ -539,8 +539,8 @@ public class FileUtil {
      * @author 宋疆疆
      * @date 2017-10-11 16:06:31
      */
-    public static List<String> findFile(String dirPath, String fileName) {
-        List<String> paths = new ArrayList<>();
+    public static List<File> findFile(String dirPath, String fileName) {
+        List<File> paths = new ArrayList<>();
         File dir = new File(dirPath);
         if (dir.exists() && dir.isDirectory()) {
             File[] listFiles = dir.listFiles();
@@ -550,10 +550,10 @@ public class FileUtil {
 
             for (File file : listFiles) {
                 if (file.getName().equals(fileName)) {
-                    paths.add(file.getAbsolutePath());
+                    paths.add(file);
                 }
                 if (file.isDirectory()) {
-                    List<String> tempPaths = findFile(file.getAbsolutePath(), fileName);
+                    List<File> tempPaths = findFile(file.getAbsolutePath(), fileName);
                     if (tempPaths != null && 0 != tempPaths.size()) {
                         paths.addAll(tempPaths);
                     }
@@ -564,31 +564,29 @@ public class FileUtil {
     }
 
     /**
-     * 找出指定目录里的带有指定的扩展名的文件
+     * 找出指定目录里的带有指定的扩展名的文件，会递归查找子目录
      *
      * @param dirPath
      * @param extension
-     * @param onlyCurrentDir
      * @return
      * @author 宋疆疆
      * @date 2014年6月13日 上午9:42:32
      */
-    public static List<String> findFileByEx(String dirPath, String extension,
-                                            boolean onlyCurrentDir) {
-        List<String> paths = new ArrayList<String>();
+    public static List<File> findFileByEx(String dirPath, String extension) {
+        List<File> paths = new ArrayList<>();
         File dir = new File(dirPath);
         if (dir.exists() && dir.isDirectory()) {
             File[] listFiles = dir.listFiles();
             if (listFiles == null || listFiles.length <= 0) {
                 return paths;
             }
+
             for (File file : listFiles) {
                 if (file.getName().endsWith(extension)) {
-                    paths.add(file.getAbsolutePath());
+                    paths.add(file);
                 }
-                if (file.isDirectory() && !onlyCurrentDir) {
-                    List<String> tempPaths = findFileByEx(
-                            file.getAbsolutePath(), extension, onlyCurrentDir);
+                if (file.isDirectory()) {
+                    List<File> tempPaths = findFileByEx(file.getAbsolutePath(), extension);
                     if (tempPaths != null && 0 != tempPaths.size()) {
                         paths.addAll(tempPaths);
                     }
