@@ -28,6 +28,7 @@ public class FormatResourceName {
     private static List<File>        sLayouts      = new ArrayList<>();
     private static List<File>        sValues       = new ArrayList<>();
     private static List<String>      sValueIds     = new ArrayList<>();
+    private static List<String>      sViewIds      = new ArrayList<>();
 
     private static int sLayoutNameMaxLength;
 
@@ -35,39 +36,15 @@ public class FormatResourceName {
     private static FileWriter sFw;
 
     public static void main(String[] args) {
+        init(args);
+
 //        testResourcePattern();
-//        testLayoutPattern();
 //        testJavaPattern();
-        if (args.length > 0) {
-            sDir = args[0];
-            sPrefix = args[1];
-        }
-        if (args.length >= 3 && args[2].equals("-e")) {
-            sExecute = true;
-        }
-
-        try {
-            sRuntimePath = new File(".").getCanonicalPath();
-            sFw = new FileWriter(new File(sRuntimePath, "map.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+//        testLayoutPattern();
         findFiles();
         rename();
 
-        if (sFw != null) {
-            try {
-                sFw.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                sFw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        closeFw();
     }
 
     private static void testJavaPattern() {
@@ -76,13 +53,17 @@ public class FormatResourceName {
                 ".tt);\n"
                 + "(R\n" +
                 ".layout.\n" +
-                "zz, dd);";
+                "zz, dd);" +
+                "((TextView) mLlRealName.findViewById(R.id.tv_content)).setText(\"完成实名认证\")\n" +
+                "        ;";
 //        Pattern p = Pattern.compile("[^\\.]R\\s*\\.\\s*.*\\s*\\.\\s*(.*?)[\\s,);]");
-        Pattern p = Pattern.compile("R\\s*\\.\\s*.*\\s*\\.\\s*(.*?)[\\s,);]");
+//        Pattern p = Pattern.compile("R\\s*\\.\\s*(.*?)\\s*\\.\\s*(.*?)[\\s,);]");
+        Pattern p = Pattern.compile("R\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
         Matcher m = p.matcher(str);
         while (m.find()) {
             print(m.group());
-            print("id = " + m.group(1));
+            print("type = " + m.group(1));
+            print("id = " + m.group(2));
         }
     }
 
@@ -90,9 +71,22 @@ public class FormatResourceName {
         String str = "<RelativeLayout\n" +
                 "                android:layout_width=\"@string/zzz\"\n" +
                 "                android:layout_height=\"250dp\"\n" +
-                "android:background=\"@drawable/credit_score_bg\">";
-//        String noAndroidAndId = "";
-        Pattern p = Pattern.compile("('@.*/(.*?)')|(\"@.*/(.*?)\")");
+                "android:background=\"@drawable/credit_score_bg\">" +
+                "<TextView\n" +
+                "            android:id=\"@+id/xlistview_footer_hint_textview\"\n" +
+                "            android:layout_width=\"wrap_content\"\n" +
+                "            android:layout_height=\"wrap_content\"\n" +
+                "            android:layout_centerInParent=\"true\"\n" +
+                "            android:text=\"@string/xlistview_footer_hint_normal\"\n" +
+                "            android:textColor=\"#BBBBBB\" />";
+        try {
+            str = FileUtil.readFile("C:\\WorkSpace\\temp\\android-credit\\src\\main\\res\\layout\\xlistview_footer.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String reg = "('@(.*)/(.*?)')|(\"@(.*)/(.*?)\")";
+//        String reg = "('@.*/(.*?)')|(\"@.*/(.*?)\")";
+        Pattern p = Pattern.compile(reg);
         Matcher m = p.matcher(str);
         while (m.find()) {
             print(m.group());
@@ -128,9 +122,10 @@ public class FormatResourceName {
         renameValueContent();
         renameAnimatorContent();
         renameDrawableContent();
-        renameJavaContent();
         renameLayoutContent();
+        renameJavaContent2();
         renameManifestContent();
+
         renameAnimatorFile();
         renameDrawableFile();
         renameLayoutFile();
@@ -219,6 +214,78 @@ public class FormatResourceName {
     }
 
     private static void renameAnimatorContent() {
+    }
+
+    private static void renameJavaContent2() {
+        print("\nREPLACE JAVA FILE CONTENT ==============\n");
+        for (File java : sJavaContents.keySet()) {
+//            print(java);
+            String content = sJavaContents.get(java);
+//            Pattern p = Pattern.compile("[^\\.]R\\s*\\.\\s*.*\\s*\\.\\s*(.*?)[\\s,);]");
+            Pattern p = Pattern.compile("[^\\.]R\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
+            Matcher m = p.matcher(content);
+            Map<String, String> contentMap = new HashMap<>();
+            while (m.find()) {
+//                print(m.group());
+                String targetContent = m.group();
+                String type = m.group(1).trim();
+                String id = m.group(2);
+
+                if (type.equals("anim")) {
+                    for (File resource : sAnimators) {
+                        String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
+                        if (id.equals(resourceName) && !id.startsWith(sPrefix)) {
+                            String replaceContent = targetContent.replace(id, sPrefix + id);
+                            contentMap.put(targetContent, replaceContent);
+                            break;
+                        }
+                    }
+                } else if (type.equals("drawable") || type.equals("mipmap")) {
+                    for (File resource : sDrawables) {
+                        String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
+                        if (id.equals(resourceName) && !id.startsWith(sPrefix)) {
+                            String replaceContent = targetContent.replace(id, sPrefix + id);
+                            contentMap.put(targetContent, replaceContent);
+                            break;
+                        }
+                    }
+                } else if (type.equals("layout")) {
+                    for (File resource : sLayouts) {
+                        String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
+                        if (id.equals(resourceName) && !id.startsWith(sPrefix)) {
+                            String replaceContent = targetContent.replace(id, sPrefix + id);
+                            contentMap.put(targetContent, replaceContent);
+                            break;
+                        }
+                    }
+                } else {
+                    if (sViewIds.contains(id)) {
+                        String replaceContent = targetContent.replace(id, sPrefix + id);
+                        contentMap.put(targetContent, replaceContent);
+                    } else if (sValueIds.contains(id)) {
+                        //TODO valueIds没有区分类型，可以会引起不同类型匹配到同一个字符串的问题
+                        String replaceContent = targetContent.replace(id, sPrefix + id);
+                        contentMap.put(targetContent, replaceContent);
+                        continue;
+                    }
+                }
+            }
+
+            print(String.format("[ %s ] -> %s", java.getName(), contentMap));
+            if (!sExecute || contentMap.isEmpty()) {
+                continue;
+            }
+
+            for (Map.Entry<String, String> entry : contentMap.entrySet()) {
+                content = content.replaceAll(entry.getKey(), entry.getValue());
+            }
+            try {
+                FileUtil.writeFile(java.getAbsolutePath(), content);
+            } catch (Exception e) {
+                e.printStackTrace();
+                print(String.format("%s write content fail", java));
+            }
+        }
     }
 
     private static void renameJavaContent() {
@@ -331,7 +398,6 @@ public class FormatResourceName {
                     continue;
                 }
 
-                sValueIds.add(id);
                 String targetContent = m.group();
                 String replaceContent = targetContent.replaceAll(id, sPrefix + id);
                 contentMap.put(targetContent, replaceContent);
@@ -423,21 +489,22 @@ public class FormatResourceName {
                 return;
             }
 
-            String[] filters = {"android:", "id", "+id"};
+            String[] filters = {"android:"};
             String reg = "('@(.*)/(.*?)')|(\"@(.*)/(.*?)\")";
             Pattern p = Pattern.compile(reg);
             Matcher m = p.matcher(content);
             Map<String, String> contentMap = new HashMap<>();
             while (m.find()) {
 //                print(m.group());
+                String targetContent = m.group();
                 String type;
-                String mId;
+                String id;
                 if (m.group(3) != null) {
                     type = m.group(2);
-                    mId = m.group(3);
+                    id = m.group(3);
                 } else {
                     type = m.group(5);
-                    mId = m.group(6);
+                    id = m.group(6);
                 }
                 boolean ignore = false;
                 for (String filter : filters) {
@@ -450,26 +517,27 @@ public class FormatResourceName {
                     continue;
                 }
 
-                for (File resource : sDrawables) {
-                    String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
-                    if (mId.equals(resourceName) && !mId.startsWith(sPrefix)) {
-                        String targetContent = m.group();
-                        String replaceContent = targetContent.replace(mId, sPrefix + mId);
+                if (type.equals("drawable") || type.equals("mipmap")) {
+                    for (File resource : sDrawables) {
+                        String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
+                        if (id.equals(resourceName) && !id.startsWith(sPrefix)) {
+                            String replaceContent = targetContent.replace(id, sPrefix + id);
+                            contentMap.put(targetContent, replaceContent);
+                            break;
+                        }
+                    }
+                } else if (type.equals("id") || type.equals("+id")) {
+                    if (sViewIds.contains(id)) {
+                        String replaceContent = targetContent.replace(id, sPrefix + id);
                         contentMap.put(targetContent, replaceContent);
-                        break;
+                    }
+                } else {
+                    //TODO valueIds没有区分类型，可以会引起不同类型匹配到同一个字符串的问题
+                    if (sValueIds.contains(id)) {
+                        String replaceContent = targetContent.replace(id, sPrefix + id);
+                        contentMap.put(targetContent, replaceContent);
                     }
                 }
-
-                //TODO valueIds没有区分类型，可以会引起不同类型匹配到同一个字符串的问题
-                for (String id : sValueIds) {
-                    if (mId.equals(id) && !mId.startsWith(sPrefix)) {
-                        String targetContent = m.group();
-                        String replaceContent = targetContent.replace(mId, sPrefix + mId);
-                        contentMap.put(targetContent, replaceContent);
-                        break;
-                    }
-                }
-
             }
 
             print(String.format("[ %s ] -> %s", file.getName(), contentMap));
@@ -629,8 +697,73 @@ public class FormatResourceName {
         });
         sLayouts.addAll(Arrays.asList(layoutFiles));
 
+        findViewIds();
         findDrawableResource();
         findValueResource();
+        findValueIds();
+    }
+
+    private static void findValueIds() {
+        for (File value : sValues) {
+            String content;
+            try {
+                content = FileUtil.readFile(value.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+                print(String.format("%s read content fail", value));
+                continue;
+            }
+
+            Pattern p = Pattern.compile("\\s+name=\\s*(('(.*?)')|(\"(.*?)\"))(>|\\s+|/>)");
+            Matcher m = p.matcher(content);
+            while (m.find()) {
+//                print(m.group());
+                String id;
+                if (m.group(3) != null) {
+                    id = m.group(3);
+                } else {
+                    id = m.group(5);
+                }
+                if (id.startsWith(sPrefix) || id.startsWith("android:")) {
+                    continue;
+                }
+
+                sValueIds.add(id);
+            }
+        }
+//        print(sValueIds);
+    }
+
+    private static void findViewIds() {
+        for (File file : sLayouts) {
+            String content;
+            try {
+                content = FileUtil.readFile(file.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+                print(String.format("%s read content fail", file));
+                return;
+            }
+
+            String reg = "('@\\+id/(.*?)')|(\"@\\+id/(.*?)\")";
+            Pattern p = Pattern.compile(reg);
+            Matcher m = p.matcher(content);
+            while (m.find()) {
+//                print(m.group());
+                String id;
+                if (m.group(2) != null) {
+                    id = m.group(2);
+                } else {
+                    id = m.group(4);
+                }
+                if (id.startsWith(sPrefix)) {
+                    continue;
+                }
+
+                sViewIds.add(id);
+            }
+        }
+//        print(sViewIds);
     }
 
     private static void findDrawableResource() {
@@ -666,12 +799,44 @@ public class FormatResourceName {
         }
     }
 
-    private static void print(String text) {
+    private static void print(Object text) {
         System.out.println(text);
         try {
             sFw.write(text + "\n");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void init(String[] args) {
+        if (args.length > 0) {
+            sDir = args[0];
+            sPrefix = args[1];
+        }
+        if (args.length >= 3 && args[2].equals("-e")) {
+            sExecute = true;
+        }
+
+        try {
+            sRuntimePath = new File(".").getCanonicalPath();
+            sFw = new FileWriter(new File(sRuntimePath, "map.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void closeFw() {
+        if (sFw != null) {
+            try {
+                sFw.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                sFw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
