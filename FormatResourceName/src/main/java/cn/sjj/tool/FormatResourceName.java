@@ -18,7 +18,7 @@ public class FormatResourceName {
 
     private static String  sDir     = "C:\\WorkSpace\\temp\\android-credit/";
     private static String  sPrefix  = "sjj_";
-    //        private static boolean sExecute = true;
+//    private static boolean sExecute = true;
     private static boolean sExecute = false;
 
     private static List<File>        sJavas        = new ArrayList<>();
@@ -125,7 +125,6 @@ public class FormatResourceName {
         renameLayoutContent();
         renameJavaContent2();
         renameManifestContent();
-
         renameAnimatorFile();
         renameDrawableFile();
         renameLayoutFile();
@@ -226,7 +225,7 @@ public class FormatResourceName {
             Matcher m = p.matcher(content);
             Map<String, String> contentMap = new HashMap<>();
             while (m.find()) {
-//                print(m.group());
+//                print(m.group() + " -> " + m.group(2) + ";");
                 String targetContent = m.group();
                 String type = m.group(1).trim();
                 String id = m.group(2);
@@ -275,9 +274,10 @@ public class FormatResourceName {
             if (!sExecute || contentMap.isEmpty()) {
                 continue;
             }
-
             for (Map.Entry<String, String> entry : contentMap.entrySet()) {
-                content = content.replaceAll(entry.getKey(), entry.getValue());
+                String targetContent = entry.getKey().replace("(", "").replace(")", "");
+                String replaceContent = entry.getValue().replace("(", "").replace(")", "");
+                content = content.replaceAll(targetContent, replaceContent);
             }
             try {
                 FileUtil.writeFile(java.getAbsolutePath(), content);
