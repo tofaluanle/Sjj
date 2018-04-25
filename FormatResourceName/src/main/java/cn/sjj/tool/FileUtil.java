@@ -706,7 +706,7 @@ public class FileUtil {
             createFile(filePath);
         }
         FileOutputStream fos = new FileOutputStream(file);
-        OutputStreamWriter osw = new OutputStreamWriter(fos);
+        OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
         BufferedWriter bw = new BufferedWriter(osw);
 
         String[] split = contents.split("\n");

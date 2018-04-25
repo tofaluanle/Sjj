@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 public class FormatResourceName {
 
     private static String  sDir     = "C:\\WorkSpace\\temp\\android-credit/";
+    //        private static String  sDir     = "C:\\WorkSpace\\AndroidStudio\\Ziroom\\ziroom-client-android\\android-credit/";
     private static String  sPrefix  = "sjj_";
 //    private static boolean sExecute = true;
     private static boolean sExecute = false;
@@ -39,15 +40,33 @@ public class FormatResourceName {
 
     public static void main(String[] args) {
         init(args);
+        print("Version 1.3");
 
 //        testResourcePattern();
 //        testJavaPattern();
 //        testLayoutPattern();
 //        testCharSet();
+//        testIdWithQuote();
         findFiles();
         rename();
 
         closeFw();
+    }
+
+    private static void testIdWithQuote() {
+        File file = new File("C:\\WorkSpace\\temp\\android-credit\\src\\main\\res\\layout\\activity_negative_record.xml");
+        try {
+            String content = "<ImageView\n" +
+                    "        android:id=\"@+id/iv_close\"\n" +
+                    "        style=\"@style/title_icon_close\"\n" +
+                    "        android:layout_height=\"56dp\" />";
+            content = FileUtil.readFile(file.getAbsolutePath());
+            content = content.replaceAll("\"@\\+id/iv_close\"", "zzz");
+//            System.out.println(content);
+            FileUtil.writeFile(file.getAbsolutePath(), content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void testCharSet() {
@@ -61,9 +80,9 @@ public class FormatResourceName {
             if (file.isFile()) {
                 try {
                     String charset = new HtmlCharsetDetector().main(new String[]{file.getAbsolutePath(), "2"});
-                    if (charset.startsWith("ASC")) {
-                        System.out.println(charset + " " + file);
-                    }
+//                    if (charset.startsWith("ASC")) {
+                    System.out.println(charset + " " + file);
+//                    }
 //                    FileCharsetConvert.main(new String[]{file.getAbsolutePath(), charset, ""});
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -462,8 +481,30 @@ public class FormatResourceName {
             while (mValue.find()) {
 //                print(mValue.group());
                 String id = mValue.group(1).trim();
-                if (id.startsWith(sPrefix) || id.startsWith("android:") || id.startsWith("@android:") || !sValueIds.contains(id)) {
+                if (id.startsWith(sPrefix) || id.startsWith("android:") || id.startsWith("@android:")) {
                     continue;
+                }
+                if (!sValueIds.contains(id)) {
+                    boolean matched = false;
+                    for (File file : sDrawables) {
+                        String resourceName = file.getName().substring(0, file.getName().lastIndexOf("."));
+                        if (id.equals(resourceName)) {
+                            matched = true;
+                            break;
+                        }
+                    }
+                    if (!matched) {
+                        for (File file : sAnimators) {
+                            String resourceName = file.getName().substring(0, file.getName().lastIndexOf("."));
+                            if (id.equals(resourceName)) {
+                                matched = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!matched) {
+                        continue;
+                    }
                 }
 
                 String targetContent = mValue.group();
@@ -566,8 +607,18 @@ public class FormatResourceName {
                             break;
                         }
                     }
+                } else if (type.equals("layout")) {
+                    for (File resource : sLayouts) {
+                        String resourceName = resource.getName().substring(0, resource.getName().lastIndexOf("."));
+                        if (id.equals(resourceName) && !id.startsWith(sPrefix)) {
+                            String replaceContent = targetContent.replace(id, sPrefix + id);
+                            contentMap.put(targetContent, replaceContent);
+                            break;
+                        }
+                    }
                 } else if (type.equals("id") || type.equals("+id")) {
                     if (sViewIds.contains(id)) {
+                        targetContent = targetContent.replaceAll("\\+", "\\\\+");
                         String replaceContent = targetContent.replace(id, sPrefix + id);
                         contentMap.put(targetContent, replaceContent);
                     }
@@ -586,7 +637,8 @@ public class FormatResourceName {
             }
 
             for (Map.Entry<String, String> entry : contentMap.entrySet()) {
-                content = content.replaceAll(entry.getKey(), entry.getValue());
+                String targetContent = entry.getKey();
+                content = content.replaceAll(targetContent, entry.getValue());
             }
             try {
                 FileUtil.writeFile(file.getAbsolutePath(), content);
