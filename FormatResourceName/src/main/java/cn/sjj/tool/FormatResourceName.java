@@ -1,5 +1,7 @@
 package cn.sjj.tool;
 
+import org.mozilla.intl.chardet.HtmlCharsetDetector;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileWriter;
@@ -41,10 +43,35 @@ public class FormatResourceName {
 //        testResourcePattern();
 //        testJavaPattern();
 //        testLayoutPattern();
+//        testCharSet();
         findFiles();
         rename();
 
         closeFw();
+    }
+
+    private static void testCharSet() {
+        File dir = new File(sDir, "src/main/");
+        checkCharset(dir);
+    }
+
+    private static void checkCharset(File dir) {
+        for (File file : dir.listFiles()) {
+//            System.out.println(file);
+            if (file.isFile()) {
+                try {
+                    String charset = new HtmlCharsetDetector().main(new String[]{file.getAbsolutePath(), "2"});
+                    if (charset.startsWith("ASC")) {
+                        System.out.println(charset + " " + file);
+                    }
+//                    FileCharsetConvert.main(new String[]{file.getAbsolutePath(), charset, ""});
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                checkCharset(file);
+            }
+        }
     }
 
     private static void testJavaPattern() {
@@ -463,17 +490,30 @@ public class FormatResourceName {
 
     private static void renameLayoutFile() {
         print("\nRENAME LAYOUT FILE ==============\n");
-        for (File layout : sLayouts) {
-            File newNameFile = new File(layout.getParentFile(), sPrefix + layout.getName());
-            print(String.format("[ %s ] -> [ %s ]", layout.getName(), newNameFile.getName()));
+        for (File file : sLayouts) {
+            File newNameFile = new File(file.getParentFile(), sPrefix + file.getName());
+            print(String.format("[ %s ] -> [ %s ]", file.getName(), newNameFile.getName()));
             if (!sExecute) {
                 continue;
             }
 
-            boolean rename = layout.renameTo(newNameFile);
-            if (!rename) {
-                print(String.format("[ %s ] rename fail", layout.getName()));
+            try {
+                Runtime runtime = Runtime.getRuntime();
+                String cmd = String.format("git mv -f %s %s", file.getAbsolutePath(), newNameFile.getAbsolutePath());
+                System.out.println(cmd);
+                Process exec = runtime.exec(cmd, null, file.getParentFile());
+                int i = exec.waitFor();
+                if (i != 0) {
+                    print(String.format("[ %s ] rename fail", file.getName()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                print(String.format("[ %s ] rename fail", file.getName()));
             }
+//            boolean rename = file.renameTo(newNameFile);
+//            if (!rename) {
+//                print(String.format("[ %s ] rename fail", file.getName()));
+//            }
         }
     }
 
@@ -642,26 +682,52 @@ public class FormatResourceName {
                 continue;
             }
 
-            boolean rename = file.renameTo(newNameFile);
-            if (!rename) {
+            try {
+                Runtime runtime = Runtime.getRuntime();
+                String cmd = String.format("git mv -f %s %s", file.getAbsolutePath(), newNameFile.getAbsolutePath());
+                System.out.println(cmd);
+                Process exec = runtime.exec(cmd, null, file.getParentFile());
+                int i = exec.waitFor();
+                if (i != 0) {
+                    print(String.format("[ %s ] rename fail", file.getName()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 print(String.format("[ %s ] rename fail", file.getName()));
             }
+//            boolean rename = file.renameTo(newNameFile);
+//            if (!rename) {
+//                print(String.format("[ %s ] rename fail", file.getName()));
+//            }
         }
     }
 
     private static void renameDrawableFile() {
         print("\nRENAME DRAWABLE FILE ==============\n");
-        for (File drawable : sDrawables) {
-            File newNameFile = new File(drawable.getParentFile(), sPrefix + drawable.getName());
-            print(String.format("[ %s ] -> [ %s ]", drawable.getName(), newNameFile.getName()));
+        for (File file : sDrawables) {
+            File newNameFile = new File(file.getParentFile(), sPrefix + file.getName());
+            print(String.format("[ %s ] -> [ %s ]", file.getName(), newNameFile.getName()));
             if (!sExecute) {
                 continue;
             }
 
-            boolean rename = drawable.renameTo(newNameFile);
-            if (!rename) {
-                print(String.format("[ %s ] rename fail", drawable.getName()));
+            try {
+                Runtime runtime = Runtime.getRuntime();
+                String cmd = String.format("git mv -f %s %s", file.getAbsolutePath(), newNameFile.getAbsolutePath());
+                System.out.println(cmd);
+                Process exec = runtime.exec(cmd, null, file.getParentFile());
+                int i = exec.waitFor();
+                if (i != 0) {
+                    print(String.format("[ %s ] rename fail", file.getName()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                print(String.format("[ %s ] rename fail", file.getName()));
             }
+//            boolean rename = file.renameTo(newNameFile);
+//            if (!rename) {
+//                print(String.format("[ %s ] rename fail", file.getName()));
+//            }
         }
     }
 
