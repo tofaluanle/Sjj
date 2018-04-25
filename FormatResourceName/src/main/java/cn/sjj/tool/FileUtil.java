@@ -1,5 +1,7 @@
 package cn.sjj.tool;
 
+import org.mozilla.intl.chardet.HtmlCharsetDetector;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -660,8 +662,17 @@ public class FileUtil {
     }
 
     public static String readFile(InputStream is) throws Exception {
+        return readFile(is, null);
+    }
+
+    public static String readFile(InputStream is, String charset) throws Exception {
         StringBuilder sb = new StringBuilder();
-        InputStreamReader isr = new InputStreamReader(is);
+        InputStreamReader isr;
+        if (charset != null) {
+            isr = new InputStreamReader(is, charset);
+        } else {
+            isr = new InputStreamReader(is);
+        }
         BufferedReader br = new BufferedReader(isr);
         String line = "";
         while ((line = br.readLine()) != null) {
@@ -676,7 +687,15 @@ public class FileUtil {
     public static String readFile(String filePath) throws Exception {
         File file = new File(filePath);
         FileInputStream fis = new FileInputStream(file);
-        String s = readFile(fis);
+        String s = readFile(fis, new HtmlCharsetDetector().main(new String[]{file.getAbsolutePath()}));
+        fis.close();
+        return s;
+    }
+
+    public static String readFile(String filePath, String charset) throws Exception {
+        File file = new File(filePath);
+        FileInputStream fis = new FileInputStream(file);
+        String s = readFile(fis, charset);
         fis.close();
         return s;
     }

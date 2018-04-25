@@ -34,54 +34,60 @@
 
 package org.mozilla.intl.chardet;
 
-import java.lang.* ;
+import java.lang.*;
 
-public class nsDetector extends nsPSMDetector 
-			implements nsICharsetDetector {
+public class nsDetector extends nsPSMDetector implements nsICharsetDetector {
 
-	nsICharsetDetectionObserver mObserver = null ;
+    nsICharsetDetectionObserver mObserver = null;
 
-	public nsDetector() {
-		super() ;
-	}
+    private String mCharset;
 
-	public nsDetector(int langFlag) {
-		super(langFlag) ;
-	}
+    public nsDetector() {
+        super();
+    }
 
-	public void Init(nsICharsetDetectionObserver aObserver) {
+    public nsDetector(int langFlag) {
+        super(langFlag);
+    }
 
-	  	mObserver = aObserver ;
-		return ;
+    public void Init(nsICharsetDetectionObserver aObserver) {
 
-	}
+        mObserver = aObserver;
+        return;
 
-	public boolean DoIt(byte[] aBuf, int aLen, boolean oDontFeedMe) {
+    }
 
-		if (aBuf == null || oDontFeedMe )
-		    return false ;
+    public boolean DoIt(byte[] aBuf, int aLen, boolean oDontFeedMe) {
 
-		this.HandleData(aBuf, aLen) ;	
-		return mDone ;
-	}
+        if (aBuf == null || oDontFeedMe)
+            return false;
 
-	public void Done() {
-		this.DataEnd() ;
-		return ;
-	}
+        this.HandleData(aBuf, aLen);
+        return mDone;
+    }
 
-	public void Report(String charset) {
-		if (mObserver != null)
-		    mObserver.Notify(charset)  ;
-	}
+    public void Done() {
+        this.DataEnd();
+        return;
+    }
 
-	public boolean isAscii(byte[] aBuf, int aLen) {
+    public void Report(String charset) {
+        mCharset = charset;
+        if (mObserver != null)
+            mObserver.Notify(charset);
+    }
 
-                for(int i=0; i<aLen; i++) {
-                   if ((0x0080 & aBuf[i]) != 0) {
-                      return false ;
-                   }
-                }
-		return true ;
-	}
+    public boolean isAscii(byte[] aBuf, int aLen) {
+
+        for (int i = 0; i < aLen; i++) {
+            if ((0x0080 & aBuf[i]) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String getCharset() {
+        return mCharset;
+    }
 }
