@@ -21,7 +21,7 @@ public class FormatResourceName {
     private static String  sDir     = "C:\\WorkSpace\\temp\\android-credit/";
     //        private static String  sDir     = "C:\\WorkSpace\\AndroidStudio\\Ziroom\\ziroom-client-android\\android-credit/";
     private static String  sPrefix  = "sjj_";
-//    private static boolean sExecute = true;
+    //    private static boolean sExecute = true;
     private static boolean sExecute = false;
 
     private static List<File>        sJavas        = new ArrayList<>();
@@ -40,13 +40,13 @@ public class FormatResourceName {
 
     public static void main(String[] args) {
         init(args);
-        print("Version 1.3");
+        print("Version 1.4.0");
 
 //        testResourcePattern();
-//        testJavaPattern();
 //        testLayoutPattern();
 //        testCharSet();
 //        testIdWithQuote();
+//        testJavaPattern();
         findFiles();
         rename();
 
@@ -101,15 +101,23 @@ public class FormatResourceName {
                 ".layout.\n" +
                 "zz, dd);" +
                 "((TextView) mLlRealName.findViewById(R.id.tv_content)).setText(\"完成实名认证\")\n" +
-                "        ;";
+                "        ;" +
+                "public class CreditGridAdapter extends BaseAdapter {\n" +
+                "    @BindViewa(R2" +
+                ".id.butter)\n" +
+                "  private   Context context;";
 //        Pattern p = Pattern.compile("[^\\.]R\\s*\\.\\s*.*\\s*\\.\\s*(.*?)[\\s,);]");
 //        Pattern p = Pattern.compile("R\\s*\\.\\s*(.*?)\\s*\\.\\s*(.*?)[\\s,);]");
-        Pattern p = Pattern.compile("R\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
+//        Pattern p = Pattern.compile("[R|R2]\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
+//        Pattern p = Pattern.compile("(R|R2)\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
+        Pattern p = Pattern.compile("R2?\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
         Matcher m = p.matcher(str);
         while (m.find()) {
-            print(m.group());
+//            print(m.group());
             print("type = " + m.group(1));
             print("id = " + m.group(2));
+//            print("type = " + m.group(2));
+//            print("id = " + m.group(3));
         }
     }
 
@@ -267,7 +275,7 @@ public class FormatResourceName {
 //            print(java);
             String content = sJavaContents.get(java);
 //            Pattern p = Pattern.compile("[^\\.]R\\s*\\.\\s*.*\\s*\\.\\s*(.*?)[\\s,);]");
-            Pattern p = Pattern.compile("[^\\.]R\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
+            Pattern p = Pattern.compile("[^\\.]R2?\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
             Matcher m = p.matcher(content);
             Map<String, String> contentMap = new HashMap<>();
             while (m.find()) {
