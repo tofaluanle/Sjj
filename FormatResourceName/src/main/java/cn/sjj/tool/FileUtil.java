@@ -685,11 +685,8 @@ public class FileUtil {
     }
 
     public static String readFile(String filePath) throws Exception {
-        File file = new File(filePath);
-        FileInputStream fis = new FileInputStream(file);
-        String s = readFile(fis, new HtmlCharsetDetector().main(new String[]{file.getAbsolutePath()}));
-        fis.close();
-        return s;
+        String charset = new HtmlCharsetDetector().main(new String[]{filePath});
+        return readFile(filePath, charset);
     }
 
     public static String readFile(String filePath, String charset) throws Exception {
@@ -730,7 +727,7 @@ public class FileUtil {
         File file = new File(filePath);
 
         FileOutputStream fos = new FileOutputStream(file, true);
-        OutputStreamWriter osw = new OutputStreamWriter(fos);
+        OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
         BufferedWriter bw = new BufferedWriter(osw);
 
         String[] split = contents.split("\n");
@@ -777,11 +774,14 @@ public class FileUtil {
             byte[] buf = new byte[1024];
             int len = 0;
             long totalLen = 0;
-            while (!listener.isCancel() && (len = is.read(buf)) != -1) {
+            while ((len = is.read(buf)) != -1) {
                 totalLen += len;
                 fos.write(buf, 0, len);
                 if (listener != null) {
                     listener.onWrite(totalLen, len);
+                    if (listener.isCancel()) {
+                        break;
+                    }
                 }
             }
             return true;
@@ -815,7 +815,7 @@ public class FileUtil {
         File file = new File(filePath);
 
         FileOutputStream fos = new FileOutputStream(file);
-        OutputStreamWriter osw = new OutputStreamWriter(fos);
+        OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
         BufferedWriter bw = new BufferedWriter(osw);
 
         String[] split = readFile.split("\n");
