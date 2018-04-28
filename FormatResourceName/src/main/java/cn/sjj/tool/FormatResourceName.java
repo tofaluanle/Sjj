@@ -3,7 +3,6 @@ package cn.sjj.tool;
 import org.mozilla.intl.chardet.HtmlCharsetDetector;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -21,7 +20,8 @@ public class FormatResourceName {
     private static String  sDir     = "C:\\WorkSpace\\temp\\android-credit/";
     //        private static String  sDir     = "C:\\WorkSpace\\AndroidStudio\\Ziroom\\ziroom-client-android\\android-credit/";
     private static String  sPrefix  = "sjj_";
-    //    private static boolean sExecute = true;
+//    private static String  sPrefix  = "credit_";
+//    private static boolean sExecute = true;
     private static boolean sExecute = false;
 
     private static List<File>        sJavas        = new ArrayList<>();
@@ -40,7 +40,7 @@ public class FormatResourceName {
 
     public static void main(String[] args) {
         init(args);
-        print("Version 1.4.0");
+        print("Version 1.4.1");
 
 //        testResourcePattern();
 //        testLayoutPattern();
@@ -319,7 +319,6 @@ public class FormatResourceName {
                         //TODO valueIds没有区分类型，可以会引起不同类型匹配到同一个字符串的问题
                         String replaceContent = targetContent.replace(id, sPrefix + id);
                         contentMap.put(targetContent, replaceContent);
-                        continue;
                     }
                 }
             }
@@ -540,6 +539,10 @@ public class FormatResourceName {
     private static void renameLayoutFile() {
         print("\nRENAME LAYOUT FILE ==============\n");
         for (File file : sLayouts) {
+            if (file.getName().startsWith(sPrefix)) {
+                continue;
+            }
+
             File newNameFile = new File(file.getParentFile(), sPrefix + file.getName());
             print(String.format("[ %s ] -> [ %s ]", file.getName(), newNameFile.getName()));
             if (!sExecute) {
@@ -697,13 +700,10 @@ public class FormatResourceName {
             }
 
             //TODO valueIds没有区分类型，可以会引起不同类型匹配到同一个字符串的问题
-            for (String id : sValueIds) {
-                if (mId.equals(id) && !mId.startsWith(sPrefix)) {
-                    String targetContent = m.group();
-                    String replaceContent = targetContent.replace(mId, sPrefix + mId);
-                    contentMap.put(targetContent, replaceContent);
-                    break;
-                }
+            if (sValueIds.contains(mId)) {
+                String targetContent = m.group();
+                String replaceContent = targetContent.replace(mId, sPrefix + mId);
+                contentMap.put(targetContent, replaceContent);
             }
 
             for (File resource : sDrawables) {
@@ -736,6 +736,10 @@ public class FormatResourceName {
     private static void renameAnimatorFile() {
         print("\nRENAME ANIMATOR FILE ==============\n");
         for (File file : sAnimators) {
+            if (file.getName().startsWith(sPrefix)) {
+                continue;
+            }
+
             File newNameFile = new File(file.getParentFile(), sPrefix + file.getName());
             print(String.format("[ %s ] -> [ %s ]", file.getName(), newNameFile.getName()));
             if (!sExecute) {
@@ -765,6 +769,10 @@ public class FormatResourceName {
     private static void renameDrawableFile() {
         print("\nRENAME DRAWABLE FILE ==============\n");
         for (File file : sDrawables) {
+            if (file.getName().startsWith(sPrefix)) {
+                continue;
+            }
+
             File newNameFile = new File(file.getParentFile(), sPrefix + file.getName());
             print(String.format("[ %s ] -> [ %s ]", file.getName(), newNameFile.getName()));
             if (!sExecute) {
@@ -806,21 +814,11 @@ public class FormatResourceName {
         }
 
         File animatorDir = new File(sDir, "src\\main\\res/anim");
-        File[] animatorFiles = animatorDir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return !file.getName().startsWith(sPrefix);
-            }
-        });
+        File[] animatorFiles = animatorDir.listFiles();
         sAnimators.addAll(Arrays.asList(animatorFiles));
 
         File layoutDir = new File(sDir, "src\\main\\res/layout");
-        File[] layoutFiles = layoutDir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return !file.getName().startsWith(sPrefix);
-            }
-        });
+        File[] layoutFiles = layoutDir.listFiles();
         sLayouts.addAll(Arrays.asList(layoutFiles));
 
         findViewIds();
@@ -901,12 +899,7 @@ public class FormatResourceName {
             }
         });
         for (File drawableDir : drawableDirs) {
-            File[] files = drawableDir.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File file) {
-                    return !file.getName().startsWith(sPrefix);
-                }
-            });
+            File[] files = drawableDir.listFiles();
             sDrawables.addAll(Arrays.asList(files));
         }
     }
