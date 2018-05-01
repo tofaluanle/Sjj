@@ -1,8 +1,6 @@
-package cn.sjj.util;
+package cn.sjj.tool;
 
-import android.os.StatFs;
-
-import org.mozilla.intl.chardet.FileCharsetDetector;
+import org.mozilla.intl.chardet.HtmlCharsetDetector;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -599,21 +597,6 @@ public class FileUtil {
     }
 
     /**
-     * 获取可用空间,只针对android文件系统的状态
-     *
-     * @param path
-     * @return
-     * @author 宋疆疆
-     * @date 2013-11-28 下午5:41:08
-     */
-    public static long getAvailable(String path) {
-        StatFs sf = new StatFs(path);
-        long blockSize = sf.getBlockSize();
-        long availCount = sf.getAvailableBlocks();
-        return availCount * blockSize;
-    }
-
-    /**
      * 移动文件或文件夹到指定目录
      *
      * @param from
@@ -702,7 +685,7 @@ public class FileUtil {
     }
 
     public static String readFile(String filePath) throws Exception {
-        String charset = new FileCharsetDetector().main(new String[]{filePath});
+        String charset = new HtmlCharsetDetector().main(new String[]{filePath});
         return readFile(filePath, charset);
     }
 
@@ -739,7 +722,8 @@ public class FileUtil {
         return true;
     }
 
-    public static boolean writeFileAppend(String filePath, String contents) throws Exception {
+    public static boolean writeFileAppend(String filePath, String contents)
+            throws Exception {
         File file = new File(filePath);
 
         FileOutputStream fos = new FileOutputStream(file, true);
@@ -761,6 +745,7 @@ public class FileUtil {
         osw.close();
         fos.close();
         return true;
+
     }
 
     public static boolean writeFile(String filePath, InputStream is, WriteListener listener) {
