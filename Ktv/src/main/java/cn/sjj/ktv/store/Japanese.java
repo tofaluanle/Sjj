@@ -15,7 +15,7 @@ public class Japanese {
 
     static {
         songs = new ArrayList<>();
-        songs.add(new Song("", "", ""));
+        songs.add(new Song("カントリー・ロード", "本名陽子", "《侧耳倾听》主题曲", "本名阳子"));
         songs.add(new Song("駆け足の生き様", "中村中", "新勇者莱汀ED"));
         songs.add(new Song("サタデー・ナイト・クエスチョン", "中島愛", "网路胜利组OP", "星期六·晚上·疑问"));
         songs.add(new Song("東京", "柴田淳", ""));
