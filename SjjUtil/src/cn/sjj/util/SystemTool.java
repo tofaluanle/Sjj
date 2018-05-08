@@ -24,7 +24,7 @@ import java.net.NetworkInterface;
 import java.util.List;
 
 import cn.sjj.Logger;
-import cn.sjj.base.BaseUtil;
+import cn.sjj.base.ContextHolder;
 
 /**
  * 与系统相关的一些常用工具方法.
@@ -32,7 +32,7 @@ import cn.sjj.base.BaseUtil;
  * @author lvbogun
  * @version 1.0.0
  */
-public class SystemTool extends BaseUtil {
+public class SystemTool extends ContextHolder {
 
     /**
      * 获取当前操作系统名称. return 操作系统名称 例如:windows xp,linux 等.

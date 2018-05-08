@@ -38,9 +38,9 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 
-import cn.sjj.base.BaseUtil;
+import cn.sjj.base.ContextHolder;
 
-public class BitmapUtil extends BaseUtil {
+public class BitmapUtil extends ContextHolder {
 
     private static String mDefaultCompressPath;
 

@@ -36,9 +36,9 @@ import java.util.regex.Pattern;
 
 import cn.sjj.Logger;
 import cn.sjj.R;
-import cn.sjj.base.BaseUtil;
+import cn.sjj.base.ContextHolder;
 
-public class NetUtil extends BaseUtil {
+public class NetUtil extends ContextHolder {
 
     private final static ArrayList<Integer> channelsFrequency = new ArrayList<Integer>(
             Arrays.asList(0, 2412, 2417, 2422, 2427, 2432, 2437, 2442, 2447,

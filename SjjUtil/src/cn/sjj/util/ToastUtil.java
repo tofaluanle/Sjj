@@ -9,14 +9,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.sjj.BuildConfig;
-import cn.sjj.base.BaseUtil;
+import cn.sjj.base.ContextHolder;
 
 /**
  * 统一管理显示内容
  *
  * @author sjj
  */
-public class ToastUtil extends BaseUtil {
+public class ToastUtil extends ContextHolder {
 
     private static Toast sToast = null;
     private static int sGravity;

@@ -8,7 +8,7 @@ import android.content.Context;
  * @auther 宋疆疆
  * @date 2016/8/16.
  */
-public class BaseUtil {
+public class ContextHolder {
 
     protected static Context sContext;
 
