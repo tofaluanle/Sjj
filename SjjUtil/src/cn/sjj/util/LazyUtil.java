@@ -87,4 +87,38 @@ public class LazyUtil extends ContextHolder {
         return map == null || map.isEmpty();
     }
 
+    /**
+     * dp转px
+     *
+     * @param dp
+     * @return
+     */
+    public static int dip2px(int dp) {
+        float density = sContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * density + 0.5);
+    }
+
+    /**
+     * px转换dip
+     */
+    public static int px2dip(int px) {
+        final float scale = sContext.getResources().getDisplayMetrics().density;
+        return (int) (px / scale + 0.5f);
+    }
+
+    /**
+     * px转换sp
+     */
+    public static int px2sp(int pxValue) {
+        final float fontScale = sContext.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue / fontScale + 0.5f);
+    }
+
+    /**
+     * sp转换px
+     */
+    public static int sp2px(int spValue) {
+        final float fontScale = sContext.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
 }
