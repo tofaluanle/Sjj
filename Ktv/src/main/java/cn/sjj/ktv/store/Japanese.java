@@ -16,6 +16,7 @@ public class Japanese {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("かかってこいよ", "NakamuraEmi", "MEGALO BOX ED", "中村絵美"));
         songs.add(new Song("ヤキモチ", "高橋優", ""));
         songs.add(new Song("カントリー・ロード", "本名陽子", "《侧耳倾听》主题曲", "本名阳子"));
         songs.add(new Song("駆け足の生き様", "中村中", "新勇者莱汀ED"));
