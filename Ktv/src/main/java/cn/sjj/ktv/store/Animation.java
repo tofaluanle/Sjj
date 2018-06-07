@@ -16,6 +16,7 @@ public class Animation {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("Binary Star", "Uru", "银河英雄传说OP", "2018年4月", "银河英雄传说 Die Neue These", "SawanoHiroyuki[nZk]"));
         songs.add(new Song("Hibana", "THE SIXTH LIE", "黄金神威ED", "2018年4月"));
         songs.add(new Song("かかってこいよ", "NakamuraEmi", "MEGALO BOX ED", "中村絵美", "2018年4月"));
         songs.add(new Song("駆け足の生き様", "中村中", "新勇者莱汀ED"
