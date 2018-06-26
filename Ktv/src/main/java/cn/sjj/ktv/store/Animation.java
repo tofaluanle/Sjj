@@ -19,6 +19,7 @@ public class Animation {
         songs.add(new Song("僕らのメッセージ", "Kiroro", "无人惑星沙维尔OP"));
         songs.add(new Song("誓い", "雨宮天", "七大罪 戒律的复活ED2", "2018年1月", "雨宫天"));
         songs.add(new Song("Binary Star", "Uru", "银河英雄传说OP", "2018年4月", "银河英雄传说 Die Neue These", "SawanoHiroyuki[nZk]"));
+        songs.add(new Song("Winding Road", "MAN WITH A MISSION", "黄金神威OP", "2018年4月"));
         songs.add(new Song("Hibana", "THE SIXTH LIE", "黄金神威ED", "2018年4月"));
         songs.add(new Song("かかってこいよ", "NakamuraEmi", "MEGALO BOX ED", "中村絵美", "2018年4月"));
         songs.add(new Song("駆け足の生き様", "中村中", "新勇者莱汀ED"
