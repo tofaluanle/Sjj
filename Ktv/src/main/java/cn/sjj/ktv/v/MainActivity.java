@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import cn.sjj.ktv.R;
+import cn.sjj.ktv.store.Animation;
 import cn.sjj.ktv.store.Chinese;
 import cn.sjj.ktv.store.English;
 import cn.sjj.ktv.store.Japanese;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         BaseUtil.setContext(this);
         sampleInit();
         mAdapter = new CategoryAdapter();
-        mAdapter.setData(Japanese.songs);
+        mAdapter.setData(Animation.songs);
         mAdapter.notifyDataSetChanged();
         mRv.setLayoutManager(new LinearLayoutManager(this));
         mRv.setAdapter(mAdapter);
@@ -73,7 +74,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_japanese) {
+        if (id == R.id.nav_animation) {
+            mAdapter.setData(Animation.songs);
+            mAdapter.notifyDataSetChanged();
+        } else if (id == R.id.nav_japanese) {
             mAdapter.setData(Japanese.songs);
             mAdapter.notifyDataSetChanged();
         } else if (id == R.id.nav_chinese) {
