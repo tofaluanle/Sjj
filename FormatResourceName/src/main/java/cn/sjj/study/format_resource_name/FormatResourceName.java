@@ -1,4 +1,4 @@
-package cn.sjj.tool;
+package cn.sjj.study.format_resource_name;
 
 import org.mozilla.intl.chardet.HtmlCharsetDetector;
 
@@ -14,13 +14,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.sjj.tool.FileUtil;
+
 
 public class FormatResourceName {
 
     private static String  sDir     = "C:\\WorkSpace\\temp\\android-credit/";
     //        private static String  sDir     = "C:\\WorkSpace\\AndroidStudio\\Ziroom\\ziroom-client-android\\android-credit/";
     private static String  sPrefix  = "sjj_";
-//    private static String  sPrefix  = "credit_";
+    //    private static String  sPrefix  = "credit_";
 //    private static boolean sExecute = true;
     private static boolean sExecute = false;
 
@@ -40,7 +42,7 @@ public class FormatResourceName {
 
     public static void main(String[] args) {
         init(args);
-        print("Version 1.4.1");
+        print("Version 1.5.0");
 
 //        testResourcePattern();
 //        testLayoutPattern();
@@ -815,11 +817,15 @@ public class FormatResourceName {
 
         File animatorDir = new File(sDir, "src\\main\\res/anim");
         File[] animatorFiles = animatorDir.listFiles();
-        sAnimators.addAll(Arrays.asList(animatorFiles));
+        if (animatorFiles != null) {
+            sAnimators.addAll(Arrays.asList(animatorFiles));
+        }
 
         File layoutDir = new File(sDir, "src\\main\\res/layout");
         File[] layoutFiles = layoutDir.listFiles();
-        sLayouts.addAll(Arrays.asList(layoutFiles));
+        if (layoutFiles != null) {
+            sLayouts.addAll(Arrays.asList(layoutFiles));
+        }
 
         findViewIds();
         findDrawableResource();
@@ -891,6 +897,10 @@ public class FormatResourceName {
     }
 
     private static void findDrawableResource() {
+        if (true) {
+            return;
+        }
+
         File resDir = new File(sDir, "src\\main\\res");
         File[] drawableDirs = resDir.listFiles(new FilenameFilter() {
             @Override
@@ -900,7 +910,9 @@ public class FormatResourceName {
         });
         for (File drawableDir : drawableDirs) {
             File[] files = drawableDir.listFiles();
-            sDrawables.addAll(Arrays.asList(files));
+            if (files != null) {
+                sDrawables.addAll(Arrays.asList(files));
+            }
         }
     }
 
@@ -914,7 +926,9 @@ public class FormatResourceName {
         });
         for (File valuesDir : valuesDirs) {
             File[] files = valuesDir.listFiles();
-            sValues.addAll(Arrays.asList(files));
+            if (files != null) {
+                sValues.addAll(Arrays.asList(files));
+            }
         }
     }
 
