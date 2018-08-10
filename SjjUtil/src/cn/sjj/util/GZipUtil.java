@@ -3,6 +3,7 @@ package cn.sjj.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -16,12 +17,34 @@ public class GZipUtil {
         if (str == null || str.length() == 0) {
             return null;
         }
-        
+
+        byte[] bytes = new byte[0];
+        try {
+            bytes = str.getBytes(encoding);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return compress(bytes);
+    }
+
+    public static byte[] compress(String str) {
+        if (str == null || str.length() == 0) {
+            return null;
+        }
+
+        return compress(str.getBytes());
+    }
+
+    public static byte[] compress(byte[] originBytes) {
+        if (originBytes == null || originBytes.length == 0) {
+            return null;
+        }
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         GZIPOutputStream gzip = null;
         try {
             gzip = new GZIPOutputStream(out);
-            gzip.write(str.getBytes(encoding));
+            gzip.write(originBytes);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -29,7 +52,7 @@ public class GZipUtil {
             LazyUtil.close(out);
             LazyUtil.close(gzip);
         }
-        
+
         byte[] bytes = out.toByteArray();
         return bytes;
     }
