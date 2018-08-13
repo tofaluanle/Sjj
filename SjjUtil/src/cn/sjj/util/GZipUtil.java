@@ -15,7 +15,7 @@ public class GZipUtil {
 
     public static byte[] compress(String str, String encoding) {
         if (str == null || str.length() == 0) {
-            return null;
+            return new byte[0];
         }
 
         byte[] bytes = new byte[0];
@@ -29,7 +29,7 @@ public class GZipUtil {
 
     public static byte[] compress(String str) {
         if (str == null || str.length() == 0) {
-            return null;
+            return new byte[0];
         }
 
         return compress(str.getBytes());
@@ -37,7 +37,7 @@ public class GZipUtil {
 
     public static byte[] compress(byte[] originBytes) {
         if (originBytes == null || originBytes.length == 0) {
-            return null;
+            return new byte[0];
         }
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -59,7 +59,7 @@ public class GZipUtil {
 
     public static byte[] uncompress(byte[] bytes) {
         if (bytes == null || bytes.length == 0) {
-            return null;
+            return new byte[0];
         }
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();
