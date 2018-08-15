@@ -1,10 +1,11 @@
 package cn.sjj.util;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
@@ -30,10 +31,12 @@ public class DeviceUtil extends ContextHolder {
      *
      * @author CODYY)peijiangping
      */
-    @SuppressLint("MissingPermission")
-    public String getNativePhoneNumber(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    public String getNativePhoneNumber() {
+        TelephonyManager telephonyManager = (TelephonyManager) sContext.getSystemService(Context.TELEPHONY_SERVICE);
         String NativePhoneNumber = null;
+        if (ActivityCompat.checkSelfPermission(sContext, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(sContext, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(sContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return "";
+        }
         NativePhoneNumber = telephonyManager.getLine1Number();
         return NativePhoneNumber;
     }
@@ -46,11 +49,13 @@ public class DeviceUtil extends ContextHolder {
      *
      * @author CODYY)peijiangping
      */
-    @SuppressLint("MissingPermission")
-    public String getProvidersName(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    public String getProvidersName() {
+        TelephonyManager telephonyManager = (TelephonyManager) sContext.getSystemService(Context.TELEPHONY_SERVICE);
         String ProvidersName = null;
         // 返回唯一的用户ID;就是这张卡的编号神马的
+        if (ActivityCompat.checkSelfPermission(sContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return "";
+        }
         String IMSI = telephonyManager.getSubscriberId();
         // IMSI号前面3位460是国家，紧接着后面2位00 02是中国移动，01是中国联通，03是中国电信。
         System.out.println(IMSI);
@@ -65,10 +70,9 @@ public class DeviceUtil extends ContextHolder {
     }
 
     //获取手机识唯一设备识别码UUID并转为MD5
-    @SuppressLint("MissingPermission")
-    public static String getDeviceUUID(Context activity) {
+    public static String getDeviceUUID() {
         TelephonyManager tm = (TelephonyManager) sContext.getSystemService(Context.TELEPHONY_SERVICE);
-        boolean isGranted = LazyUtil.checkPermission(activity, Manifest.permission.READ_PHONE_STATE);
+        boolean isGranted = LazyUtil.checkPermission(sContext, Manifest.permission.READ_PHONE_STATE);
         String deviceId = "";
         if (tm != null && isGranted) {
             deviceId = tm.getDeviceId();
