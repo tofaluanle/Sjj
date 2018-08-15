@@ -1,5 +1,8 @@
 package cn.sjj.util;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -120,5 +123,20 @@ public class LazyUtil extends ContextHolder {
     public static int sp2px(int spValue) {
         final float fontScale = sContext.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
+    }
+
+    public static boolean checkPermission(Context context, String permission) {
+        boolean result = false;
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+                result = true;
+            }
+        } else {
+            PackageManager pm = context.getPackageManager();
+            if (pm.checkPermission(permission, context.getPackageName()) == PackageManager.PERMISSION_GRANTED) {
+                result = true;
+            }
+        }
+        return result;
     }
 }
