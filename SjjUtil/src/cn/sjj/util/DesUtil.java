@@ -36,6 +36,15 @@ public class DesUtil {
     }
 
     /**
+     * 使用 默认key 加密
+     *
+     * @return byte[]
+     */
+    public static byte[] encryptByte(String data) throws Exception {
+        return encrypt(data.getBytes(ENCODE), defaultKey.getBytes(ENCODE));
+    }
+
+    /**
      * 使用 默认key 解密
      *
      * @return String
@@ -65,6 +74,18 @@ public class DesUtil {
     }
 
     /**
+     * Description 根据键值进行加密
+     *
+     * @param data
+     * @param key  加密键byte数组
+     * @return
+     * @throws Exception
+     */
+    public static byte[] encryptByte(String data, String key) throws Exception {
+        return encrypt(data.getBytes(ENCODE), defaultKey.getBytes(ENCODE));
+    }
+
+    /**
      * Description 根据键值进行解密
      *
      * @param data
@@ -90,7 +111,7 @@ public class DesUtil {
      * @return
      * @throws Exception
      */
-    private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
+    public static byte[] encrypt(byte[] data, byte[] key) throws Exception {
         // 生成一个可信任的随机数源
         SecureRandom sr = new SecureRandom();
 
@@ -118,7 +139,7 @@ public class DesUtil {
      * @return
      * @throws Exception
      */
-    private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
+    public static byte[] decrypt(byte[] data, byte[] key) throws Exception {
         // 生成一个可信任的随机数源
         SecureRandom sr = new SecureRandom();
 

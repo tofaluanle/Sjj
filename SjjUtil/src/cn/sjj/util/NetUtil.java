@@ -35,7 +35,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.sjj.Logger;
-import cn.sjj.R;
 import cn.sjj.base.ContextHolder;
 
 public class NetUtil extends ContextHolder {
@@ -77,7 +76,6 @@ public class NetUtil extends ContextHolder {
             TextView msg = new TextView(activity);
             msg.setText("当前没有可以使用的网络，请设置网络！");
             new AlertDialog.Builder(activity)
-                    .setIcon(R.drawable.ic_launcher)
                     .setTitle("网络状态提示")
                     .setView(msg)
                     .setPositiveButton("确定",

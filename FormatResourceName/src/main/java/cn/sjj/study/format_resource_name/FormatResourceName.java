@@ -1,28 +1,39 @@
-package cn.sjj.tool;
+package cn.sjj.study.format_resource_name;
 
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.mozilla.intl.chardet.HtmlCharsetDetector;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.sjj.tool.FileUtil;
+
 
 public class FormatResourceName {
 
-    private static String  sDir     = "C:\\WorkSpace\\temp\\android-credit/";
+    private static final boolean RELEASE = false;
+
+    private static String  sDir     = "C:\\WorkSpace\\temp\\android-sojourn\\sojourn/";
     //        private static String  sDir     = "C:\\WorkSpace\\AndroidStudio\\Ziroom\\ziroom-client-android\\android-credit/";
     private static String  sPrefix  = "sjj_";
-//    private static String  sPrefix  = "credit_";
-//    private static boolean sExecute = true;
-    private static boolean sExecute = false;
+    //    private static String  sPrefix  = "credit_";
+    private static boolean sExecute = true;
+//    private static boolean sExecute = false;
 
     private static List<File>        sJavas        = new ArrayList<>();
     private static Map<File, String> sJavaContents = new HashMap<>();
@@ -33,24 +44,96 @@ public class FormatResourceName {
     private static List<String>      sValueIds     = new ArrayList<>();
     private static List<String>      sViewIds      = new ArrayList<>();
 
+    private static List<String> sSupportStyles     = new ArrayList<>();
+    private static List<String> sSupportStyleAttrs = new ArrayList<>();
+
     private static int sLayoutNameMaxLength;
 
     private static String     sRuntimePath;
     private static FileWriter sFw;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         init(args);
-        print("Version 1.4.1");
+        print("Version 1.5.1");
 
 //        testResourcePattern();
 //        testLayoutPattern();
 //        testCharSet();
 //        testIdWithQuote();
 //        testJavaPattern();
+        findSupportValues();
         findFiles();
         rename();
 
+
         closeFw();
+    }
+
+    private static void findSupportValues() throws Exception {
+        findSupportV7Values();
+        findDesignValues();
+    }
+
+    private static void findDesignValues() throws Exception {
+        InputStream is;
+        if (RELEASE) {
+            is = FormatResourceName.class.getResourceAsStream("/design_values.xml");
+        } else {
+            is = new FileInputStream("C:\\Users\\sjj\\.gradle\\caches\\transforms-1\\files-1.1\\design-26.0.2.aar\\1cfdeda5893f28fa859689073bc01047\\res\\values/values.xml");
+        }
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(is);
+        Element bookStore = document.getRootElement();
+        scanElement(bookStore);
+
+//        print(sSupportStyles);
+//        print(sSupportStyleAttrs);
+    }
+
+    private static void findSupportV7Values() throws Exception {
+        InputStream is;
+        if (RELEASE) {
+            is = FormatResourceName.class.getResourceAsStream("/support_v7_values.xml");
+        } else {
+            is = new FileInputStream("C:\\Users\\sjj\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.0.2.aar\\87193e658e92abd1bac368e29baa204d\\res\\values/values.xml");
+        }
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(is);
+        Element bookStore = document.getRootElement();
+        scanElement(bookStore);
+
+//        print(sSupportStyles);
+//        print(sSupportStyleAttrs);
+    }
+
+    private static void scanElement(Element element) {
+        Element parent = element.getParent();
+        if (element.getName().equals("style")) {
+//            System.out.println(element.getName());
+            List<Attribute> attributes = element.attributes();
+            for (Attribute attr : attributes) {
+//                System.out.println("    " + attr.getName() + " = " + attr.getValue());
+                if (attr.getName().equals("name")) {
+//                    sSupportStyles.add(attr.getValue());
+                }
+            }
+        } else if (parent != null) {
+            if (parent.getName().equals("declare-styleable")) {
+//                System.out.println(element.getName());
+                List<Attribute> attributes = element.attributes();
+                for (Attribute attr : attributes) {
+//                    System.out.println("    " + attr.getName() + " = " + attr.getValue());
+                    if (attr.getName().equals("name")) {
+                        sSupportStyleAttrs.add(attr.getValue());
+                    }
+                }
+            }
+        }
+
+        Iterator iterator = element.elementIterator();
+        while (iterator.hasNext()) {
+            scanElement((Element) iterator.next());
+        }
     }
 
     private static void testIdWithQuote() {
@@ -94,6 +177,15 @@ public class FormatResourceName {
     }
 
     private static void testJavaPattern() {
+        String butterKnifeMulti = "private void hideRecommendEva() {\n" +
+                "        rv_recommend_eva.setVisibility(View.GONE);\n" +
+                "        recommend_eva_area.setVisibility(View.GONE);\n" +
+                "    }\n" +
+                "\n" +
+                "\n" +
+                "    @OnClick({R.id.sdv_top, R.id.tv_city_station, R.id.tv_search_content_station, R.id.fun_area,\n" +
+                "            R.id.station_more, R.id.lav_station_home})\n" +
+                "    public void onViewClicked(View view) {";
         String str = "(android.R.\n" +
                 "layout\n" +
                 ".tt);\n"
@@ -105,17 +197,20 @@ public class FormatResourceName {
                 "public class CreditGridAdapter extends BaseAdapter {\n" +
                 "    @BindViewa(R2" +
                 ".id.butter)\n" +
-                "  private   Context context;";
+                "  private   Context context;" +
+                butterKnifeMulti;
 //        Pattern p = Pattern.compile("[^\\.]R\\s*\\.\\s*.*\\s*\\.\\s*(.*?)[\\s,);]");
 //        Pattern p = Pattern.compile("R\\s*\\.\\s*(.*?)\\s*\\.\\s*(.*?)[\\s,);]");
 //        Pattern p = Pattern.compile("[R|R2]\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
 //        Pattern p = Pattern.compile("(R|R2)\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
-        Pattern p = Pattern.compile("R2?\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
+//        Pattern p = Pattern.compile("R2?\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
+        Pattern p = Pattern.compile("[^\\.]R2?\\s*\\.([^\\.]*)\\.\\s*(.*?)[\\s,);]");
+
         Matcher m = p.matcher(str);
         while (m.find()) {
-//            print(m.group());
-            print("type = " + m.group(1));
-            print("id = " + m.group(2));
+            print("***" + m.group() + "***");
+//            print("type = " + m.group(1));
+//            print("id = " + m.group(2));
 //            print("type = " + m.group(2));
 //            print("id = " + m.group(3));
         }
@@ -327,9 +422,10 @@ public class FormatResourceName {
             if (!sExecute || contentMap.isEmpty()) {
                 continue;
             }
+
             for (Map.Entry<String, String> entry : contentMap.entrySet()) {
-                String targetContent = entry.getKey().replace("(", "").replace(")", "");
-                String replaceContent = entry.getValue().replace("(", "").replace(")", "");
+                String targetContent = entry.getKey().replace("(", "").replace(")", "").replace("{", "").replace("}", "").replace(",", "");
+                String replaceContent = entry.getValue().replace("(", "").replace(")", "").replace("{", "").replace("}", "").replace(",", "");
                 content = content.replaceAll(targetContent, replaceContent);
             }
             try {
@@ -447,7 +543,7 @@ public class FormatResourceName {
                 } else {
                     id = m.group(5);
                 }
-                if (id.startsWith(sPrefix) || id.startsWith("android:")) {
+                if (id.startsWith(sPrefix) || id.startsWith("android:") || sSupportStyleAttrs.contains(id)) {
                     continue;
                 }
 
@@ -815,11 +911,15 @@ public class FormatResourceName {
 
         File animatorDir = new File(sDir, "src\\main\\res/anim");
         File[] animatorFiles = animatorDir.listFiles();
-        sAnimators.addAll(Arrays.asList(animatorFiles));
+        if (animatorFiles != null) {
+            sAnimators.addAll(Arrays.asList(animatorFiles));
+        }
 
         File layoutDir = new File(sDir, "src\\main\\res/layout");
         File[] layoutFiles = layoutDir.listFiles();
-        sLayouts.addAll(Arrays.asList(layoutFiles));
+        if (layoutFiles != null) {
+            sLayouts.addAll(Arrays.asList(layoutFiles));
+        }
 
         findViewIds();
         findDrawableResource();
@@ -891,6 +991,10 @@ public class FormatResourceName {
     }
 
     private static void findDrawableResource() {
+        if (true) {
+            return;
+        }
+
         File resDir = new File(sDir, "src\\main\\res");
         File[] drawableDirs = resDir.listFiles(new FilenameFilter() {
             @Override
@@ -900,7 +1004,9 @@ public class FormatResourceName {
         });
         for (File drawableDir : drawableDirs) {
             File[] files = drawableDir.listFiles();
-            sDrawables.addAll(Arrays.asList(files));
+            if (files != null) {
+                sDrawables.addAll(Arrays.asList(files));
+            }
         }
     }
 
@@ -912,9 +1018,15 @@ public class FormatResourceName {
                 return s.startsWith("values");
             }
         });
+        if (valuesDirs == null) {
+            return;
+        }
+
         for (File valuesDir : valuesDirs) {
             File[] files = valuesDir.listFiles();
-            sValues.addAll(Arrays.asList(files));
+            if (files != null) {
+                sValues.addAll(Arrays.asList(files));
+            }
         }
     }
 

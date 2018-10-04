@@ -2,6 +2,7 @@ apply plugin: 'java-library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "dom4j:dom4j:1.6.1"
 }
 
 sourceCompatibility = "1.8"
@@ -15,7 +16,7 @@ jar {
     String someString = ''
     configurations.runtime.each { someString = someString + " lib//" + it.name }
     manifest {
-        attributes 'Main-Class': 'cn.sjj.tool.FormatResourceName'
+        attributes 'Main-Class': 'cn.sjj.study.format_resource_name.FormatResourceName'
         attributes 'Class-Path': someString
     }
 }

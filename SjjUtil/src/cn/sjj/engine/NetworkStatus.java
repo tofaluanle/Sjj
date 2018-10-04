@@ -80,10 +80,6 @@ public class NetworkStatus implements Handler.Callback {
     }
 
     private NetworkStatus() {
-        if (NetworkStateHolder.ourInstance == null) {
-        } else {
-            throw new IllegalStateException("instance already create");
-        }
     }
 
     public static NetworkStatus getInstance() {
