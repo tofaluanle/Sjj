@@ -16,6 +16,10 @@ public class Animation {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("星屑ハイウェイ", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("Remember 16", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("Holy Lonely Light", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("My Friends", "Fire Bomber", "超时空要塞7", "福山芳树"));
         songs.add(new Song("SUBMARINE STREET", "Fire Bomber", "超时空要塞7", "福山芳树"));
         songs.add(new Song("My Soul For You", "Fire Bomber", "超时空要塞7", "福山芳树"));
         songs.add(new Song("Light The Light", "Fire Bomber", "超时空要塞7", "福山芳树"));
