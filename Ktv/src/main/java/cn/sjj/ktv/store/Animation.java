@@ -16,6 +16,15 @@ public class Animation {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("星屑ハイウェイ", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("Remember 16", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("Holy Lonely Light", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("My Friends", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("SUBMARINE STREET", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("My Soul For You", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("Light The Light", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("ANGEL VOICE", "Fire Bomber", "超时空要塞7", "福山芳树"));
+        songs.add(new Song("Grand Blue", "湘南乃風", "碧蓝之海ED", "2018年7月"));
         songs.add(new Song("僕らのメッセージ", "Kiroro", "无人惑星沙维尔OP"));
         songs.add(new Song("誓い", "雨宮天", "七大罪 戒律的复活ED2", "2018年1月", "雨宫天"));
         songs.add(new Song("Binary Star", "Uru", "银河英雄传说OP", "2018年4月", "银河英雄传说 Die Neue These", "SawanoHiroyuki[nZk]"));
