@@ -8,7 +8,7 @@ import cn.sjj.annotation.NotToString;
 /**
  * 基础bean，提供打印子类bean的属性的功能
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2018/4/11.
  */
 public class BaseBean {

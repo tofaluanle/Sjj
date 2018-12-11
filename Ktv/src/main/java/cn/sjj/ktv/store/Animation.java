@@ -6,7 +6,7 @@ import java.util.List;
 import cn.sjj.ktv.bean.Song;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/6/16.
  */
 public class Animation {

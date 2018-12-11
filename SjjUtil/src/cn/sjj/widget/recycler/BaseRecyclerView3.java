@@ -22,11 +22,11 @@ import io.reactivex.functions.Action;
 import io.reactivex.internal.functions.Functions;
 
 /**
- * * RecyclerView的Adapter和ViewHolder的抽象基类，默认提供item点击事件监听和ButterKnife注解的使用；同时ListAdapter提供一个拥有mDataList的成员变量<BR>
- * * 第二版针对LayoutManager引起的IndexOutOfBoundsException进行处理，在调用mDataList的相关方法时，直接notify，并且判断是否在主进程<BR>
- * * 第三版统一了两个ListAdapter的代码
+ * RecyclerView的Adapter和ViewHolder的抽象基类，默认提供item点击事件监听和ButterKnife注解的使用；同时ListAdapter提供一个拥有mDataList的成员变量<BR>
+ * 第二版针对LayoutManager引起的IndexOutOfBoundsException进行处理，在调用mDataList的相关方法时，直接notify，并且判断是否在主进程<BR>
+ * 第三版统一了两个ListAdapter的代码
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2016/12/26.
  */
 public class BaseRecyclerView3 extends RecyclerView {
@@ -49,7 +49,7 @@ public class BaseRecyclerView3 extends RecyclerView {
     public static abstract class Adapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements RecyclerViewScrollerHelper.INotLoadOnScroll {
 
         protected OnItemClickListener mListener;
-        protected boolean mCanLoad = true;
+        protected boolean             mCanLoad = true;
 
         @Override
         public void setCanLoad(boolean canLoad) {

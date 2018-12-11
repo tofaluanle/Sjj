@@ -5,7 +5,7 @@ import cn.sjj.Logger;
 /**
  * 用来记录APP的Activity的总数量，并按照策略进行处理
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/7/19.
  */
 public class ActivityCounter {

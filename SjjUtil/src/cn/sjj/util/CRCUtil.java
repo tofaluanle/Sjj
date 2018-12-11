@@ -3,7 +3,7 @@ package cn.sjj.util;
 /**
  * CRC8相关计算
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2015/4/16.
  */
 public class CRCUtil {

@@ -8,7 +8,7 @@ import android.util.Log;
 import java.lang.reflect.Method;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2015/6/29.
  */
 public class Observer {

@@ -3,7 +3,7 @@ package cn.sjj.net.download;
 /**
  * 下载的回调监听接口
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/11/28.
  */
 public interface DownloadListener {

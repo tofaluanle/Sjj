@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2015/10/30.
  */
 @Target(ElementType.FIELD)

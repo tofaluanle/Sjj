@@ -17,7 +17,7 @@ import cn.sjj.ktv.util.SystemTool;
  * RecyclerView的Adapter和ViewHolder的抽象基类，默认提供item点击事件监听和ButterKnife注解的使用；同时ListAdapter提供一个拥有mDataList的成员变量<BR>
  * 第二版针对LayoutManager引起的IndexOutOfBoundsException进行处理，在调用mDataList的相关方法时，直接notify，并且判断是否在主进程
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2016/12/26.
  */
 public class BaseRecyclerView2 extends RecyclerView {

@@ -5,7 +5,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * 用来缓存对象的FIFO队列，默认容量100，超过后会废弃掉最旧的对象
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2018/2/8.
  */
 public class BufferQueue<T> implements Runnable {

@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * 打印对象信息的工具类
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/8/28.
  */
 public class PrintUtil {

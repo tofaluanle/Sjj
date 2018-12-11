@@ -14,7 +14,7 @@
 //
 //
 ///**
-// * @auther 宋疆疆
+// * @author 宋疆疆
 // * @date 2015/7/7.
 // */
 //public class SpeechEngine {

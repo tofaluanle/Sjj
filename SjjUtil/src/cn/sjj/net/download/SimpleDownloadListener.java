@@ -3,7 +3,7 @@ package cn.sjj.net.download;
 /**
  * 没有任何逻辑
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/11/28.
  */
 public class SimpleDownloadListener implements DownloadListener {

@@ -8,7 +8,7 @@ import cn.sjj.Logger;
 
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/5/6.
  */
 public abstract class BaseBroadcastReceiver extends BroadcastReceiver {

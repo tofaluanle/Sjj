@@ -12,7 +12,7 @@ import java.util.List;
 import cn.sjj.ktv.R;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/8/8.
  */
 public class SongAdapter extends BaseAdapter {

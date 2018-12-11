@@ -7,7 +7,7 @@ import android.content.Intent;
 /**
  * 用来接收Activity的数量变化的广播
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/7/19.
  */
 public class ActivityCounterReceiver extends BroadcastReceiver {

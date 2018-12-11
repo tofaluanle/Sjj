@@ -15,7 +15,7 @@ import cn.sjj.Logger;
 /**
  * Service的通用基类，提供打印生命周期的功能
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/3/14.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)

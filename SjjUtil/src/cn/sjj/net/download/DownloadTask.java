@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * 保存下载任务的信息
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/11/28.
  */
 public class DownloadTask {

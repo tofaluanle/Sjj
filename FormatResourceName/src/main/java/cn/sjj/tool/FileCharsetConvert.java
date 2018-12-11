@@ -3,7 +3,7 @@ package cn.sjj.tool;
 import java.io.FileInputStream;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2018/4/25.
  */
 public class FileCharsetConvert {

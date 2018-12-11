@@ -16,7 +16,7 @@ import cn.sjj.util.SystemTool;
 /**
  * 将log记录到文件里的工具类
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/5/5.
  */
 public class LogRecorder2 implements Logger.ILogRecorder {

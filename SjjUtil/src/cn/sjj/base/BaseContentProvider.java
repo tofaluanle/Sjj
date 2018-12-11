@@ -12,7 +12,7 @@ import cn.sjj.Logger;
 /**
  * ContentProvider的通用基类，提供打印生命周期的功能
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/8/4.
  */
 public class BaseContentProvider extends ContentProvider {
