@@ -3,6 +3,7 @@ package cn.sjj.bean;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import cn.sjj.BuildConfig;
 import cn.sjj.annotation.NotToString;
 
 /**
@@ -15,6 +16,10 @@ public class BaseBean {
 
 	@Override
 	public String toString() {
+		if (!BuildConfig.DEBUG) {
+			return super.toString();
+		}
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getSimpleName() + " [ ");
 		getValue(getClass(), sb);
