@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * 下载文件的工具类，不使用okhttp下载，使用HttpUrlConnect进行下载
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/11/28.
  */
 public class DownloadEngine {

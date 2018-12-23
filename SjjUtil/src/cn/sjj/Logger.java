@@ -310,7 +310,7 @@ public class Logger {
     /**
      * 定义记录日志的功能的接口
      *
-     * @auther 宋疆疆
+     * @author 宋疆疆
      * @date 2016/5/6.
      */
     public interface ILogRecorder {

@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 import cn.sjj.Logger;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2018/2/21.
  */
 public class FileWriter {

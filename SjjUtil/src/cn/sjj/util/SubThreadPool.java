@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 
 /**
  * 一个公用的线程池单例类
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/5/13.
  */
 public class SubThreadPool {

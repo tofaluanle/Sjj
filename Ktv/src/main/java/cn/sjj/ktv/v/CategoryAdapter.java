@@ -18,7 +18,7 @@ import cn.sjj.ktv.widget.BaseRecyclerView2;
 import cn.sjj.ktv.widget.FlowTagLayout;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/6/16.
  */
 public class CategoryAdapter extends BaseRecyclerView2.ListAdapter<Song, CategoryAdapter.ViewHolder> {

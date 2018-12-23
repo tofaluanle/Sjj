@@ -19,7 +19,7 @@ import cn.sjj.base.ContextHolder;
 /**
  * 一些不好分类的方法放在这里
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/5/23.
  */
 public class LazyUtil extends ContextHolder {

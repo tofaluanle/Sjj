@@ -12,7 +12,7 @@ import cn.sjj.util.LazyUtil;
 /**
  * 下载管理器，主要提供重复下载的判断逻辑与下载进度共享的逻辑
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/11/28.
  */
 public class DownloadManager {

@@ -9,7 +9,7 @@ import cn.sjj.IStatics;
 import cn.sjj.Logger;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/3/14.
  */
 public class BaseService extends Service {

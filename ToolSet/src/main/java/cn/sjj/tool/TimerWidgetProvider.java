@@ -9,7 +9,7 @@ import android.widget.RemoteViews;
 import java.util.Arrays;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/3/14.
  */
 /*

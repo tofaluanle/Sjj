@@ -13,7 +13,7 @@ import cn.sjj.util.SystemTool;
 /**
  * 管理整个APP的所有缓存文件路径的单例类
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/6/9.
  */
 public class CacheDirManager {

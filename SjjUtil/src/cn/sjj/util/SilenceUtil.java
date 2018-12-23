@@ -3,7 +3,7 @@ package cn.sjj.util;
 /**
  * 提供捕捉异常的功能，让调用者的代码更简洁
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/10/24.
  */
 public class SilenceUtil {

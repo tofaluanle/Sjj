@@ -5,7 +5,7 @@ import android.media.MediaMetadataRetriever;
 
 /**
  * 视频相关的工具类
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/5/12.
  */
 public class VideoUtil {

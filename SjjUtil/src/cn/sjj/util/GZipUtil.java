@@ -8,7 +8,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2018/1/1.
  */
 public class GZipUtil {

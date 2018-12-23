@@ -9,7 +9,7 @@ import android.widget.TextView;
 /**
  * 去掉Padding的TextView，要配合android:includeFontPadding="false"使用
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/5/10.
  */
 public class NoPaddingTextView extends TextView {

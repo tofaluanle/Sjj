@@ -10,7 +10,7 @@ import cn.sjj.util.LazyUtil;
 /**
  * LinearLayoutManager的封装基类，用来方便开发调试
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2016/12/1.
  */
 public class BaseLinearLayoutManager extends LinearLayoutManager {

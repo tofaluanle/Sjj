@@ -6,7 +6,7 @@ import android.os.Message;
 /**
  * 方便使用Handler发送消息或Runnable的工具类
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2016/12/17.
  */
 public class HandlerUtil {

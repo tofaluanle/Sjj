@@ -17,7 +17,7 @@ import cn.sjj.util.NetUtil;
 /**
  * 监听网络状态变化的类
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/9/13.
  */
 public class NetworkStatus implements Handler.Callback {

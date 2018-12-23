@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 /**
  * 仅仅为了将事件传递给其他控件的类，一般情况下是为了扩大触摸范围
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/8/2.
  */
 public class DelegateView extends RelativeLayout {

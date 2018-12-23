@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/6/16.
  */
 public class Song extends BaseBean {

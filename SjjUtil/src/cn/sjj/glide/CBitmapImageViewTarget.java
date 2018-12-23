@@ -8,7 +8,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 /**
  * 用来防止快速滑动时，图片加载错位的类
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/5/10.
  */
 public class CBitmapImageViewTarget extends BitmapImageViewTarget {

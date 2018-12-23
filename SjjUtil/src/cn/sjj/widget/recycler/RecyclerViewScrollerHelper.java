@@ -3,12 +3,10 @@ package cn.sjj.widget.recycler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.android.volley.toolbox.ImageLoader;
-
 /**
  * 给RecyclerView提供在快速滑动时，不加载图片的功能
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @since 2017/7/5.
  */
 public class RecyclerViewScrollerHelper {
@@ -32,7 +30,6 @@ public class RecyclerViewScrollerHelper {
     /**
      * 配置显示图片，需要设置这几个参数，快速滑动时，暂停图片加载
      *
-     * @param imageLoader   ImageLoader实例对象
      * @param pauseOnScroll
      * @param pauseOnFling
      */

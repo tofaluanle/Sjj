@@ -1,7 +1,7 @@
 package cn.sjj.util;
 
 /**
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2015/4/21.
  */
 public class IntegerUtil {

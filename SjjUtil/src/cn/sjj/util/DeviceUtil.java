@@ -20,7 +20,7 @@ import cn.sjj.base.ContextHolder;
 /**
  * 跟硬件设备有关的工具类
  *
- * @auther 宋疆疆
+ * @author 宋疆疆
  * @date 2016/3/21.
  */
 public class DeviceUtil extends ContextHolder {
