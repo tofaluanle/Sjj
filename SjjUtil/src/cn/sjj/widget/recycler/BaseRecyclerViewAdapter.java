@@ -45,14 +45,6 @@ public class BaseRecyclerViewAdapter {
             this.mListener = mListener;
         }
 
-        public interface OnItemClickListener<T> {
-
-            void onRvItemClick(View v, T bean, int position);
-
-            boolean onRvItemLongClick(View v, T bean, int position);
-
-        }
-
     }
 
     public static abstract class ListAdapter<T, VH extends RecyclerView.ViewHolder, L extends List<T>> extends Adapter<VH> {
@@ -207,8 +199,8 @@ public class BaseRecyclerViewAdapter {
 
     public static abstract class ViewHolder<T> extends RecyclerView.ViewHolder {
 
-        private Adapter.OnItemClickListener mListener;
-        private T                           mBean;
+        private OnItemClickListener mListener;
+        private T                   mBean;
 
         public T getBean() {
             return mBean;
@@ -223,11 +215,11 @@ public class BaseRecyclerViewAdapter {
             ButterKnife.bind(this, v);
         }
 
-        public ViewHolder(View v, Adapter.OnItemClickListener listener) {
+        public ViewHolder(View v, OnItemClickListener listener) {
             this(v, listener, true);
         }
 
-        public ViewHolder(View v, Adapter.OnItemClickListener listener, boolean canThrottle) {
+        public ViewHolder(View v, OnItemClickListener listener, boolean canThrottle) {
             super(v);
             ButterKnife.bind(this, v);
             mListener = listener;
@@ -261,6 +253,14 @@ public class BaseRecyclerViewAdapter {
                 });
             }
         }
+    }
+
+    public interface OnItemClickListener<T> {
+
+        void onRvItemClick(View v, T bean, int position);
+
+        boolean onRvItemLongClick(View v, T bean, int position);
+
     }
 
 }
