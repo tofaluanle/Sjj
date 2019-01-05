@@ -1,9 +1,6 @@
 package cn.sjj.widget.recycler;
 
-import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -29,22 +26,10 @@ import io.reactivex.internal.functions.Functions;
  * @author 宋疆疆
  * @since 2016/12/26.
  */
-public class BaseRecyclerView3 extends RecyclerView {
+public class BaseRecyclerViewAdapter {
 
     //    protected static final boolean DEBUG = Config.DEBUG;
     protected static final boolean DEBUG = false;
-
-    public BaseRecyclerView3(Context context) {
-        super(context);
-    }
-
-    public BaseRecyclerView3(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public BaseRecyclerView3(Context context, @Nullable AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
 
     public static abstract class Adapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements RecyclerViewScrollerHelper.INotLoadOnScroll {
 
@@ -58,14 +43,6 @@ public class BaseRecyclerView3 extends RecyclerView {
 
         public void setListener(OnItemClickListener mListener) {
             this.mListener = mListener;
-        }
-
-        public interface OnItemClickListener<T> {
-
-            void onRvItemClick(View v, T bean, int position);
-
-            boolean onRvItemLongClick(View v, T bean, int position);
-
         }
 
     }
@@ -222,8 +199,8 @@ public class BaseRecyclerView3 extends RecyclerView {
 
     public static abstract class ViewHolder<T> extends RecyclerView.ViewHolder {
 
-        private Adapter.OnItemClickListener mListener;
-        private T                           mBean;
+        private OnItemClickListener mListener;
+        private T                   mBean;
 
         public T getBean() {
             return mBean;
@@ -238,42 +215,52 @@ public class BaseRecyclerView3 extends RecyclerView {
             ButterKnife.bind(this, v);
         }
 
-        public ViewHolder(View v, Adapter.OnItemClickListener listener) {
+        public ViewHolder(View v, OnItemClickListener listener) {
             this(v, listener, true);
         }
 
-        public ViewHolder(View v, Adapter.OnItemClickListener listener, boolean canThrottle) {
+        public ViewHolder(View v, OnItemClickListener listener, boolean canThrottle) {
             super(v);
             ButterKnife.bind(this, v);
             mListener = listener;
 
-            Observable<Object> observable = RxView.clicks(v);
-            if (canThrottle) {
-                observable = observable.throttleFirst(1, TimeUnit.SECONDS);
-            }
-            Action action = new Action() {
-                @Override
-                public void run() throws Exception {
-                    int position = getLayoutPosition();
-                    if (position == RecyclerView.NO_POSITION) {
-                        return;
-                    }
-                    mListener.onRvItemClick(itemView, mBean, position);
+            if (mListener != null) {
+                Observable<Object> observable = RxView.clicks(v);
+                if (canThrottle) {
+                    observable = observable.throttleFirst(1, TimeUnit.SECONDS);
                 }
-            };
-            observable.subscribe(Functions.actionConsumer(action));
+                Action action = new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        int position = getLayoutPosition();
+                        if (position == RecyclerView.NO_POSITION) {
+                            return;
+                        }
+                        mListener.onRvItemClick(itemView, mBean, position);
+                    }
+                };
+                observable.subscribe(Functions.actionConsumer(action));
 
-            v.setOnLongClickListener(new OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int position = getLayoutPosition();
-                    if (position == RecyclerView.NO_POSITION) {
-                        return false;
+                v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        int position = getLayoutPosition();
+                        if (position == RecyclerView.NO_POSITION) {
+                            return false;
+                        }
+                        return mListener.onRvItemLongClick(v, mBean, position);
                     }
-                    return mListener.onRvItemLongClick(v, mBean, position);
-                }
-            });
+                });
+            }
         }
+    }
+
+    public interface OnItemClickListener<T> {
+
+        void onRvItemClick(View v, T bean, int position);
+
+        boolean onRvItemLongClick(View v, T bean, int position);
+
     }
 
 }
