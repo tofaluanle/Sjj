@@ -16,6 +16,7 @@ public class Animation {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("Pink", "YUAMU", "星界的战旗 ED"));
         songs.add(new Song("17才", "ハルカトミユキ", "来自多彩世界的明天"));
         songs.add(new Song("星屑ハイウェイ", "Fire Bomber", "超时空要塞7", "福山芳树"));
         songs.add(new Song("Remember 16", "Fire Bomber", "超时空要塞7", "福山芳树"));
