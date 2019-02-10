@@ -16,6 +16,7 @@ public class Animation {
     static {
         songs = new ArrayList<>();
         songs.add(new Song("", "", ""));
+        songs.add(new Song("ラブ・ドラマティック", "鈴木雅之", "辉夜大小姐想让我告白 OP", "2019年1月", "Battle Of Love", "伊原六花"));
         songs.add(new Song("君のとなり わたしの場所", "南条爱乃", "同居人是只猫 ED", "2019年1月"));
         songs.add(new Song("youthful beautiful", "内田真礼", "SSSS.GRIDMAN ED", "2018年10月"));
         songs.add(new Song("Pink", "YUAMU", "星界的战旗 ED"));
