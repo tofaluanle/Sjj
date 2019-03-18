@@ -23,56 +23,56 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         Logger.i(DEBUG, this + " onCreate");
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onStart() {
-        super.onStart();
         Logger.v(DEBUG, this + " onStart");
+        super.onStart();
     }
 
     @Override
     protected void onRestart() {
-        super.onRestart();
         Logger.v(DEBUG, this + " onRestart");
+        super.onRestart();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         Logger.v(DEBUG, this + " onResume");
+        super.onResume();
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         Logger.v(DEBUG, this + " onPause");
+        super.onPause();
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         Logger.v(DEBUG, this + " onStop");
+        super.onStop();
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
         Logger.i(DEBUG, this + " onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         Logger.i(DEBUG, this + " onDestroy");
+        super.onDestroy();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
         Logger.i(DEBUG, this + " onNewIntent");
+        super.onNewIntent(intent);
     }
 
     @Override
@@ -83,8 +83,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         Logger.i(DEBUG, this + " onActivityResult");
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     protected void findView() {

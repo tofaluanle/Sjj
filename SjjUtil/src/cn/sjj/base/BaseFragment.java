@@ -43,8 +43,8 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         Logger.v(DEBUG, this + "   onCreate");
+        super.onCreate(savedInstanceState);
     }
 
     @Override
