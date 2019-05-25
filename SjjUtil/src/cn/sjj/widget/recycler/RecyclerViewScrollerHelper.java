@@ -34,7 +34,7 @@ public class RecyclerViewScrollerHelper {
      * @param pauseOnFling
      */
     public void setOnPauseListenerParams(boolean pauseOnScroll, boolean pauseOnFling) {
-        mRv.setOnScrollListener(new AutoLoadScrollListener(pauseOnScroll, pauseOnFling));
+        mRv.addOnScrollListener(new AutoLoadScrollListener(pauseOnScroll, pauseOnFling));
     }
 
     public void setLoadMoreListener(onLoadMoreListener loadMoreListener) {
