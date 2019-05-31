@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
+ * 确保实参是安全的
+ *
  * @author 宋疆疆
  * @since 2019/5/25.
  */
-public class NotNullUtil {
+public class MakeSafeUtil {
 
     public static String make(String str) {
         if (str == null) {
@@ -45,8 +47,8 @@ public class NotNullUtil {
             list.remove(null);
         }
         for (Object o : list) {
-            if (o instanceof INotNull) {
-                ((INotNull) o).makeNotNull();
+            if (o instanceof ISafe) {
+                ((ISafe) o).makeSafe();
             }
         }
         return list;
@@ -60,14 +62,14 @@ public class NotNullUtil {
             list.remove(null);
         }
         for (Object o : list) {
-            if (o instanceof INotNull) {
-                ((INotNull) o).makeNotNull();
+            if (o instanceof ISafe) {
+                ((ISafe) o).makeSafe();
             }
         }
         return list;
     }
 
-    public interface INotNull {
-        void makeNotNull();
+    public interface ISafe {
+        void makeSafe();
     }
 }
