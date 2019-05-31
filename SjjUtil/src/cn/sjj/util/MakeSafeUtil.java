@@ -69,6 +69,30 @@ public class MakeSafeUtil {
         return list;
     }
 
+    public static int make(int origin, int min, int max) {
+        origin = Math.min(max, origin);
+        origin = Math.max(min, origin);
+        return origin;
+    }
+
+    public static long make(long origin, long min, long max) {
+        origin = Math.min(max, origin);
+        origin = Math.max(min, origin);
+        return origin;
+    }
+
+    public static float make(float origin, float min, float max) {
+        origin = Math.min(max, origin);
+        origin = Math.max(min, origin);
+        return origin;
+    }
+
+    public static double make(double origin, double min, double max) {
+        origin = Math.min(max, origin);
+        origin = Math.max(min, origin);
+        return origin;
+    }
+
     public interface ISafe {
         void makeSafe();
     }
