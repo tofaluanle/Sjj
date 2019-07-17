@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     //region 2
     public void click2(View v) {
     }
-
     //endregion
 
     //region 3

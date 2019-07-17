@@ -15,8 +15,7 @@ public class SilenceUtil {
     public static int parseInt(String number, int defaultValue) {
         try {
             return Integer.parseInt(number);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
         }
         return defaultValue;
     }
@@ -25,11 +24,34 @@ public class SilenceUtil {
         return parseLong(number, 0);
     }
 
-    public static long parseLong(String number, int defaultValue) {
+    public static long parseLong(String number, long defaultValue) {
         try {
             return Long.parseLong(number);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+        }
+        return defaultValue;
+    }
+
+    public static float parseFloat(String number) {
+        return parseFloat(number, 0);
+    }
+
+    public static float parseFloat(String number, float defaultValue) {
+        try {
+            return Float.parseFloat(number);
+        } catch (Exception e) {
+        }
+        return defaultValue;
+    }
+
+    public static double parseDouble(String number) {
+        return parseDouble(number, 0);
+    }
+
+    public static double parseDouble(String number, double defaultValue) {
+        try {
+            return Double.parseDouble(number);
+        } catch (Exception e) {
         }
         return defaultValue;
     }
