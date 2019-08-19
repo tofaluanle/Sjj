@@ -1,5 +1,9 @@
 package cn.sjj.util;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -113,5 +117,23 @@ public class PrintUtil {
         }
         sb.append(" }");
         return sb.toString();
+    }
+
+    public static String printJson(String json) {
+        String message;
+        try {
+            if (json.startsWith("{")) {
+                JSONObject jsonObject = new JSONObject(json);
+                message = jsonObject.toString(4);//最重要的方法，就一行，返回格式化的json字符串，其中的数字4是缩进字符数
+            } else if (json.startsWith("[")) {
+                JSONArray jsonArray = new JSONArray(json);
+                message = jsonArray.toString(4);
+            } else {
+                message = json;
+            }
+        } catch (JSONException e) {
+            message = json;
+        }
+        return message;
     }
 }
