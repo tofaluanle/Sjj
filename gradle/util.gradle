@@ -1,0 +1,94 @@
+import java.security.MessageDigest
+import java.text.SimpleDateFormat
+
+ext.getGitVersion = {
+    return 'git rev-parse --short HEAD'.execute().text.trim()
+}
+
+ext.getGitVersion = { envp, dir ->
+    return 'git rev-parse --short HEAD'.execute(envp, dir).text.trim()
+}
+
+ext.getJenkinsBuild = {
+    return System.getenv("BUILD_NUMBER") as Integer ?: 0
+}
+
+ext.getDate = {
+    SimpleDateFormat format = new SimpleDateFormat("M-dd HH:mm");
+    return format.format(new Date());
+}
+
+ext.getFileMD5 = { file ->
+    if (!file.exists() || !file.isFile()) {
+        throw new Exception("file not exist: " + file)
+    }
+    MessageDigest digest = null;
+    FileInputStream fis = null;
+    byte[] buffer = new byte[1024];
+    int len;
+    try {
+        digest = MessageDigest.getInstance("MD5");
+        fis = new FileInputStream(file);
+        while ((len = fis.read(buffer, 0, 1024)) != -1) {
+            digest.update(buffer, 0, len);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new Exception("get file md5 fail: " + file)
+    } finally {
+        if (fis != null) {
+            try {
+                fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    BigInteger bigInt = new BigInteger(1, digest.digest());
+    String md5 = bigInt.toString(16);
+    if (md5.length() < 32) {
+        String zero = "";
+        for (int i = 0; i < 32 - md5.length(); i++) {
+            zero += "0";
+        }
+        md5 = zero + md5;
+    }
+    return md5;
+}
+
+ext.error = { msg ->
+    println "\033[31m" + msg + "\033[0m"
+}
+
+ext.copyFile = { sourceFile, targetFile ->
+    BufferedInputStream inBuff = null;
+    BufferedOutputStream outBuff = null;
+
+    if (!targetFile.exists()) {
+        targetFile.createNewFile()
+    }
+
+    try {
+        // 新建文件输入流并对它进行缓冲
+        inBuff = new BufferedInputStream(new FileInputStream(sourceFile));
+
+        // 新建文件输出流并对它进行缓冲
+        outBuff = new BufferedOutputStream(new FileOutputStream(targetFile));
+
+        // 缓冲数组
+        byte[] b = new byte[1024 * 5];
+        int len;
+        while ((len = inBuff.read(b)) != -1) {
+            outBuff.write(b, 0, len);
+        }
+        // 刷新此缓冲的输出流
+        outBuff.flush();
+    } finally {
+        // 关闭流
+        if (inBuff != null)
+            inBuff.close();
+        if (outBuff != null)
+            outBuff.close();
+    }
+}
