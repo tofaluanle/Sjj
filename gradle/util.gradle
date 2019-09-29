@@ -92,3 +92,7 @@ ext.copyFile = { sourceFile, targetFile ->
             outBuff.close();
     }
 }
+
+def isWindows() {
+    return System.properties['os.name'].contains('windows');
+}
